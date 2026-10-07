@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Manuscript;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -16,19 +17,18 @@ class ManuscriptStatusUpdated implements ShouldBroadcastNow
     /**
      * Create a new event instance.
      */
-    public function __construct(public Manuscript $manuscript)
-    {
-    }
+    public function __construct(public Manuscript $manuscript) {}
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, Channel>
      */
     public function broadcastOn(): array
     {
         return [
             new PrivateChannel('manuscripts.'.$this->manuscript->user_id),
+            new PrivateChannel('portfolio-matrix'),
         ];
     }
 
@@ -53,6 +53,12 @@ class ManuscriptStatusUpdated implements ShouldBroadcastNow
             'status' => $this->manuscript->status,
             'synthesized_brief_path' => $this->manuscript->synthesized_brief_path,
             'word_count' => $this->manuscript->word_count,
+            'grant_amount' => (float) $this->manuscript->grant_amount,
+            'published_at' => $this->manuscript->published_at?->toISOString(),
+            'author' => [
+                'name' => $this->manuscript->user?->name ?? 'Institutional Fellow',
+                'email' => $this->manuscript->user?->email,
+            ],
             'updated_at' => $this->manuscript->updated_at?->toISOString(),
         ];
     }
