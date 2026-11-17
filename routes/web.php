@@ -68,11 +68,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/attestations/digest-queue', [AttestationController::class, 'digestQueue'])->name('attestations.digestQueue');
     Route::post('/attestations/digest-queue/{edition}', [AttestationController::class, 'attestDigest'])->name('attestations.attestDigest');
     Route::post('/attestations/{attestation}/anchor', [AttestationController::class, 'recordAnchor'])->name('attestations.recordAnchor');
+    Route::post('/attestations/{attestation}/correct', [AttestationController::class, 'correct'])->name('attestations.correct');
 });
 
-// Public Glenride Attestations (Witness) — verify must register before show
+// Public Glenride Attestations (Witness) — verify and key-statement must register before show
 Route::get('/attestations', [AttestationController::class, 'index'])->name('attestations.index');
 Route::post('/attestations/verify', [AttestationController::class, 'verify'])->name('attestations.verify');
+Route::get('/attestations/key-statement', [AttestationController::class, 'keyStatement'])->name('attestations.keyStatement');
 Route::get('/attestations/{key}', [AttestationController::class, 'show'])->name('attestations.show');
 
 // Public Glenride standards

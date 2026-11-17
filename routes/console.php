@@ -18,3 +18,12 @@ Schedule::command('attestations:digest')
     ->timezone('America/New_York')
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/digest-attestation-scheduler.log'));
+
+// Retry independent RFC 3161 timestamping for records whose timestamp
+// request failed or is still pending (protocol §19). A failed TSA
+// request never blocks issuance; this retry stamps the record later.
+Schedule::command('attestations:timestamp-missing')
+    ->dailyAt('10:15')
+    ->timezone('America/New_York')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/digest-attestation-scheduler.log'));

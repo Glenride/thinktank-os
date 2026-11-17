@@ -7,6 +7,7 @@ use App\Models\Manuscript;
 use App\Services\Attestation\AttestationService;
 use App\Services\Attestation\DigestAttestationService;
 use App\Services\Attestation\IssuanceChainService;
+use App\Services\Attestation\SigningKeyService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -83,6 +84,8 @@ class AttestationController extends Controller
         $attestation->load([
             'verifier:id,name',
             'challenges.challenger:id,name',
+            'supersedes',
+            'supersededBy',
         ]);
 
         $user = $request->user();
@@ -90,7 +93,28 @@ class AttestationController extends Controller
         return Inertia::render('Attestations/Show', [
             'attestation' => $attestation,
             'signature_valid' => $service->verifySignature($attestation),
+            'timestamp_valid' => $service->verifyTimestamp($attestation),
+            'statement' => $attestation->statement(),
+            'signature_block' => $attestation->signatureBlock(),
+            'supersedes_public_id' => $attestation->supersedes?->public_id,
+            'superseded_by_public_id' => $attestation->supersededBy?->public_id,
+            'chain_seq' => $attestation->issuanceLogEntry?->seq,
             'canIssue' => $user ? $user->canIssueAttestations() : false,
+        ]);
+    }
+
+    /**
+     * Published key statement (public): the signing keys, their
+     * fingerprints, the identity they bind to, and the revocation
+     * procedure. Public keys are public material; the binding is
+     * Glenride's published statement, not a CA-issued certificate.
+     */
+    public function keyStatement(SigningKeyService $keys): Response
+    {
+        return Inertia::render('Attestations/KeyStatement', [
+            'keys' => $keys->keys(),
+            'active_key_id' => $keys->activeKeyId(),
+            'identity' => "D'Vaughn House, principal of Glenride",
         ]);
     }
 
@@ -298,6 +322,50 @@ class AttestationController extends Controller
         $service->revoke($attestation, $validated['reason']);
 
         return back()->with('success', "Attestation {$attestation->public_id} revoked.");
+    }
+
+    /**
+     * Correct an attestation (editor/orchestrator roles only). The
+     * correction appends a new version linked to the original; the
+     * original is never edited or deleted, and stays readable.
+     */
+    public function correct(Request $request, Attestation $attestation, AttestationService $service): RedirectResponse
+    {
+        $user = $request->user();
+
+        if (! $user || ! $user->canIssueAttestations()) {
+            abort(403, 'Only Glenride editors and orchestrators can correct attestations.');
+        }
+
+        if ($attestation->status === 'revoked') {
+            return back()->with('error', 'A revoked attestation cannot be corrected. It stays revoked.');
+        }
+
+        $validated = $request->validate([
+            'subject_title' => 'nullable|string|max:500',
+            'claim' => 'nullable|string|min:10',
+            'subject_hash' => 'nullable|string|regex:/^[a-fA-F0-9]{64}$/',
+            'reason' => 'required|string|min:10|max:500',
+        ]);
+
+        $corrected = array_filter([
+            'subject_title' => $validated['subject_title'] ?? null,
+            'claim' => $validated['claim'] ?? null,
+            'subject_hash' => $validated['subject_hash'] ?? null,
+        ], fn ($v) => $v !== null && $v !== '');
+
+        if ($corrected === []) {
+            return back()->with('error', 'A correction must change at least one field.');
+        }
+
+        try {
+            $correction = $service->correct($attestation, $corrected, $user, $validated['reason']);
+        } catch (DomainException $e) {
+            return back()->with('error', $e->getMessage())->withInput();
+        }
+
+        return redirect()->route('attestations.show', $correction->public_id)
+            ->with('success', "Correction issued: {$correction->public_id} (version {$correction->version}, supersedes {$attestation->public_id}).");
     }
 
     /**

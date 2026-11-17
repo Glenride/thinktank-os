@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * Append-only, hash-chained issuance log for the Witness attestation layer.
  *
- * Scheme (ATTESTATION-PROTOCOL.md §9):
+ * Scheme (ATTESTATION-PROTOCOL.md §10):
  * - Sequence numbers are monotonic and gap-free, starting at the genesis
  *   entry (seq 0). Every issued attestation gets the next number.
  * - Each entry records seq, the previous entry's hash, public ID, subject
@@ -27,6 +27,9 @@ use Illuminate\Support\Facades\DB;
  *   'glenride-witness-genesis-v1', gates_passed [], issued_at
  *   2026-11-17T00:00:00+00:00.
  * - Held items get no sequence number. Duplicate triggers create no entry.
+ * - The entry hash formula is FIXED by the protocol. It must never change:
+ *   changing it would invalidate every existing entry. New record fields
+ *   live on the attestation record, never in the chain entry.
  */
 class IssuanceChainService
 {
@@ -69,14 +72,34 @@ class IssuanceChainService
     }
 
     /**
+     * The current chain head (highest sequence), or null when empty.
+     */
+    public function head(): ?IssuanceLogEntry
+    {
+        return IssuanceLogEntry::query()->orderByDesc('seq')->first();
+    }
+
+    /**
      * Append the next entry for a newly issued attestation. Creates the
      * genesis entry first when the log is empty. Must be called inside the
      * same transaction as the attestation creation so a failed append rolls
      * the issuance back with it.
+     *
+     * @param  array<int, int>  $gatesPassed  Gate numbers passed. Digest
+     *                                        issuances pass [1..6]; direct
+     *                                        issuances pass [] (the six
+     *                                        gates are digest-only).
+     * @param  string|null  $authorization  The authorization under which
+     *                                      the signature was executed.
+     *                                      Defaults to the automated
+     *                                      standing authorization; direct
+     *                                      issuances pass their own.
      */
-    public function append(Attestation $attestation, array $gatesPassed): IssuanceLogEntry
+    public function append(Attestation $attestation, array $gatesPassed, ?string $authorization = null): IssuanceLogEntry
     {
-        return DB::transaction(function () use ($attestation, $gatesPassed) {
+        $authorization ??= self::AUTHORIZATION;
+
+        return DB::transaction(function () use ($attestation, $gatesPassed, $authorization) {
             $last = IssuanceLogEntry::query()
                 ->orderByDesc('seq')
                 ->lockForUpdate()
@@ -97,7 +120,7 @@ class IssuanceChainService
                 'gates_passed' => array_values($gatesPassed),
                 'issued_at' => $attestation->issued_at,
                 'human_principal' => self::HUMAN_PRINCIPAL,
-                'authorization' => self::AUTHORIZATION,
+                'authorization' => $authorization,
                 'entry_hash' => $this->entryHash(
                     $seq,
                     $last->entry_hash,
@@ -106,7 +129,7 @@ class IssuanceChainService
                     array_values($gatesPassed),
                     $issuedAtIso,
                     self::HUMAN_PRINCIPAL,
-                    self::AUTHORIZATION
+                    $authorization
                 ),
             ]);
         });

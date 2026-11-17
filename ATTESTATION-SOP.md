@@ -1,9 +1,18 @@
 # SOP — Attestation Issuance (ThinkTank OS / Witness)
 
-**Version:** 1.1 — 2026-11-17 · **Status:** operating procedure, grounded in the
+**Version:** 1.2 — 2026-11-17 · **Status:** operating procedure, grounded in the
 shipped system (ThinkTank OS attestation v1 2026-10-22 `551fcd1`, v2 `dcaef87`;
 system reference: `ATTESTATION.md` in the thinktank-os repo).
 **Authority:** Glenride is the attestation authority. **Proof, not promises.**
+
+**Amendment v1.2 (ordered by D'Vaughn House, 2026-11-17, federal alignment):**
+the attestation statement accompanies every record above the signature block;
+new issuances sign with Ed25519 under a published key ID and verify from the
+published public key (legacy HMAC records verify as issued, never re-signed);
+an independent RFC 3161 timestamp is requested for every new issuance; every
+issuance appends to the hash-chained issuance log; corrections append a new
+version linked to the original and never overwrite. No change to the v1.1
+automation scope: automated issuance stays digest reports only.
 
 **Amendment v1.1 (approved by D'Vaughn's tap, 2026-11-17, with the automated
 digest attestation PRD):** automated issuance is authorized for weekly-digest
@@ -20,8 +29,15 @@ A signed record binding four things: **the claim** (what was done, produced, or
 asserted), **the evidence** (the trail behind it, recorded at issuance),
 **the verifier** (the Glenride issuer who checked it), and **the timestamp**.
 Public ID format: `GLR-AT-<year>-<6 uppercase alphanumerics>`. Signature:
-HMAC-SHA256 over the canonical payload (`public_id`, subject type/id,
-subject hash, `issued_at`), verified by recomputation on the public record.
+Ed25519 over the canonical payload (record identity fields + the full
+attestation statement text), verified from the published public key on the
+key statement page; records issued before November 17, 2026 carry HMAC-SHA256
+signatures and verify through the legacy path, exactly as issued. The
+attestation statement (protocol §17) accompanies every record above the
+signature block, on the public page and in the `.md` rendering. What
+"attested" means: identity, origin, and integrity of the record, plus the
+stated claim as published — not the truth of third-party data the record
+reports, and not a federal certification.
 
 Records live on **SpinWave** (the permanent store of record); ThinkTank OS is
 the working surface. STANZA on Base is the public representation of the proof
@@ -107,6 +123,10 @@ For each subject, the issuer confirms:
   returned instead of duplicated — re-submitting a loaded subject is safe.
   A changed subject (new hash) earns a new attestation; the old record is
   never edited (see CHALLENGE-SOP for amendment-by-supersession).
+  **Correction (v1.2):** to fix a record, issue a correction — a new
+  version (N+1) with a new public ID, linked to the original, signed fresh,
+  with its own chain entry. The original stays readable and is marked
+  superseded. A revoked record cannot be corrected; it stays revoked.
 - **Credit debit (pipeline only):** if the manuscript is linked to a credit
   account and balance enforcement is on, issuance debits **75 TTOS**
   ($1.00) in the same transaction; insufficient balance rolls the attestation
@@ -198,10 +218,14 @@ Authorized by D'Vaughn's tap, 2026-11-17 (automated digest attestation PRD,
   6. No duplicates: no existing attestation already covers this edition
      (same URL + same hash). A duplicate trigger is a no-op.
 - **Signing:** via `AttestationService` (the `issueManual` logic, reused),
-  public ID + HMAC signature, `entered_via = automated`, issuer of record
-  Glenride on the orchestrator account. The signing key stays in the
-  application environment on the iMac; it is never copied, logged, or
-  transmitted.
+  public ID + Ed25519 signature under the active published key ID, the
+  attestation statement inside the signed payload, `entered_via = automated`,
+  issuer of record Glenride on the orchestrator account, chain entry
+  appended in the same transaction, and an independent RFC 3161 timestamp
+  requested after the commit (a failed timestamp request never blocks
+  issuance; the daily retry command stamps it later). The signing key stays
+  in the application environment on the iMac (mode 600); it is never copied,
+  logged, or transmitted. See protocol §§17–19.
 - **Human source:** the human principal of every automated issuance is
   D'Vaughn House, principal of Glenride. Glenride is the issuer of record,
   acting through him; the system prepares and executes and is never named

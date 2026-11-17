@@ -6,7 +6,6 @@ use App\Models\Attestation;
 use App\Models\User;
 use Carbon\Carbon;
 use DomainException;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
@@ -169,27 +168,25 @@ class DigestAttestationService
             return $this->hold($row, (int) $failed['gate'], (string) $failed['reason'], $runAt, $gates);
         }
 
-        $attestation = DB::transaction(function () use ($row, $claim, $verifier) {
-            $attestation = $this->attestations->issueManual([
-                'subject_title' => $row['subject_title'],
-                'claim' => $claim,
-                'subject_kind' => 'report',
-                'evidence_notes' => $row['evidence_notes'] ?? null,
-                'evidence_urls' => ! empty($row['public_url']) ? [$row['public_url']] : [],
-                'subject_hash_override' => $row['subject_hash'],
-            ], $verifier, 'automated', [
-                // Human source: the system executes the signature as the
-                // human principal's instrument; it is never the attestor.
-                'human_principal' => IssuanceChainService::HUMAN_PRINCIPAL,
-                'authorization' => IssuanceChainService::AUTHORIZATION,
-            ]);
-
-            if ($attestation->wasRecentlyCreated) {
-                $this->chain->append($attestation, [1, 2, 3, 4, 5, 6]);
-            }
-
-            return $attestation;
-        });
+        // The chain append, the Ed25519 signature, and the timestamp
+        // request all live in issueManual, shared with every other
+        // issuance path; issueManual runs its own transaction. The
+        // gates passed travel in the manifest extra so the chain
+        // entry records all six.
+        $attestation = $this->attestations->issueManual([
+            'subject_title' => $row['subject_title'],
+            'claim' => $claim,
+            'subject_kind' => 'report',
+            'evidence_notes' => $row['evidence_notes'] ?? null,
+            'evidence_urls' => ! empty($row['public_url']) ? [$row['public_url']] : [],
+            'subject_hash_override' => $row['subject_hash'],
+        ], $verifier, 'automated', [
+            // Human source: the system executes the signature as the
+            // human principal's instrument; it is never the attestor.
+            'human_principal' => IssuanceChainService::HUMAN_PRINCIPAL,
+            'authorization' => IssuanceChainService::AUTHORIZATION,
+            'gates_passed' => [1, 2, 3, 4, 5, 6],
+        ]);
 
         if (! $attestation->wasRecentlyCreated) {
             $outcome = [
@@ -218,6 +215,10 @@ class DigestAttestationService
             'gates_passed' => [1, 2, 3, 4, 5, 6],
             'human_principal' => IssuanceChainService::HUMAN_PRINCIPAL,
             'authorization' => IssuanceChainService::AUTHORIZATION,
+            'signature_method' => $attestation->signature_method,
+            'key_id' => $attestation->key_id,
+            'timestamp_status' => $attestation->timestamp_status,
+            'timestamp_source' => $attestation->timestamp_source,
             'issued_at' => $attestation->issued_at->format('c'),
             'run_at' => $runAt,
         ];

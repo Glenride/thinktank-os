@@ -57,6 +57,12 @@ class DigestAttestationEmail
             $lines[] = '  Public ID: '.$o['public_id'];
             $lines[] = '  Registry: '.$baseUrl.'/attestations';
             $lines[] = '  Verify: '.$baseUrl.'/attestations/'.$o['public_id'];
+            if (! empty($o['signature_method']) || ! empty($o['key_id'])) {
+                $lines[] = '  Signature: '.($o['signature_method'] ?? 'hmac-sha256').' under key '.($o['key_id'] ?? 'legacy-hmac (application key)').'.';
+            }
+            if (! empty($o['timestamp_status'])) {
+                $lines[] = '  Trusted timestamp: '.($o['timestamp_status'] === 'timestamped' ? 'stamped by '.($o['timestamp_source'] ?? 'the timestamp authority') : 'not yet stamped ('.$o['timestamp_status'].') — the retry command will stamp it. The issue time in the record is the system clock until then.');
+            }
             $lines[] = '';
         }
 
