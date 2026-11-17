@@ -55,4 +55,15 @@ return [
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
     ],
 
+    // Albert Pass sign-in. Keys live only in the host environment;
+    // nothing secret is committed. The provider under the hood is
+    // never named in the UI. owner_emails stays a comma-separated
+    // string: WorkosAuthController explodes it itself.
+    'workos' => [
+        'client_id' => env('WORKOS_CLIENT_ID'),
+        'client_secret' => env('WORKOS_CLIENT_SECRET'),
+        'redirect_uri' => env('WORKOS_REDIRECT_URI'),
+        'owner_emails' => env('WORKOS_OWNER_EMAILS', 'dvaughn@dvaughnhouse.com'),
+    ],
+
 ];

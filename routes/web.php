@@ -5,6 +5,13 @@ use App\Http\Controllers\CreditController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManuscriptController;
 use App\Http\Controllers\MarkdownController;
+use App\Http\Controllers\OpsConsoleLoggedInController;
+use App\Http\Controllers\PlusPortalController;
+use App\Http\Controllers\TressAuthController;
+use App\Http\Controllers\TressColumnLoggedInController;
+use App\Http\Controllers\TressRpcController;
+use App\Http\Controllers\TradingTerminalLoggedInController;
+use App\Http\Controllers\WorkosAuthController;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Controllers\PortfolioMatrixController;
 use App\Http\Controllers\ProfileController;
@@ -139,11 +146,30 @@ Route::domain('ops.dvaughnhouse.com')->group(function () {
     Route::get('/', [OpsConsoleController::class, 'index'])->name('ops-console.domain');
 });
 
-// Staging Preview Routes (Direct URL access across environments)
+// Staging Preview Routes (Direct URL access across environments).
+// The logged-in-state build renders the new pages on the staging
+// routes. Domain routes above still point at the legacy controllers
+// until a live cutover is tapped.
 Route::prefix('staging')->group(function () {
-    Route::get('/tress-column', [TressColumnController::class, 'index'])->name('tress-column.preview');
-    Route::get('/terminal', [TradingTerminalController::class, 'index'])->name('trading-terminal.preview');
-    Route::get('/ops-console', [OpsConsoleController::class, 'index'])->name('ops-console.preview');
+    Route::get('/tress-column', [TressColumnLoggedInController::class, 'index'])->name('tress-column.preview');
+    Route::get('/tress-column/launches/{id}', [TressColumnLoggedInController::class, 'show'])->whereNumber('id')->name('tress-column.preview.show');
+    Route::get('/tress-column/start', [TressColumnLoggedInController::class, 'create'])->name('tress-column.preview.create');
+    Route::get('/tress-column/mine', [TressColumnLoggedInController::class, 'mine'])->name('tress-column.preview.mine');
+    Route::get('/terminal', [TradingTerminalLoggedInController::class, 'markets'])->name('trading-terminal.preview');
+    Route::get('/terminal/token/{address}', [TradingTerminalLoggedInController::class, 'token'])->name('trading-terminal.preview.token');
+    Route::get('/terminal/activity', [TradingTerminalLoggedInController::class, 'activity'])->name('trading-terminal.preview.activity');
+    Route::get('/ops-console', [OpsConsoleLoggedInController::class, 'index'])->name('ops-console.preview');
+    Route::get('/plus', [PlusPortalController::class, 'index'])->name('plus-portal.preview');
 });
+
+// Tress Column sign-in entry (Albert Pass). The provider under the
+// hood is never named in the UI.
+Route::get('/auth/tress-entry', [TressAuthController::class, 'entry'])->name('tress.auth.entry');
+Route::get('/auth/workos/login', [WorkosAuthController::class, 'login'])->name('workos.login');
+Route::get('/auth/workos/callback', [WorkosAuthController::class, 'callback'])->name('workos.callback');
+
+// Tress Column read-only chain relay. Read methods only; the
+// controller enforces the allowlist and rejects sends.
+Route::post('/api/tc/rpc', [TressRpcController::class, 'relay'])->name('tc.rpc')->middleware('throttle:120,1');
 
 require __DIR__.'/auth.php';
