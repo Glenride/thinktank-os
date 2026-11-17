@@ -1,9 +1,14 @@
 # SOP — Challenging an Attestation (ThinkTank OS / Witness)
 
-**Version:** 1.0 — 2026-10-24 · **Status:** operating procedure, grounded in
+**Version:** 1.1 — 2026-11-17 · **Status:** operating procedure, grounded in
 the shipped challenge flow (ThinkTank OS attestation v1/v2; system reference:
 `ATTESTATION.md`). **Principle:** an attestation authority that can't be
 challenged is just a priesthood. Challenges are public by design.
+
+**Change note (v1.1):** §6 conformed to Protocol v2.0 §21.4 (build
+`c17f498`): a correction supersedes the original without revoking it,
+and a revoked record cannot be corrected. Revocation remains a
+separate outcome path.
 
 ## 1. What a challenge is
 
@@ -78,12 +83,14 @@ strongest challenges are reproducible: a hash, a link, a quote.
   returns to `issued`. The challenge remains listed on the public record —
   dismissed challenges are part of the record's history, not deleted.
 - **Upheld — claim amended by supersession:** records are append-only, so
-  an upheld challenge never edits the original. The original attestation is
-  **revoked** (reason citing the upheld challenge) and, where the work
-  itself stands, a **new attestation** is issued bound to the corrected
-  claim/evidence (new public ID; its evidence manifest cites the revoked
-  record and the challenge). The public trail reads: issued → challenged →
-  revoked → superseded.
+  an upheld challenge never edits the original and never revokes it. The
+  issuer issues a **correction**: a new version (N+1) with a new public
+  ID, linked to the original by `supersedes_id`, signed fresh, with its
+  own chain entry (`POST /attestations/{attestation}/correct`, issuers
+  only; reason 10–500 characters, at least one field changed). The
+  original stays readable exactly as issued and is marked superseded,
+  showing the superseding record's public ID. The public trail reads:
+  issued → challenged → superseded.
 - **Upheld — record revoked:** issuer revokes with a recorded reason and
   timestamp (`POST /attestations/{attestation}/revoke`, issuers only,
   active records only). Status `revoked` is permanent and public; the
