@@ -4,7 +4,6 @@
 
 import { Link } from '@inertiajs/react';
 import {
-    DEPLOY_BLOCK,
     FEE_TIERS,
     HOOK_CERTIFICATE_FACTORY,
     QUOTE_ASSETS,
@@ -13,7 +12,6 @@ import {
 } from '../../../TressColumn/tressConfig';
 import {
     decodeLaunchedLog,
-    ethBlockNumber,
     ethCall,
     ethGetLogs,
     readAddress,
@@ -38,21 +36,24 @@ function pct(bps) {
     return `${(Number(bps) / 100).toFixed(1)}%`;
 }
 
-function useLaunchEvent(launchId) {
+function useLaunchEvent(launchId, launchBlock) {
     return useAsyncData(async () => {
-        const latest = await ethBlockNumber();
+        // The Launched event is emitted by the launch transaction itself,
+        // so it sits at the record's launch block. No record, no scan.
+        if (!launchBlock) return { event: null, complete: true };
+        const from = BigInt(launchBlock);
         const topic = `0x${BigInt(launchId).toString(16).padStart(64, '0')}`;
         const { logs, complete } = await ethGetLogs(
             {
                 address: HOOK_CERTIFICATE_FACTORY,
                 topics: [TOPICS.launched, topic],
-                fromBlock: `0x${DEPLOY_BLOCK.toString(16)}`,
-                toBlock: `0x${latest.toString(16)}`,
+                fromBlock: `0x${from.toString(16)}`,
+                toBlock: `0x${(from + 500n).toString(16)}`,
             },
-            { maxPages: 10 },
+            { maxPages: 4 },
         );
         return { event: logs.length > 0 ? decodeLaunchedLog(logs[0]) : null, complete };
-    }, [launchId], 'launchList');
+    }, [launchId, launchBlock ? launchBlock.toString() : ''], 'launchList');
 }
 
 function useGuardsAndVesting(record) {
@@ -107,7 +108,7 @@ export default function Show({ launchId }) {
     const gateState = useGate(record?.hookCore);
     const metasState = useMetas(record);
     const guardsState = useGuardsAndVesting(record);
-    const eventState = useLaunchEvent(launchId);
+    const eventState = useLaunchEvent(launchId, record?.launchBlock);
 
     const tokenMeta = metasState.data?.tokenMeta || null;
     const quote = metasState.data?.quote || null;
