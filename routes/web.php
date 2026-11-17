@@ -65,6 +65,8 @@ Route::get('/thesis', [VanguardLibraryController::class, 'thesis'])->name('thesi
 Route::middleware('auth')->group(function () {
     Route::get('/attestations/create', [AttestationController::class, 'create'])->name('attestations.create');
     Route::post('/attestations/manual', [AttestationController::class, 'storeManual'])->name('attestations.storeManual');
+    Route::get('/attestations/digest-queue', [AttestationController::class, 'digestQueue'])->name('attestations.digestQueue');
+    Route::post('/attestations/digest-queue/{edition}', [AttestationController::class, 'attestDigest'])->name('attestations.attestDigest');
     Route::post('/attestations/{attestation}/anchor', [AttestationController::class, 'recordAnchor'])->name('attestations.recordAnchor');
 });
 

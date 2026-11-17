@@ -1,9 +1,18 @@
 # SOP — Attestation Issuance (ThinkTank OS / Witness)
 
-**Version:** 1.0 — 2026-10-24 · **Status:** operating procedure, grounded in the
+**Version:** 1.1 — 2026-11-17 · **Status:** operating procedure, grounded in the
 shipped system (ThinkTank OS attestation v1 2026-10-22 `551fcd1`, v2 `dcaef87`;
 system reference: `ATTESTATION.md` in the thinktank-os repo).
 **Authority:** Glenride is the attestation authority. **Proof, not promises.**
+
+**Amendment v1.1 (approved by D'Vaughn's tap, 2026-11-17, with the automated
+digest attestation PRD):** automated issuance is authorized for weekly-digest
+standalone subjects (`report`) when all six automated gates pass (see §10).
+The issuer of record remains Glenride on the orchestrator account; the gates
++ the audit log + challenge/revoke are the control, replacing the second pair
+of eyes for this subject class only. All other subject classes keep the v1.0
+rule (a human issuer signs). Automation does not spread by default: any other
+subject class needs its own amendment.
 
 ## 1. What an attestation is
 
@@ -48,6 +57,13 @@ need evidence Glenride does not hold.
   admin, editor). Checks the subject against this SOP and signs. An author
   never attests their own work by self-signing; a second set of eyes signs.
   In current practice the sole issuer account is the orchestrator.
+- **Automated issuance (v1.1, digest reports only)** — the scheduled job
+  executes the signature for weekly-digest `report` subjects when all six
+  §10 gates pass, as the human principal's instrument, on the orchestrator
+  account, with `entered_via = automated`. The human principal is D'Vaughn
+  House, principal of Glenride; the system is never the attestor. The gates
+  + audit log + challenge/revoke replace the second pair of eyes for this
+  class only.
 - **Attestor of record** — Glenride (`issuer_name = Glenride` on every record).
 
 ## 4. Intake and completeness check (before any signature)
@@ -82,6 +98,11 @@ For each subject, the issuer confirms:
   Claim is prefilled and editable; evidence notes/URL optional additions.
 - **Standalone:** `/attestations/create` → manual entry →
   `attestations.storeManual` → `AttestationService::issueManual()`.
+- **Automated (digest reports only, v1.1):** the scheduled job
+  (`attestations:digest`) builds the row from the released digest artifact,
+  runs the six §10 gates, and executes the signature via the same service
+  logic with `entered_via = automated`, as the human principal's instrument.
+  See §10.
 - **Idempotency:** an active attestation for the same subject hash is
   returned instead of duplicated — re-submitting a loaded subject is safe.
   A changed subject (new hash) earns a new attestation; the old record is
@@ -91,6 +112,7 @@ For each subject, the issuer confirms:
   ($1.00) in the same transaction; insufficient balance rolls the attestation
   back. Manuscripts with no account are never blocked. **Manual standalone
   attestations are not debited** (current build; see OPEN-ISSUES #11).
+  Automated digest attestations are likewise not debited.
 
 ## 6. Post-issuance verification (issuer, same session)
 
@@ -148,3 +170,54 @@ third-party audit before mainnet** — both remain the owner's gates
   the TTOS ledger for charges, and the workspace audit log for issuance
   batches. Records are never deleted to hide them — revocation is a status,
   not an erasure (see CHALLENGE-SOP).
+
+## 10. Automated digest attestation (v1.1)
+
+Authorized by D'Vaughn's tap, 2026-11-17 (automated digest attestation PRD,
+§9 defaults). Scope: weekly drug-shortage digest editions only, kind
+`report`, attested artifact = the full paid digest.
+
+- **Trigger:** release of the edition's artifact. The trigger row carries the
+  exact published title, the canonical file (stored path), the public URL
+  where one exists, and the digest run's figures + retrieval date.
+- **Preparation:** the row is built from the digest run itself — never free
+  text, never invented. Claim follows the PRD §6.2 template; every figure
+  comes from the digest run. A missing figure fails preparation; the item is
+  held, never filled in.
+- **Gates (all must pass; any failure holds the item, never signed past):**
+  1. Finished + fixed: the published edition exists and the canonical file
+     is on disk.
+  2. Checkable: the public URL returns 200 where the artifact is public; a
+     paid artifact satisfies this gate through its canonical file + hash
+     (gates 1 + 3).
+  3. Hash parity: the SHA-256 of the canonical file equals the recorded
+     subject hash.
+  4. Claim fidelity: every figure in the claim matches the digest run's
+     figures exactly; the claim asserts nothing beyond them.
+  5. Identity: title exactly as published; kind `report`.
+  6. No duplicates: no existing attestation already covers this edition
+     (same URL + same hash). A duplicate trigger is a no-op.
+- **Signing:** via `AttestationService` (the `issueManual` logic, reused),
+  public ID + HMAC signature, `entered_via = automated`, issuer of record
+  Glenride on the orchestrator account. The signing key stays in the
+  application environment on the iMac; it is never copied, logged, or
+  transmitted.
+- **Human source:** the human principal of every automated issuance is
+  D'Vaughn House, principal of Glenride. Glenride is the issuer of record,
+  acting through him; the system prepares and executes and is never named
+  as the attestor. Every issuance records the standing authorization (this
+  SOP v1.1 + his November 17, 2026 tap approving the PRD defaults) in the
+  evidence record, the issuance log entry, the audit record, and the run
+  email.
+- **Failure handling:** a held item is recorded with the exact failed gate +
+  reason, logged for Mission Control, and re-checked on the next run. After
+  3 consecutive failed runs it stays held and waits on a human, with the
+  reason standing. Held items are never silently skipped and never partially
+  issued.
+- **Human control:** challenge and revoke work exactly as for any other
+  attestation. The issuance log records what was checked, what passed, what
+  was signed, and when.
+- **Triple-check:** the triple-check review layer (Checker One + Checker Two
+  + Janine) reviews digest content before release; it is separate from these
+  gates. The gates never fabricate a triple-check record, and a missing
+  triple-check record is noted, not invented.

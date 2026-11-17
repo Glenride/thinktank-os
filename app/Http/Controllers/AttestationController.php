@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Attestation;
 use App\Models\Manuscript;
 use App\Services\Attestation\AttestationService;
+use App\Services\Attestation\DigestAttestationService;
+use App\Services\Attestation\IssuanceChainService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -296,5 +298,62 @@ class AttestationController extends Controller
         $service->revoke($attestation, $validated['reason']);
 
         return back()->with('success', "Attestation {$attestation->public_id} revoked.");
+    }
+
+    /**
+     * One-click digest attestation queue (PRD section 12). Issuers only.
+     *
+     * Lists queued digest editions pre-filled from their trigger rows.
+     * The Attest button runs the SAME gates + signing code as the
+     * scheduled path (DigestAttestationService::processRow). This is
+     * the human override/fallback control, not the steady-state path:
+     * steady state signs automatically after preparation, with no
+     * human step between publishing and issuance.
+     */
+    public function digestQueue(Request $request, DigestAttestationService $digests): Response
+    {
+        $user = $request->user();
+
+        if (! $user || ! $user->canIssueAttestations()) {
+            abort(403, 'Only Glenride editors and orchestrators can issue attestations.');
+        }
+
+        return Inertia::render('Attestations/DigestQueue', [
+            'rows' => $digests->listQueue(),
+            'canIssue' => true,
+            'humanPrincipal' => IssuanceChainService::HUMAN_PRINCIPAL,
+            'authorization' => IssuanceChainService::AUTHORIZATION,
+        ]);
+    }
+
+    /**
+     * Attest one queued digest edition from the button. Same gates and
+     * signing as the automatic path; a failed gate holds with the
+     * reason shown and never signs past the failure.
+     */
+    public function attestDigest(Request $request, string $edition, DigestAttestationService $digests): RedirectResponse
+    {
+        $user = $request->user();
+
+        if (! $user || ! $user->canIssueAttestations()) {
+            abort(403, 'Only Glenride editors and orchestrators can issue attestations.');
+        }
+
+        $row = $digests->findRow($edition);
+
+        if ($row === null) {
+            return back()->with('error', "No queued digest edition matches {$edition}.");
+        }
+
+        $outcome = $digests->processRow($row, $user);
+
+        return match ($outcome['outcome']) {
+            'issued' => redirect()->route('attestations.show', $outcome['public_id'])
+                ->with('success', "Attestation issued: {$outcome['public_id']}"),
+            'duplicate' => back()->with('success', "Already attested: {$outcome['public_id']}. No duplicate issued."),
+            'held' => back()->with('error', "Held — gate {$outcome['failed_gate']} failed: {$outcome['reason']}"),
+            'waiting' => back()->with('error', $outcome['reason']),
+            default => back()->with('error', $outcome['reason'] ?? 'Digest row could not be processed.'),
+        };
     }
 }

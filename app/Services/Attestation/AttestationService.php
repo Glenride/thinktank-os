@@ -194,9 +194,16 @@ class AttestationService
      * The subject hash is either the supplied override or a SHA-256 of
      * the canonical entered data. Signing matches issue() exactly.
      *
+     * The automated digest path reuses this method with
+     * $enteredVia = 'automated' and a $manifestExtra carrying the human
+     * principal and the authorization under which the system executed
+     * the signature as the principal's instrument. The manual path
+     * passes neither and behaves exactly as before.
+     *
      * @param  array{subject_title: string, claim: string, subject_kind: string, evidence_notes?: ?string, evidence_urls?: array<int, string>, subject_hash_override?: ?string}  $data
+     * @param  array<string, mixed>  $manifestExtra  Extra evidence-manifest keys (automated path only).
      */
-    public function issueManual(array $data, User $verifier): Attestation
+    public function issueManual(array $data, User $verifier, string $enteredVia = 'manual', array $manifestExtra = []): Attestation
     {
         $subjectTitle = trim((string) ($data['subject_title'] ?? ''));
         $claim = trim((string) ($data['claim'] ?? ''));
@@ -249,18 +256,18 @@ class AttestationService
         $manifest = [
             'subject_title' => $subjectTitle,
             'subject_kind' => $subjectKind,
-            'entered_via' => 'manual',
+            'entered_via' => $enteredVia,
             'evidence_notes' => $evidenceNotes,
             'evidence_urls' => $evidenceUrls,
             'subject_hash_override' => $override ?: null,
-        ];
+        ] + $manifestExtra;
 
         return Attestation::create([
             'public_id' => $publicId,
             'attestable_type' => null,
             'attestable_id' => null,
             'subject_kind' => $subjectKind,
-            'entered_via' => 'manual',
+            'entered_via' => $enteredVia,
             'subject_title' => $subjectTitle,
             'claim' => $claim,
             'evidence_manifest' => $manifest,
@@ -268,7 +275,7 @@ class AttestationService
             'signature' => $signature,
             'verifier_id' => $verifier->id,
             'issuer_name' => 'Glenride',
-            'method' => 'manual_entry_v1',
+            'method' => $enteredVia === 'automated' ? 'automated_digest_v1' : 'manual_entry_v1',
             'status' => 'issued',
             'issued_at' => $issuedAt,
         ]);

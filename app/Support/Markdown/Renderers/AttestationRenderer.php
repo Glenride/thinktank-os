@@ -58,7 +58,11 @@ class AttestationRenderer implements MarkdownRenderer
             'Verified by' => $attestation->verifier?->name ?? 'Glenride',
             'Issued' => Markdown::date($attestation->issued_at),
             'Method' => $attestation->method ?: 'editorial_review_v1',
-            'Entry' => $attestation->entered_via === 'manual' ? 'Manual entry' : 'Manuscript pipeline',
+            'Entry' => match ($attestation->entered_via) {
+                'manual' => 'Manual entry',
+                'automated' => 'Automated digest attestation',
+                default => 'Manuscript pipeline',
+            },
             'Subject hash (SHA-256)' => $attestation->subject_hash,
             'Signature fingerprint' => $attestation->signatureFingerprint(),
             'On-chain anchor' => $attestation->anchor_tx
