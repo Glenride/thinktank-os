@@ -141,6 +141,20 @@ class MarkdownReadableTest extends TestCase
         $this->assertContains('/essays/power-wisdom-gap', $paths);
     }
 
+    public function test_legacy_md_catalog_path_redirects_to_canonical_catalog(): void
+    {
+        $this->get('/api/md_catalog')->assertRedirect('/api/md/_catalog');
+
+        $this->get('/api/md/_catalog')->assertOk();
+    }
+
+    public function test_briefs_index_redirects_to_library(): void
+    {
+        $this->get('/briefs')->assertRedirect('/library');
+
+        $this->get('/library')->assertOk();
+    }
+
     public function test_llms_txt_is_generated_from_the_registry(): void
     {
         $response = $this->get('/llms.txt');

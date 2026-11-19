@@ -31,6 +31,9 @@ Route::get('/ai.txt', [MarkdownController::class, 'aiTxt'])->name('ai.policy')->
 Route::get('/robots.txt', [MarkdownController::class, 'robotsTxt'])->name('ai.robots')->withoutMiddleware(HandleInertiaRequests::class);
 Route::get('/sitemap.xml', [MarkdownController::class, 'sitemapXml'])->name('ai.sitemap')->withoutMiddleware(HandleInertiaRequests::class);
 Route::get('/api/md/_catalog', [MarkdownController::class, 'catalog'])->name('md.catalog')->withoutMiddleware(HandleInertiaRequests::class);
+// Legacy catalog path flagged as a 404 in Search Console: redirect to the
+// canonical catalog at /api/md/_catalog.
+Route::redirect('/api/md_catalog', '/api/md/_catalog', 301);
 Route::get('/api/md/{path}', [MarkdownController::class, 'showApi'])->where('path', '.*')->name('md.api')->withoutMiddleware(HandleInertiaRequests::class);
 // .md suffix for every public page (registered before the HTML routes;
 // the pattern only matches paths ending in .md).
@@ -55,6 +58,8 @@ Route::domain('store.dvaughnhouse.com')->group(function () {
 // Glenride institutional front door; the Vanguard Library lives at /library
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/library', [VanguardLibraryController::class, 'index'])->name('library.index');
+// /briefs has no index of its own — the library is the briefs list.
+Route::redirect('/briefs', '/library', 301);
 Route::get('/briefs/{manuscript}', [VanguardLibraryController::class, 'show'])->name('briefs.show');
 Route::get('/thesis', [VanguardLibraryController::class, 'thesis'])->name('thesis.index');
 
