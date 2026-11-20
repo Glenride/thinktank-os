@@ -48,11 +48,13 @@
     </head>
     <body class="bg-paper font-serif text-ink antialiased dark:bg-night dark:text-cream">
         @inertia
-        {{-- Global Mission Control backlink — every ThinkTank OS page carries a visible link back to Mission Control. --}}
+        {{-- Global Mission Control backlink — every ThinkTank OS page carries a visible link back to Mission Control. Tress Column surfaces are excluded: they use the Tress shell (TressShell), which carries its own footer note. --}}
+        @if(!str_starts_with($page['component'] ?? '', 'TressColumn/') && !str_starts_with($page['component'] ?? '', 'TradingTerminal/') && !str_starts_with($page['component'] ?? '', 'OpsConsole/') && !str_starts_with($page['component'] ?? '', 'PlusPortal/'))
         <footer style="border-top:1px solid #3a352a;background:#171410;color:#e8e0cf;text-align:center;padding:14px 20px;font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;">
             <a href="https://mission.dvaughnhouse.com" style="color:#e8e0cf;text-decoration:underline;text-underline-offset:3px;">Mission Control</a>
             · <a href="/llms.txt" style="color:#e8e0cf;text-decoration:underline;text-underline-offset:3px;">For AI agents</a>
         </footer>
+        @endif
         {{-- AEO: plain-text catalog summary for crawlers that don't run JS.
              Same offers and prices as the interactive storefront — no cloaking. --}}
         @if(isset($storeSeo) && ($page['component'] ?? null) === 'Store/Index')

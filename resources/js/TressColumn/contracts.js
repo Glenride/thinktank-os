@@ -43,11 +43,10 @@ export const NON_TC_ROUTING_FEE_BPS = 5;
 export const NON_TC_ROUTING_FEE_PROPOSED_LABEL = '0.05% (5 bps, LOCKED Nov 15, 2026 — non-Tress Column Base swaps only)';
 
 // Launch Tier Doctrine (Platinum LOCKED 2026-11-02; Gold LOCKED 2026-11-20;
-// Silver DECIDED 2026-11-20: $20K gate, ~0.58% (58 bps). Silver is
-// NOT rendered on live tc/trade copy per Q3 — do not re-add it to any
-// rendered tier list without his tap. It is recorded here only so the
-// decided numbers are not lost; the rendered map below stays Platinum
-// + Gold until he taps Silver back into live copy.)
+// Silver DECIDED 2026-11-20: $20K gate, ~0.58% (58 bps), no lock or burn.
+// Silver was dropped from live copy per Q3 (H7) and restored on his tap
+// "Add silver" 2026-11-20, which supersedes the Q3 drop rule. The map
+// below renders all three tiers on the terminal and Tress Column pages.)
 export const LAUNCH_TIERS = {
     PLATINUM: {
         name: 'Platinum',
@@ -63,6 +62,14 @@ export const LAUNCH_TIERS = {
         lpRequirement: 'Short timed lock',
         volumeGateUsd: 250_000,
         postGateFeeLabel: '0.45% in quote asset only',
+        isLocked: true,
+    },
+    SILVER: {
+        name: 'Silver',
+        status: 'DECIDED (2026-11-20)',
+        lpRequirement: 'No lock or burn',
+        volumeGateUsd: 20000,
+        postGateFeeLabel: '~0.58% in quote asset only',
         isLocked: true,
     },
 };
