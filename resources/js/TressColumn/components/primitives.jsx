@@ -2,11 +2,16 @@
 // talk, do not present. Concrete detail first. Short, uneven
 // sentences. Errors say what happened, then what to do next.
 
-import { explorerAddress, explorerTx, USDC_SEPOLIA, WETH_SEPOLIA } from '../tressConfig';
+import { explorerAddress, explorerToken, explorerTx, USDC_SEPOLIA, WETH_SEPOLIA } from '../tressConfig';
 import { shortenAddress } from '../format';
 
 export function AddressLink({ address, label = null, kind = 'address' }) {
-    const href = kind === 'tx' ? explorerTx(address) : explorerAddress(address);
+    const href =
+        kind === 'tx'
+            ? explorerTx(address)
+            : kind === 'token'
+              ? explorerToken(address)
+              : explorerAddress(address);
     return (
         <a
             href={href}

@@ -4,29 +4,66 @@
 // when billing is not connected, subscribing says so.
 
 import { useState } from 'react';
+import { Component } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { PLUS_TIERS } from '../../TressColumn/tressConfig';
 import { TressShell } from '../../TressColumn/components/TressShell';
 import { EmptyState, Tabs } from '../../TressColumn/components/primitives';
 
-const TIER_KEYS = ['sapphire', 'emerald', 'ruby'];
+// Tier keys match the canonical config exactly (SAPPHIRE/EMERALD/RUBY).
+// Lowercase keys used to look up undefined tiers and throw on render.
+const TIER_KEYS = ['SAPPHIRE', 'EMERALD', 'RUBY'];
+
+// Error boundary for the portal route: a tier render failure shows a
+// plain error with a retry instead of a blank page.
+export class PortalErrorBoundary extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { failed: false };
+    }
+
+    static getDerivedStateFromError() {
+        return { failed: true };
+    }
+
+    render() {
+        if (this.state.failed) {
+            return (
+                <div className="tc-error" role="alert">
+                    <strong>The Plus+ portal did not load.</strong> Check the
+                    network and try again.
+                    <div className="tc-error-action">
+                        <button
+                            type="button"
+                            className="tc-button-quiet"
+                            onClick={() => window.location.reload()}
+                        >
+                            Try again
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        return this.props.children;
+    }
+}
 
 // Honest state for each feature, in the same order as PLUS_TIERS.
 // The feature text is the locked copy. The note says what is true now.
 const HONEST_NOTES = {
-    sapphire: [
+    SAPPHIRE: [
         'No launches exist yet, so the feed is empty. The feed needs the indexer, which is not built.',
         'No airdrop campaigns exist. The radar has nothing to watch.',
         'No locks exist. There is nothing to track yet.',
     ],
-    emerald: [
+    EMERALD: [
         'The workbench is the launch flow. Staging a launch starts there.',
         'The snapshot builder is not built.',
         'No launches exist, so there is nothing to analyze.',
         'No locks exist. There is nothing to count down.',
         'Vanity certificate URLs are not built. Certificates use their launch number.',
     ],
-    ruby: [
+    RUBY: [
         'No campaigns exist, so no rebate activity exists.',
         'No launches exist. There is nothing to monitor.',
         'No snapshots exist. There is nothing to export.',
@@ -41,7 +78,7 @@ function TierScreen({ tierKey, onSubscribe, subscribeNote }) {
     return (
         <div>
             <p className="tc-lede">
-                {tier.name}, ${tier.price} per month. {tier.audience}.
+                {tier.name}, ${tier.priceMonthly} per month. {tier.target}.
             </p>
             <ul className="tc-feature-list">
                 {tier.features.map((feature, index) => (
@@ -66,7 +103,7 @@ function TierScreen({ tierKey, onSubscribe, subscribeNote }) {
 export default function Index({ billingConnected }) {
     const { auth } = usePage().props;
     const user = auth?.user || null;
-    const [active, setActive] = useState('sapphire');
+    const [active, setActive] = useState('SAPPHIRE');
     const [subscribeNote, setSubscribeNote] = useState('');
 
     const onSubscribe = () => {
@@ -84,19 +121,22 @@ export default function Index({ billingConnected }) {
                 touches a contract, a lock, a fee, or anyone else's launch.
             </p>
 
-            <Tabs
-                options={TIER_KEYS.map((key) => ({
-                    value: key,
-                    label: `${PLUS_TIERS[key].name} · $${PLUS_TIERS[key].price}/mo`,
-                }))}
-                value={active}
-                onChange={(key) => {
-                    setActive(key);
-                    setSubscribeNote('');
-                }}
-            />
+            <PortalErrorBoundary>
+                <Tabs
+                    tabs={TIER_KEYS.map((key) => ({
+                        key,
+                        label: `${PLUS_TIERS[key].name} · $${PLUS_TIERS[key].priceMonthly}/mo`,
+                    }))}
+                    active={active}
+                    onChange={(key) => {
+                        setActive(key);
+                        setSubscribeNote('');
+                    }}
+                    label="Plus+ tiers"
+                />
 
-            <TierScreen tierKey={active} onSubscribe={onSubscribe} subscribeNote={subscribeNote} />
+                <TierScreen tierKey={active} onSubscribe={onSubscribe} subscribeNote={subscribeNote} />
+            </PortalErrorBoundary>
 
             <section className="tc-section" aria-labelledby="tc-status-h">
                 <h2 className="tc-h2" id="tc-status-h">Your subscription</h2>

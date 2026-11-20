@@ -4,10 +4,10 @@ import {
     BASE_SEPOLIA_CHAIN_ID,
     POOL_MANAGER_ADDRESS,
     TEST_SAFE_TREASURY_ADDRESS,
-    PLUS_TIERS,
     AIRDROP_CAMPAIGN_FEE_ETH,
     VOLUME_GATE_USD,
 } from '@/TressColumn/contracts';
+import { PLUS_TIERS } from '@/TressColumn/tressConfig';
 
 export default function OpsConsoleIndex() {
     const [activeTab, setActiveTab] = useState('subscriptions'); // 'subscriptions' | 'airdrop' | 'launches' | 'certificates' | 'accounting'
@@ -199,7 +199,7 @@ export default function OpsConsoleIndex() {
                             <div className="p-8 text-center text-xs text-nacre-cream/50 space-y-2">
                                 <div>∅ No airdrop campaigns created yet</div>
                                 <p className="text-[11px] text-nacre-cream/40 max-w-md mx-auto">
-                                    Campaigns are deployed atomically via `LaunchFactory.launch` when airdropBps &gt; 0, requiring exact payment of {AIRDROP_CAMPAIGN_FEE_ETH} ETH forwarded to the treasury Safe.
+                                    Campaigns deploy as part of the launch, in the two-step factory flow, when airdropBps &gt; 0, requiring exact payment of {AIRDROP_CAMPAIGN_FEE_ETH} ETH forwarded to the treasury Safe.
                                 </p>
                             </div>
                         </div>
@@ -241,7 +241,7 @@ export default function OpsConsoleIndex() {
                         <div className="border border-abyssal-line/40 bg-abyssal-card/40 p-6 rounded-lg text-center space-y-3">
                             <div className="text-xs font-semibold text-pearls-white">Telemetry Feed Idle — Awaiting First Rehearsal Launch</div>
                             <p className="text-[11px] text-nacre-cream/60 max-w-lg mx-auto">
-                                Phase 3 deployment is awaiting execution. Once the first Sepolia dummy launch is created, live locker state (Abyssal permanent vs Timed unlock countdown) and pool fee accruals will stream here.
+                                Phase 3 deployment is awaiting execution. Once the first Sepolia launch is created, live locker state (Abyssal permanent vs Timed unlock countdown) and pool fee accruals will stream here.
                             </p>
                         </div>
                     </div>

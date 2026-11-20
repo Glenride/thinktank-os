@@ -7,6 +7,8 @@ import {
     POST_GATE_FEE_BPS,
     PRE_GATE_FEE_BPS,
 } from '@/TressColumn/contracts';
+import { ROUTING_MARKUP_BPS } from '@/TressColumn/tressConfig';
+import { formatBps } from '@/TressColumn/format';
 
 export default function TradingTerminalIndex() {
     const [selectedToken, setSelectedToken] = useState(null);
@@ -14,7 +16,6 @@ export default function TradingTerminalIndex() {
     const [buyAmount, setBuyAmount] = useState('');
     const [quoteAsset, setQuoteAsset] = useState('WETH');
     const [slippage, setSlippage] = useState('0.5');
-    const [routingFeeEnabled, setRoutingFeeEnabled] = useState(false); // Locked as OFF per doctrine
     const [sapphireRadarOpen, setSapphireRadarOpen] = useState(false);
 
     // Cumulative volume for active market (0 until real Sepolia launch trades occur)
@@ -210,7 +211,7 @@ export default function TradingTerminalIndex() {
                                 <span className="text-xs font-semibold uppercase text-abyssal-gold tracking-wider">
                                     Non-Custodial Swap
                                 </span>
-                                <span className="text-[10px] text-emerald-400">PearlHook Router</span>
+                                <span className="text-[10px] text-emerald-400">TCHook Router</span>
                             </div>
 
                             {/* Swap Inputs */}
@@ -263,7 +264,7 @@ export default function TradingTerminalIndex() {
                                     </div>
                                     <div className="flex justify-between text-nacre-cream/70">
                                         <span>Platform Routing Markup</span>
-                                        <span className="text-nacre-cream/40 font-mono">0.00% (OFF)</span>
+                                        <span className="text-nacre-cream/40 font-mono">{formatBps(ROUTING_MARKUP_BPS)}{ROUTING_MARKUP_BPS === 0 ? ' (OFF)' : ''}</span>
                                     </div>
                                     <div className="flex justify-between text-nacre-cream/70">
                                         <span>Max Slippage</span>
@@ -274,7 +275,7 @@ export default function TradingTerminalIndex() {
                                 {/* Routing Fee Switch (Built as OFF per Work Order) */}
                                 <div className="flex items-center justify-between px-2 py-1 text-[10px] text-nacre-cream/50 border border-dashed border-abyssal-line/20 rounded">
                                     <span>External Routing Fee</span>
-                                    <span className="text-nacre-cream/40">DISABLED (0.0%)</span>
+                                    <span className="text-nacre-cream/40">{ROUTING_MARKUP_BPS === 0 ? 'DISABLED (0.0%)' : formatBps(ROUTING_MARKUP_BPS)}</span>
                                 </div>
 
                                 {/* Action Button */}

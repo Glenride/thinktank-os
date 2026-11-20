@@ -18,7 +18,8 @@ function pct(bps) {
 }
 
 function feeTierLabel(tier) {
-    return `${((Number(tier) / 10000) * 100).toFixed(2)}%`;
+    // Pool fee tier is Uniswap v4 millionths: 3000 = 0.30%.
+    return `${(Number(tier) / 10000).toFixed(2)}%`;
 }
 
 export function CertificateDoc({
@@ -50,7 +51,7 @@ export function CertificateDoc({
                 {abyssal ? (
                     <span className="tc-certificate-seal">Abyssal lock. Locked forever.</span>
                 ) : (
-                    <span className="tc-certificate-seal">
+                    <span className="tc-certificate-seal tc-certificate-seal-timed">
                         Timed lock. Unlocks {formatDateTime(record.unlockTime)}.
                     </span>
                 )}

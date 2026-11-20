@@ -193,7 +193,7 @@ export default function Show({ launchId }) {
                             <div className="tc-term">
                                 <dt>Pool fee tier</dt>
                                 <dd>
-                                    {(Number(record.poolFeeTier) / 100).toFixed(2)}%, tick spacing{' '}
+                                    {(Number(record.poolFeeTier) / 10000).toFixed(2)}%, tick spacing{' '}
                                     {FEE_TIERS.find((t) => t.fee === record.poolFeeTier)?.tickSpacing ?? 'unknown'}
                                 </dd>
                             </div>

@@ -22,7 +22,7 @@ class WorkosAuthController extends Controller
     public function login(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $config = config('services.workos');
-        if (empty($config['client_id']) || empty($config['redirect_uri'])) {
+        if (empty($config['client_id']) || empty($config['client_secret']) || empty($config['redirect_uri'])) {
             return redirect('/');
         }
         $nonce = (string) Str::uuid();

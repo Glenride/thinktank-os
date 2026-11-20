@@ -4,7 +4,6 @@
 // source label: SaaS record or on-chain read.
 
 import {
-    DEPLOY_BLOCK,
     LAUNCH_CERTIFICATE,
     TREASURY_SAFE,
 } from '../../../TressColumn/tressConfig';
@@ -15,7 +14,7 @@ import {
     ethGetLogs,
 } from '../../../TressColumn/rpc';
 import { useAsyncData, useNextLaunchId } from '../../../TressColumn/useChain';
-import { formatUsdGate } from '../../../TressColumn/format';
+import { formatEth, formatUsdGate } from '../../../TressColumn/format';
 import { TressShell } from '../../../TressColumn/components/TressShell';
 import { AddressLink, ErrorFix, SourceLabel } from '../../../TressColumn/components/primitives';
 
@@ -77,7 +76,7 @@ export default function Index({ staffEmail }) {
             </p>
 
             <Module title="Plus+ subscriptions">
-                <SourceLabel kind="saas" />
+                <SourceLabel source="saas" />
                 <p className="tc-module-copy">
                     Subscription records are not wired. No billing connection exists on
                     this build, so no count is shown.
@@ -86,7 +85,7 @@ export default function Index({ staffEmail }) {
             </Module>
 
             <Module title="Airdrop campaigns">
-                <SourceLabel kind="saas" />
+                <SourceLabel source="saas" />
                 <p className="tc-module-copy">
                     Campaign records are not wired. The campaign fee is 0.0194 ETH per
                     campaign, paid to the treasury.
@@ -95,7 +94,7 @@ export default function Index({ staffEmail }) {
             </Module>
 
             <Module title="Launch monitoring">
-                <SourceLabel kind="chain" />
+                <SourceLabel source="on-chain" />
                 {nextId.loading && <p className="tc-loading-line">Reading the certificate factory.</p>}
                 {nextId.error && (
                     <ErrorFix title="The chain read failed." fix="Check the network and try again." onRetry={nextId.retry} />
@@ -110,7 +109,7 @@ export default function Index({ staffEmail }) {
             </Module>
 
             <Module title="Certificates">
-                <SourceLabel kind="chain" />
+                <SourceLabel source="on-chain" />
                 <p className="tc-module-copy">
                     The LaunchCertificate contract records every launch. Certificates
                     are minted by the factory only. The contract:
@@ -119,7 +118,7 @@ export default function Index({ staffEmail }) {
             </Module>
 
             <Module title="Treasury-fee accounting">
-                <SourceLabel kind="chain" />
+                <SourceLabel source="on-chain" />
                 <p className="tc-module-copy">
                     Treasury Safe: <AddressLink address={TREASURY_SAFE} />
                 </p>
@@ -144,13 +143,13 @@ export default function Index({ staffEmail }) {
                 )}
                 {balance.data && (
                     <p className="tc-module-copy">
-                        Native balance: {balance.data.balance.toString()} wei. Read live from
+                        Native balance: {formatEth(balance.data.balance)}. Read live from
                         the Safe address.
                     </p>
                 )}
                 <p className="tc-module-note">
-                    Transfers were scanned from block {DEPLOY_BLOCK} onward in bounded
-                    windows. Earlier windows need the indexer.
+                    Transfers were scanned in the most recent 1,000 blocks only.
+                    Earlier windows need the indexer.
                 </p>
             </Module>
 

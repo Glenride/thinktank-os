@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { TOPICS } from '../../../TressColumn/tressConfig';
+import { ROUTING_MARKUP_BPS, TOPICS } from '../../../TressColumn/tressConfig';
 import {
     decodePoolSwapLog,
     decodeSwapRecordedLog,
@@ -15,14 +15,34 @@ import {
 import { useAsyncData } from '../../../TressColumn/useChain';
 import { useWallet } from '../../../TressColumn/useWallet';
 import { loadTxRecords } from '../../../TressColumn/wallet';
-import { formatDateTime } from '../../../TressColumn/format';
+import { formatBps, formatDateTime } from '../../../TressColumn/format';
 import { SignInPrompt, TressShell } from '../../../TressColumn/components/TressShell';
 import { AddressLink, EmptyState, ErrorFix, SkeletonRows } from '../../../TressColumn/components/primitives';
+
+// Grouped integer, no decimal assumption: swap amounts and the hook fee
+// are base units of assets whose decimals this screen does not read.
+// They are labeled base units, never silently rendered as decimals.
+function formatBaseUnits(value) {
+    const text = BigInt(value).toString();
+    const sign = text.startsWith('-') ? '-' : '';
+    const digits = text.replace('-', '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return `${sign}${digits}`;
+}
+
+function swapDirection(swap) {
+    if (!swap) return null;
+    // PoolManager Swap amounts are deltas to the pool: a negative amount
+    // is a token the pool paid out, so the trader received it.
+    if (swap.amount0 < 0n) return 'Received token0, paid token1';
+    if (swap.amount1 < 0n) return 'Received token1, paid token0';
+    return 'Swap amounts read from the receipt';
+}
 
 function useActivity(address) {
     return useAsyncData(async () => {
         if (!address) return [];
         const mine = loadTxRecords()
+            .filter((r) => r.kind === 'swap')
             .filter((r) => r.from === address.toLowerCase())
             .sort((a, b) => b.submittedAt - a.submittedAt);
         const rows = await Promise.all(
@@ -86,8 +106,9 @@ export default function Activity() {
             {user && wallet.address && (
                 <div>
                     <p className="tc-lede">
-                        Swaps made through this terminal on this device. Chain-wide history
-                        needs the indexer, which is not built.
+                        Swaps made through this terminal on this device. Launch
+                        transactions live on My launches, not here. Chain-wide
+                        history needs the indexer, which is not built.
                     </p>
                     {activity.loading && <SkeletonRows copy="Loading activity." />}
                     {activity.error && (
@@ -120,14 +141,37 @@ export default function Activity() {
                                 <div className="tc-row" key={row.hash}>
                                     <span className="tc-row-identity">
                                         <span>
-                                            <span className="tc-row-name">{row.label}</span>
+                                            <span className="tc-row-name">
+                                                {row.swap
+                                                    ? `Pool ${row.swap.poolId.slice(0, 10)}...${row.swap.poolId.slice(-6)}`
+                                                    : row.label}
+                                            </span>
+                                            <span className="tc-row-creator">
+                                                {row.swap ? (
+                                                    <>
+                                                        {swapDirection(row.swap)} · amount0{' '}
+                                                        {formatBaseUnits(row.swap.amount0)} · amount1{' '}
+                                                        {formatBaseUnits(row.swap.amount1)} base units
+                                                    </>
+                                                ) : (
+                                                    'Swap amounts were not in the receipt.'
+                                                )}
+                                            </span>
                                             <span className="tc-row-creator">
                                                 <AddressLink address={row.hash} kind="tx" />
                                             </span>
                                         </span>
                                     </span>
                                     <span className="tc-row-meta tc-row-hide-phone">
-                                        {row.fee ? `${row.fee.fee.toString()} quote units` : 'See receipt.'}
+                                        {row.fee ? (
+                                            <>
+                                                Hook fee {formatBaseUnits(row.fee.fee)} quote base units
+                                                <br />
+                                                Routing markup {formatBps(ROUTING_MARKUP_BPS)}
+                                            </>
+                                        ) : (
+                                            'See receipt.'
+                                        )}
                                     </span>
                                     <span className="tc-row-meta tc-row-hide-phone">{row.status}</span>
                                     <span className="tc-row-meta">

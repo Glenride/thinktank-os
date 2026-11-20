@@ -138,7 +138,7 @@ function AccountItem({ user, returnTo }) {
                         type="button"
                         className="tc-menu-item"
                         role="menuitem"
-                        onClick={() => router.post('/logout')}
+                        onClick={() => router.post('/logout', { return_to: returnTo })}
                     >
                         Sign out
                     </button>

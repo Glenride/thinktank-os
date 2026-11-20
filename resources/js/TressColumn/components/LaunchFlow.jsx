@@ -245,6 +245,7 @@ export function LaunchFlow() {
     const [deployState, setDeployState] = useState({ status: 'idle' });
     const [launchState, setLaunchState] = useState({ status: 'idle' });
     const [estimate, setEstimate] = useState(null);
+    const [estimate2, setEstimate2] = useState(null);
     const [dryRun, setDryRun] = useState(null);
     const [stored, setStored] = useState(null);
     const [launched, setLaunched] = useState(null);
@@ -352,6 +353,35 @@ export function LaunchFlow() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [step]);
+
+    // Step 2 gas estimate, only once step 1 has a token address. The
+    // review screen cannot estimate step 2: no token exists yet. The
+    // step 2 screen shows the live estimate here.
+    const step2Token =
+        part1.data?.token && !isZeroAddress(part1.data.token) ? part1.data.token : null;
+    useEffect(() => {
+        if (step !== 'lock-part2' || !stored || !quote || !step2Token || !wallet.address) return undefined;
+        let alive = true;
+        setEstimate2(null);
+        (async () => {
+            try {
+                const params = toChainParams(stored.form, quote, step2Token);
+                const gas = await ethEstimateGas({
+                    to: HOOK_CERTIFICATE_FACTORY,
+                    from: wallet.address,
+                    data: encodeLaunchCalldata(stored.part1, params),
+                });
+                const gasPrice = await ethGasPrice();
+                if (alive) setEstimate2({ gas, cost: gas * gasPrice });
+            } catch {
+                if (alive) setEstimate2({ failed: true });
+            }
+        })();
+        return () => {
+            alive = false;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [step, stored?.deployTx, step2Token, wallet.address]);
 
     const sendDeploy = async () => {
         if (!wallet.address || !quote) return;
@@ -596,6 +626,30 @@ export function LaunchFlow() {
                                 : 'Set from the token address.'}
                         </dd>
                     </div>
+                    <div className="tc-term">
+                        <dt>Vesting terms</dt>
+                        <dd>
+                            {stored && Number(stored.form.vestingPct) > 0
+                                ? `Beneficiary ${stored.form.vestingBeneficiary}. Cliff ${stored.form.vestingCliffDays} days, duration ${stored.form.vestingDurationDays} days.`
+                                : 'No vesting.'}
+                        </dd>
+                    </div>
+                    <div className="tc-term">
+                        <dt>Airdrop Merkle root</dt>
+                        <dd className="tc-mono">
+                            {stored && Number(stored.form.airdropPct) > 0 ? stored.form.airdropMerkleRoot : 'No airdrop.'}
+                        </dd>
+                    </div>
+                    <div className="tc-term">
+                        <dt>Estimated gas, step 2</dt>
+                        <dd>
+                            {estimate2?.failed
+                                ? 'Could not be estimated. The wallet shows the cost before signing.'
+                                : estimate2
+                                  ? formatEth(estimate2.cost)
+                                  : 'Estimating.'}
+                        </dd>
+                    </div>
                 </dl>
 
                 {launchState.status === 'failed' && (
@@ -667,13 +721,15 @@ export function LaunchFlow() {
                         <div className="tc-term"><dt>Total supply</dt><dd>{form.totalSupply}</dd></div>
                         <div className="tc-term"><dt>Creator</dt><dd className="tc-mono">{form.creator.trim()}</dd></div>
                         <div className="tc-term"><dt>Quote asset</dt><dd>{quote ? `${quote.name} (${quote.symbol})` : 'None'}</dd></div>
-                        <div className="tc-term"><dt>Pool fee tier</dt><dd>{Number(form.poolFeeTier) / 100}%</dd></div>
+                        <div className="tc-term"><dt>Pool fee tier</dt><dd>{(Number(form.poolFeeTier) / 10000).toFixed(2)}%</dd></div>
                         <div className="tc-term"><dt>Gate threshold</dt><dd>{form.volumeThresholdQuote} {quote?.symbol}</dd></div>
                         <div className="tc-term"><dt>USD anchor</dt><dd>{formatUsdGate(USD_GATE_UNITS)}</dd></div>
                         <div className="tc-term"><dt>Quote price used</dt><dd>{form.quoteUsdPrice ? `$${form.quoteUsdPrice} per ${quote?.symbol}` : 'Entered directly, no price used'}</dd></div>
                         <div className="tc-term"><dt>Lock</dt><dd>{Number(form.lockMode) === 0 ? 'Abyssal, forever' : `Timed, ${form.lockDurationDays} days`}</dd></div>
                         <div className="tc-term"><dt>LP fees</dt><dd>{Number(form.lpFeeMode) === 0 ? 'Creator claimable' : 'Dead, compounded'}</dd></div>
                         <div className="tc-term"><dt>Split</dt><dd>{form.vestingPct}% vesting, {form.airdropPct}% airdrop, {form.liquidityPct}% liquidity</dd></div>
+                        <div className="tc-term"><dt>Vesting terms</dt><dd>{Number(form.vestingPct) > 0 ? `Beneficiary ${form.vestingBeneficiary.trim()}. Cliff ${form.vestingCliffDays} days, duration ${form.vestingDurationDays} days.` : 'No vesting.'}</dd></div>
+                        <div className="tc-term"><dt>Airdrop Merkle root</dt><dd className="tc-mono">{Number(form.airdropPct) > 0 ? form.airdropMerkleRoot.trim() : 'No airdrop.'}</dd></div>
                         <div className="tc-term"><dt>Liquidity goes to</dt><dd className="tc-mono">{form.liquidityAllocation.trim()}</dd></div>
                         <div className="tc-term"><dt>Wallet cap</dt><dd>{Number(form.walletCapTokens) === 0 ? 'Off' : `${form.walletCapTokens} tokens for ${form.walletCapBlocks} blocks`}</dd></div>
                         <div className="tc-term"><dt>Max swap guard</dt><dd>{Number(form.maxSwapQuote) === 0 ? 'Off' : `${form.maxSwapQuote} ${quote?.symbol} for ${form.maxSwapBlocks} blocks`}</dd></div>
@@ -681,6 +737,7 @@ export function LaunchFlow() {
                         <div className="tc-term"><dt>Transactions</dt><dd>2. Step 1 deploys. Step 2 launches.</dd></div>
                         <div className="tc-term"><dt>Step 1 value</dt><dd>{airdropOn ? formatEth(deployValue) : '0 ETH'}</dd></div>
                         <div className="tc-term"><dt>Estimated gas, step 1</dt><dd>{estimate ? formatEth(estimate.cost) : 'Estimating.'}</dd></div>
+                        <div className="tc-term"><dt>Estimated gas, step 2</dt><dd>Estimated after step 1, on the step 2 screen. No token exists yet to estimate against.</dd></div>
                     </dl>
                 </div>
 
@@ -841,7 +898,7 @@ export function LaunchFlow() {
                         <select value={form.poolFeeTier} onChange={set('poolFeeTier')}>
                             {FEE_TIERS.map((t) => (
                                 <option key={t.fee} value={t.fee}>
-                                    {t.fee / 100}% (tier {t.fee})
+                                    {t.fee / 10000}% (tier {t.fee})
                                 </option>
                             ))}
                         </select>

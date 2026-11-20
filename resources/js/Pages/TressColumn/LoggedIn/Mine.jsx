@@ -8,13 +8,16 @@ import {
     CHAIN_ID,
     DISTRIBUTION_FACTORY,
     LAUNCH_CERTIFICATE,
+    QUOTE_ASSETS,
     SELECTORS,
 } from '../../../TressColumn/tressConfig';
-import { decodeCertificateRecord, encodeUintArg, ethCall } from '../../../TressColumn/rpc';
+import { decodeCertificateRecord, encodeUintArg, ethCall, ethGetBlockByNumber, readBool, readTokenMeta, readUint } from '../../../TressColumn/rpc';
 import { useAsyncData, useLaunchedByCreator, usePart1Status } from '../../../TressColumn/useChain';
 import { useWallet } from '../../../TressColumn/useWallet';
 import { SignInPrompt, TressShell } from '../../../TressColumn/components/TressShell';
-import { AddressLink, EmptyState, ErrorFix, SkeletonRows } from '../../../TressColumn/components/primitives';
+import { AddressLink, EmptyState, ErrorFix, PairCell, SkeletonRows } from '../../../TressColumn/components/primitives';
+import { GateBar, GateNumbers } from '../../../TressColumn/components/GateProgress';
+import { formatAge } from '../../../TressColumn/format';
 
 function useMyRecords(events) {
     return useAsyncData(async () => {
@@ -25,7 +28,35 @@ function useMyRecords(events) {
                     LAUNCH_CERTIFICATE,
                     SELECTORS.recordOf + encodeUintArg(event.certificateId),
                 );
-                return { id: Number(event.certificateId), event, ...decodeCertificateRecord(hex) };
+                const record = { id: Number(event.certificateId), event, ...decodeCertificateRecord(hex) };
+                const [tokenMeta, quoteMeta, gate, block] = await Promise.all([
+                    readTokenMeta(record.token).catch(() => null),
+                    readTokenMeta(record.quoteAsset).catch(() => null),
+                    (async () => {
+                        if (/^0x0{40}$/i.test(record.hookCore)) return null;
+                        try {
+                            const [cumulative, threshold, feeActive] = await Promise.all([
+                                readUint(record.hookCore, SELECTORS.cumulativeVolumeQuote),
+                                readUint(record.hookCore, SELECTORS.volumeThresholdQuote),
+                                readBool(record.hookCore, SELECTORS.feeActive),
+                            ]);
+                            return { cumulative, threshold, feeActive };
+                        } catch {
+                            return null;
+                        }
+                    })(),
+                    ethGetBlockByNumber(Number(record.launchBlock)).catch(() => null),
+                ]);
+                const knownQuote = QUOTE_ASSETS.find(
+                    (q) => q.address.toLowerCase() === record.quoteAsset.toLowerCase(),
+                );
+                return {
+                    ...record,
+                    tokenMeta,
+                    quote: knownQuote || quoteMeta,
+                    gate,
+                    launchTime: block ? Number(BigInt(block.timestamp)) : null,
+                };
             }),
         );
         return rows;
@@ -129,27 +160,47 @@ export default function Mine() {
                         {!created.loading && !created.error && created.data && created.data.launches.length > 0 && (
                             <div>
                                 {records.loading && <SkeletonRows copy="Loading launch records." />}
-                                {records.data?.map((row) => (
-                                    <Link key={row.id} className="tc-row" href={`/staging/tress-column/launches/${row.id}`}>
-                                        <span className="tc-row-identity">
-                                            <span className="tc-avatar" aria-hidden="true">TC</span>
-                                            <span>
-                                                <span className="tc-row-name">
-                                                    Launch {row.id}
+                                {records.data?.map((row) => {
+                                    const name = row.tokenMeta?.name || 'Unnamed token';
+                                    const symbol = row.tokenMeta?.symbol || '';
+                                    const age = row.launchTime
+                                        ? formatAge(row.launchTime)
+                                        : `block ${row.launchBlock.toString()}`;
+                                    return (
+                                        <Link key={row.id} className="tc-row" href={`/staging/tress-column/launches/${row.id}`}>
+                                            <span className="tc-row-identity">
+                                                <span className="tc-avatar" aria-hidden="true">
+                                                    {(symbol || name).slice(0, 2).toUpperCase()}
                                                 </span>
-                                                <span className="tc-row-creator">
-                                                    Token {row.token.slice(0, 10)}...{row.token.slice(-6)}
+                                                <span>
+                                                    <span className="tc-row-name">
+                                                        {name}
+                                                        {symbol && <span className="tc-row-ticker">{symbol}</span>}
+                                                    </span>
+                                                    <span className="tc-row-creator">
+                                                        {row.creator.slice(0, 6)}...{row.creator.slice(-4)} · {age}
+                                                    </span>
                                                 </span>
                                             </span>
-                                        </span>
-                                        <span className="tc-row-hide-phone" />
-                                        <span className="tc-row-hide-phone" />
-                                        <span className="tc-row-value">Complete</span>
-                                    </Link>
-                                ))}
+                                            <span className="tc-row-hide-phone tc-align-right">
+                                                <PairCell symbol={row.quote?.symbol} address={row.quoteAsset} />
+                                            </span>
+                                            <span className="tc-row-hide-phone">
+                                                <GateBar gate={row.gate} />
+                                            </span>
+                                            <span>
+                                                <GateNumbers gate={row.gate} quoteSymbol={row.quote?.symbol} />
+                                            </span>
+                                        </Link>
+                                    );
+                                })}
                                 {created.data.complete === false && (
                                     <p className="tc-loading-line">
-                                        The scan stopped early. Showing recent launches only.
+                                        The scan stopped early. It covers blocks{' '}
+                                        {created.data.scanFrom?.toLocaleString()} to{' '}
+                                        {created.data.scanTo?.toLocaleString()} only, the
+                                        earliest window, not recent launches. Launches
+                                        after that need the indexer, which is not built.
                                     </p>
                                 )}
                             </div>

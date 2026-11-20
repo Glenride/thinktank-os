@@ -29,6 +29,7 @@ class TressAuthController extends Controller
 
         $config = config('services.workos');
         $workosReady = ! empty($config['client_id'])
+            && ! empty($config['client_secret'])
             && ! empty($config['redirect_uri'])
             && Route::has('workos.login');
 

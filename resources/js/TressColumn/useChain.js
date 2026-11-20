@@ -188,12 +188,19 @@ export function useBlockTime(blockNumber) {
     }, [String(blockNumber)], 'launchList');
 }
 
+// Creator scan window, in blocks. The relay pages in 200-block
+// chunks (25 per request) and this hook caps total pages at 10, so a
+// scan covers at most 10 x 25 x 200 = 50,000 blocks from DEPLOY_BLOCK.
+// That is the earliest window only. Any launch after scanTo is
+// invisible here until an indexer exists.
+const CREATOR_SCAN_MAX_BLOCKS = 50000;
+
 // Launches created by one address, from Launched events. Bounded scan:
 // the relay pages in 200-block chunks and this hook caps total pages.
 // An incomplete scan says so instead of pretending it finished.
 export function useLaunchedByCreator(creator) {
     return useAsyncData(async () => {
-        if (!creator) return { launches: [], complete: true };
+        if (!creator) return { launches: [], complete: true, scanFrom: DEPLOY_BLOCK, scanTo: DEPLOY_BLOCK + CREATOR_SCAN_MAX_BLOCKS - 1 };
         const latest = await ethBlockNumber();
         const topic = `0x${creator.toLowerCase().replace(/^0x/, '').padStart(64, '0')}`;
         const { logs, complete } = await ethGetLogs(
@@ -205,6 +212,11 @@ export function useLaunchedByCreator(creator) {
             },
             { maxPages: 10 },
         );
-        return { launches: logs.map(decodeLaunchedLog).reverse(), complete };
+        return {
+            launches: logs.map(decodeLaunchedLog).reverse(),
+            complete,
+            scanFrom: DEPLOY_BLOCK,
+            scanTo: DEPLOY_BLOCK + CREATOR_SCAN_MAX_BLOCKS - 1,
+        };
     }, [creator], 'launchList');
 }

@@ -74,6 +74,7 @@
   --tc-h1-weight: 800;
   --tc-h1-line-height: 1.1;
   --tc-h2-size: 19px;
+  --tc-h2-leading: 1.2;
   --tc-name-size: 15px;
   --tc-name-weight: 600;
   --tc-meta-size: 12px;
@@ -82,6 +83,27 @@
   --tc-value-weight: 600;
   --tc-button-size: 15px;
   --tc-body-size: 15px;
+  --tc-body-leading: 1.6;
+  --tc-note-size: 13px;
+  --tc-note-leading: 1.5;
+  --tc-text-muted: #5C6254;
+
+  /* Borders */
+  --tc-border: #D4D5D4;
+  --tc-border-w: 1px;
+
+  /* Depth: flat. One very soft shadow, grid cards only. */
+  --tc-shadow-card: 0 1px 3px rgb(12 21 0 / 0.06);
+  --tc-shadow-menu: 0 4px 16px rgb(12 21 0 / 0.12);
+
+  /* Certificate scope: translucent ink steps, spec palette only. */
+  --tc-cert-faint: rgb(13 14 17 / 0.12);
+  --tc-cert-line: rgb(13 14 17 / 0.2);
+  --tc-cert-line-soft: rgb(13 14 17 / 0.14);
+  --tc-cert-ink-soft: rgb(13 14 17 / 0.62);
+
+  /* Clear: the transparent keyword lives here, nowhere else. */
+  --tc-clear: transparent;
 
   /* Shape */
   --tc-radius-button: 13px;
@@ -104,9 +126,6 @@
   --tc-pair-icon: 16px;
   --tc-button-w: 150px;
   --tc-button-h: 44px;
-
-  /* Depth: flat. One very soft shadow, grid cards only. */
-  --tc-shadow-card: 0 1px 3px rgb(12 21 0 / 0.06);
 
   /* Motion */
   --tc-motion-fast: 120ms ease;
@@ -171,7 +190,7 @@
   padding: 0;
   border: 0;
   border-radius: var(--tc-radius-avatar);
-  background: transparent;
+  background: var(--tc-clear);
   color: var(--tc-ink);
   cursor: pointer;
   text-decoration: none;
@@ -397,7 +416,7 @@
   min-height: 44px;
   padding: 8px 2px;
   border: 0;
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid var(--tc-clear);
   background: none;
   color: var(--tc-muted);
   font-size: 14px;
@@ -417,7 +436,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 36px;
+  min-height: 44px;
   padding: 0 14px;
   border: 0;
   border-radius: var(--tc-radius-pill);
@@ -441,11 +460,11 @@
 }
 
 .tc-toggle button {
-  min-height: 36px;
+  min-height: 44px;
   padding: 0 14px;
   border: 0;
   border-radius: var(--tc-radius-pill);
-  background: transparent;
+  background: var(--tc-clear);
   color: var(--tc-muted);
   font-size: 13px;
   font-weight: 600;
@@ -586,7 +605,7 @@ button.tc-row:hover {
 .tc-pair-icon-eth { background: var(--tc-eth); }
 .tc-pair-icon-usdc { background: var(--tc-usdc); }
 .tc-pair-icon-other {
-  background: transparent;
+  background: var(--tc-clear);
   color: var(--tc-ink);
   box-shadow: inset 0 0 0 1px var(--tc-divider);
 }
@@ -908,7 +927,7 @@ button.tc-row:hover {
   padding: 8px;
   border-radius: var(--tc-radius-field);
   background: var(--tc-surface);
-  box-shadow: 0 4px 16px rgb(12 21 0 / 0.12);
+  box-shadow: var(--tc-shadow-menu);
   z-index: 30;
 }
 
@@ -921,9 +940,11 @@ button.tc-row:hover {
 }
 
 .tc-menu-item {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  padding: 10px;
+  min-height: 44px;
+  padding: 10px 12px;
   border: 0;
   border-radius: 8px;
   background: none;
@@ -976,19 +997,26 @@ button.tc-row:hover {
   font-weight: 800;
 }
 
-.tc-certificate .tc-gate-track { background: rgb(13 14 17 / 0.12); }
+/* Timed locks get no gold seal: outlined on the certificate surface,
+   so the Abyssal gold seal stays Abyssal-only. */
+.tc-certificate-seal-timed {
+  background: var(--tc-cert-surface);
+  border: 1px solid var(--tc-cert-ink);
+}
+
+.tc-certificate .tc-gate-track { background: var(--tc-cert-faint); }
 .tc-certificate .tc-gate-fill { background: var(--tc-cert-signal); }
 
 .tc-certificate-note {
   margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid rgb(13 14 17 / 0.2);
+  border-top: 1px solid var(--tc-cert-line);
   font-size: 13px;
   line-height: 1.6;
 }
 
-.tc-certificate .tc-term { border-bottom-color: rgb(13 14 17 / 0.14); }
-.tc-certificate .tc-term dt { color: rgb(13 14 17 / 0.62); }
+.tc-certificate .tc-term { border-bottom-color: var(--tc-cert-line-soft); }
+.tc-certificate .tc-term dt { color: var(--tc-cert-ink-soft); }
 
 /* Ops modules */
 .tc-module { margin-bottom: var(--tc-section-gap); }

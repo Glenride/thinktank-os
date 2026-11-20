@@ -59,10 +59,15 @@ return [
     // nothing secret is committed. The provider under the hood is
     // never named in the UI. owner_emails stays a comma-separated
     // string: WorkosAuthController explodes it itself.
+    // The redirect URI must be the real callback route,
+    // /auth/workos/callback. The old /auth/callback path never existed
+    // as a route and 404s. The default below builds the real path from
+    // APP_URL; a host .env that still sets the old path must be fixed
+    // in the host env, the default cannot override it.
     'workos' => [
         'client_id' => env('WORKOS_CLIENT_ID'),
         'client_secret' => env('WORKOS_CLIENT_SECRET'),
-        'redirect_uri' => env('WORKOS_REDIRECT_URI'),
+        'redirect_uri' => env('WORKOS_REDIRECT_URI', rtrim((string) env('APP_URL', 'https://dvaughnhouse.org'), '/').'/auth/workos/callback'),
         'owner_emails' => env('WORKOS_OWNER_EMAILS', 'dvaughn@dvaughnhouse.com'),
     ],
 

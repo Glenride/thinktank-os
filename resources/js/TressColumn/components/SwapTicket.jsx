@@ -162,7 +162,7 @@ export function SwapTicket({
                     className="tc-button-primary"
                     onClick={() => setShowWhy(true)}
                 >
-                    Swap
+                    Why no quote?
                 </button>
             )}
 

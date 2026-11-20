@@ -19,7 +19,6 @@ use App\Http\Controllers\EssayController;
 use App\Http\Controllers\ResearchController;
 use App\Http\Controllers\DrugShortageController;
 use App\Http\Controllers\SopController;
-use App\Http\Controllers\OpsConsoleController;
 use App\Http\Controllers\StandardsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TradingTerminalController;
@@ -143,7 +142,11 @@ Route::domain('trade.dvaughnhouse.com')->group(function () {
     Route::get('/', [TradingTerminalController::class, 'index'])->name('trading-terminal.domain');
 });
 Route::domain('ops.dvaughnhouse.com')->group(function () {
-    Route::get('/', [OpsConsoleController::class, 'index'])->name('ops-console.domain');
+    // Gated, not deleted: the legacy unauthenticated staff view used to
+    // live here with no middleware. Until a live cutover is tapped, the
+    // domain redirects to the gated staging entry, which enforces auth
+    // plus the staff allowlist (D'Vaughn only) in its controller.
+    Route::get('/', fn () => redirect()->route('ops-console.preview'))->name('ops-console.domain');
 });
 
 // Staging Preview Routes (Direct URL access across environments).
