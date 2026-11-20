@@ -31,6 +31,7 @@ import { TressShell } from '../../../TressColumn/components/TressShell';
 import { AddressLink, Badge, EmptyState, ErrorFix, SkeletonRows } from '../../../TressColumn/components/primitives';
 import { GateProgress } from '../../../TressColumn/components/GateProgress';
 import { CertificateDoc } from '../../../TressColumn/components/CertificateDoc';
+import { tcUrl, tradeUrl } from '../../../TressColumn/urls';
 
 function pct(bps) {
     return `${(Number(bps) / 100).toFixed(1)}%`;
@@ -129,7 +130,7 @@ export default function Show({ launchId }) {
                     title="No launch with this number yet."
                     body="The certificate record is empty. The launch may not exist, or the number is wrong."
                     action={
-                        <Link className="tc-button-primary" href="/staging/tress-column">
+                        <Link className="tc-button-primary" href={tcUrl()}>
                             Back to Launches
                         </Link>
                     }
@@ -315,7 +316,7 @@ export default function Show({ launchId }) {
 
                     <section className="tc-section" aria-labelledby="tc-trade-h">
                         <h2 className="tc-h2" id="tc-trade-h">Trade</h2>
-                        <Link className="tc-button-primary" href={`/staging/terminal/token/${record.token}`}>
+                        <Link className="tc-button-primary" href={tradeUrl(`/token/${record.token}`)}>
                             Open the token page
                         </Link>
                     </section>

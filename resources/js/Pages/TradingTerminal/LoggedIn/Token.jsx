@@ -21,6 +21,7 @@ import { TressShell } from '../../../TressColumn/components/TressShell';
 import { Badge, EmptyState, ErrorFix, SkeletonRows } from '../../../TressColumn/components/primitives';
 import { GateProgress } from '../../../TressColumn/components/GateProgress';
 import { SwapTicket } from '../../../TressColumn/components/SwapTicket';
+import { tcUrl, tradeUrl } from '../../../TressColumn/urls';
 
 function useTokenPage(tokenAddress) {
     return useAsyncData(async () => {
@@ -70,7 +71,7 @@ export default function Token({ tokenAddress }) {
                     title="No token contract at this address."
                     body="The address holds no code on Base Sepolia."
                     action={
-                        <Link className="tc-button-primary" href="/staging/terminal">
+                        <Link className="tc-button-primary" href={tradeUrl()}>
                             Back to Markets
                         </Link>
                     }
@@ -83,7 +84,7 @@ export default function Token({ tokenAddress }) {
                         {record ? (
                             <>
                                 A Tress Column launch. <Badge accent>Tress Column</Badge>{' '}
-                                <Link href={`/staging/tress-column/launches/${record.id}`}>
+                                <Link href={tcUrl(`/launches/${record.id}`)}>
                                     Launch certificate {record.id}
                                 </Link>
                             </>
@@ -131,7 +132,7 @@ export default function Token({ tokenAddress }) {
                     {record && (
                         <section className="tc-section" aria-labelledby="tc-cert-h">
                             <h2 className="tc-h2" id="tc-cert-h">Certificate</h2>
-                            <Link className="tc-button-primary" href={`/staging/tress-column/launches/${record.id}`}>
+                            <Link className="tc-button-primary" href={tcUrl(`/launches/${record.id}`)}>
                                 Read the certificate
                             </Link>
                         </section>

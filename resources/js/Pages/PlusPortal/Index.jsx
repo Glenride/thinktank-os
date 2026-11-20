@@ -9,6 +9,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { PLUS_TIERS } from '../../TressColumn/tressConfig';
 import { TressShell } from '../../TressColumn/components/TressShell';
 import { EmptyState, Tabs } from '../../TressColumn/components/primitives';
+import { tcUrl } from '../../TressColumn/urls';
 
 // Tier keys match the canonical config exactly (SAPPHIRE/EMERALD/RUBY).
 // Lowercase keys used to look up undefined tiers and throw on render.
@@ -169,7 +170,7 @@ export default function Index({ billingConnected }) {
                     The creator workbench is the launch flow on Tress Column. It is open
                     to every signed-in account.
                 </p>
-                <Link className="tc-button-primary" href="/staging/tress-column/start">
+                <Link className="tc-button-primary" href={tcUrl('/start')}>
                     Start a launch
                 </Link>
             </section>

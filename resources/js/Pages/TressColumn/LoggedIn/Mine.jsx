@@ -18,6 +18,7 @@ import { SignInPrompt, TressShell } from '../../../TressColumn/components/TressS
 import { AddressLink, EmptyState, ErrorFix, PairCell, SkeletonRows } from '../../../TressColumn/components/primitives';
 import { GateBar, GateNumbers } from '../../../TressColumn/components/GateProgress';
 import { formatAge } from '../../../TressColumn/format';
+import { tcUrl } from '../../../TressColumn/urls';
 
 function useMyRecords(events) {
     return useAsyncData(async () => {
@@ -93,7 +94,7 @@ export default function Mine() {
 
     return (
         <TressShell surface="tc" title="My launches" active="mine">
-            {!user && <SignInPrompt what="see your launches" returnTo="/staging/tress-column/mine" />}
+            {!user && <SignInPrompt what="see your launches" returnTo={tcUrl('/mine')} />}
 
             {user && !wallet.address && (
                 <div className="tc-empty">
@@ -129,7 +130,7 @@ export default function Mine() {
                                 </div>
                             </dl>
                             <div className="tc-block-gap-top">
-                                <Link className="tc-button-primary" href="/staging/tress-column/start">
+                                <Link className="tc-button-primary" href={tcUrl('/start')}>
                                     Resume step 2
                                 </Link>
                             </div>
@@ -151,7 +152,7 @@ export default function Mine() {
                                 title="No launches yet."
                                 body="Launches you create with this wallet appear here."
                                 action={
-                                    <Link className="tc-button-primary" href="/staging/tress-column/start">
+                                    <Link className="tc-button-primary" href={tcUrl('/start')}>
                                         Start a launch
                                     </Link>
                                 }
@@ -167,7 +168,7 @@ export default function Mine() {
                                         ? formatAge(row.launchTime)
                                         : `block ${row.launchBlock.toString()}`;
                                     return (
-                                        <Link key={row.id} className="tc-row" href={`/staging/tress-column/launches/${row.id}`}>
+                                        <Link key={row.id} className="tc-row" href={tcUrl(`/launches/${row.id}`)}>
                                             <span className="tc-row-identity">
                                                 <span className="tc-avatar" aria-hidden="true">
                                                     {(symbol || name).slice(0, 2).toUpperCase()}

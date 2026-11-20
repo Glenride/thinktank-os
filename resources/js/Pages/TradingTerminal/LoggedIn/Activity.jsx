@@ -18,6 +18,7 @@ import { loadTxRecords } from '../../../TressColumn/wallet';
 import { formatBps, formatDateTime } from '../../../TressColumn/format';
 import { SignInPrompt, TressShell } from '../../../TressColumn/components/TressShell';
 import { AddressLink, EmptyState, ErrorFix, SkeletonRows } from '../../../TressColumn/components/primitives';
+import { tradeUrl } from '../../../TressColumn/urls';
 
 // Grouped integer, no decimal assumption: swap amounts and the hook fee
 // are base units of assets whose decimals this screen does not read.
@@ -87,7 +88,7 @@ export default function Activity() {
 
     return (
         <TressShell surface="trade" title="My activity" active="activity">
-            {!user && <SignInPrompt what="see your activity" returnTo="/staging/terminal/activity" />}
+            {!user && <SignInPrompt what="see your activity" returnTo={tradeUrl('/activity')} />}
 
             {user && !wallet.address && (
                 <div className="tc-empty">
@@ -123,7 +124,7 @@ export default function Activity() {
                             title="No swaps yet."
                             body="Swaps you make through the terminal appear here, newest first."
                             action={
-                                <Link className="tc-button-primary" href="/staging/terminal">
+                                <Link className="tc-button-primary" href={tradeUrl()}>
                                     Go to Markets
                                 </Link>
                             }

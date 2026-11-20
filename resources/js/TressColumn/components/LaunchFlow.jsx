@@ -44,6 +44,7 @@ import {
 } from '../wallet';
 import { formatEth, formatTokenAmount, formatUsdGate, isZeroAddress, parseTokenAmount } from '../format';
 import { ErrorFix } from './primitives';
+import { tcUrl, tradeUrl } from '../urls';
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const ZERO_ROOT = `0x${'0'.repeat(64)}`;
@@ -558,7 +559,7 @@ export function LaunchFlow() {
                         <div className="tc-term">
                             <dt>Certificate</dt>
                             <dd>
-                                <Link href={`/staging/tress-column/launches/${certId}`}>
+                                <Link href={tcUrl(`/launches/${certId}`)}>
                                     Launch certificate {certId}
                                 </Link>
                             </dd>
@@ -568,7 +569,7 @@ export function LaunchFlow() {
                         <div className="tc-term">
                             <dt>Token page</dt>
                             <dd>
-                                <Link href={`/staging/terminal/token/${token}`}>Open the token page</Link>
+                                <Link href={tradeUrl(`/token/${token}`)}>Open the token page</Link>
                             </dd>
                         </div>
                     )}

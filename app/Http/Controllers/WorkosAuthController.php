@@ -25,14 +25,30 @@ class WorkosAuthController extends Controller
         if (empty($config['client_id']) || empty($config['client_secret']) || empty($config['redirect_uri'])) {
             return redirect('/');
         }
+        // The callback must come back to the host the sign-in started
+        // on: sessions are host-only, so a shared redirect would strand
+        // the state on another host and fail the check in callback().
+        // Each surface's https://<host>/auth/workos/callback must be
+        // registered for this app in the WorkOS dashboard.
+        $redirectUri = 'https://'.$request->getHost().'/auth/workos/callback';
         $nonce = (string) Str::uuid();
         $sig = hash_hmac('sha256', $nonce, config('app.key'));
         $state = $nonce.'.'.$sig;
+        // Keep recent states, not just the latest: a double-tap (or a
+        // browser firing the callback twice) used to overwrite or
+        // destroy the only state and fail every attempt with
+        // invalid_state — twice in a row on Nov 20, and Oct 28 too.
+        // States older than 10 minutes are dropped; at most 5 kept.
+        $states = collect($request->session()->get('workos_states', []))
+            ->filter(fn ($s) => is_array($s) && time() - (int) ($s['at'] ?? 0) < 600)
+            ->values()->all();
+        $states[] = ['state' => $state, 'at' => time()];
+        $request->session()->put('workos_states', array_slice($states, -5));
         $request->session()->put('workos_state', $state);
         $authUrl = 'https://api.workos.com/user_management/authorize?'.http_build_query([
             'response_type' => 'code',
             'client_id' => $config['client_id'],
-            'redirect_uri' => $config['redirect_uri'],
+            'redirect_uri' => $redirectUri,
             'provider' => 'authkit',
             'prompt' => 'login',
             'state' => $state,
@@ -66,13 +82,39 @@ class WorkosAuthController extends Controller
         }
         $code = $request->query('code');
         $state = (string) $request->query('state', '');
-        $sessionState = (string) $request->session()->pull('workos_state', '');
+        // Accept any recent state, not just the latest: the login may
+        // have run twice (double-tap) before either callback arrives.
+        // A failed check destroys nothing, so a second callback for
+        // the other state still has its state to match against. The
+        // used state is consumed only after a successful match, so a
+        // replayed callback cannot reuse it.
+        $candidates = collect($request->session()->get('workos_states', []))
+            ->map(fn ($s) => is_array($s) ? (string) ($s['state'] ?? '') : (string) $s)
+            ->filter()->values()->all();
+        $legacy = (string) $request->session()->get('workos_state', '');
+        if ($legacy !== '') {
+            $candidates[] = $legacy;
+        }
+        $matched = false;
+        if ($state !== '') {
+            foreach ($candidates as $candidate) {
+                if ($candidate !== '' && hash_equals($candidate, $state)) {
+                    $matched = true;
+                    break;
+                }
+            }
+        }
         $parts = explode('.', $state);
-        $stateOk = $code && $sessionState === $state && count($parts) === 2
+        $stateOk = $code && $matched && count($parts) === 2 && $parts[1] !== ''
             && hash_equals(hash_hmac('sha256', $parts[0], config('app.key')), $parts[1]);
         if (! $stateOk) {
             return $fail('invalid_state');
         }
+        $remaining = collect($request->session()->get('workos_states', []))
+            ->reject(fn ($s) => (is_array($s) ? (string) ($s['state'] ?? '') : (string) $s) === $state)
+            ->values()->all();
+        $request->session()->put('workos_states', $remaining);
+        $request->session()->forget('workos_state');
         try {
             $res = Http::asJson()->post('https://api.workos.com/user_management/authenticate', [
                 'grant_type' => 'authorization_code',

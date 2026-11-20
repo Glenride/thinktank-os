@@ -1,6 +1,7 @@
 import { usePage } from '@inertiajs/react';
 import { SignInPrompt, TressShell } from '../../../TressColumn/components/TressShell';
 import { LaunchFlow } from '../../../TressColumn/components/LaunchFlow';
+import { tcUrl } from '../../../TressColumn/urls';
 
 export default function Create() {
     const { auth } = usePage().props;
@@ -11,7 +12,7 @@ export default function Create() {
             {user ? (
                 <LaunchFlow />
             ) : (
-                <SignInPrompt what="start a launch" returnTo="/staging/tress-column/start" />
+                <SignInPrompt what="start a launch" returnTo={tcUrl('/start')} />
             )}
         </TressShell>
     );

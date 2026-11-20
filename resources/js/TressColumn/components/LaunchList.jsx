@@ -34,6 +34,7 @@ import {
     Tabs,
 } from './primitives';
 import { GateBar, GateNumbers } from './GateProgress';
+import { tcUrl, tradeUrl } from '../urls';
 
 async function readGate(hookCore) {
     if (!hookCore || /^0x0{40}$/i.test(hookCore)) return null;
@@ -95,8 +96,8 @@ function Row({ row, linkTo }) {
     const { record, tokenMeta, quote, gate, launchTime } = row;
     const href =
         linkTo === 'token'
-            ? `/staging/terminal/token/${record.token}`
-            : `/staging/tress-column/launches/${record.id}`;
+            ? tradeUrl(`/token/${record.token}`)
+            : tcUrl(`/launches/${record.id}`);
     const name = tokenMeta?.name || 'Unnamed token';
     const symbol = tokenMeta?.symbol || '';
     const age = launchTime ? formatAge(launchTime) : `block ${record.launchBlock.toString()}`;
@@ -133,8 +134,8 @@ function Card({ row, linkTo }) {
     const { record, tokenMeta, quote, gate, launchTime } = row;
     const href =
         linkTo === 'token'
-            ? `/staging/terminal/token/${record.token}`
-            : `/staging/tress-column/launches/${record.id}`;
+            ? tradeUrl(`/token/${record.token}`)
+            : tcUrl(`/launches/${record.id}`);
     const name = tokenMeta?.name || 'Unnamed token';
     const symbol = tokenMeta?.symbol || '';
     const age = launchTime ? formatAge(launchTime) : `block ${record.launchBlock.toString()}`;

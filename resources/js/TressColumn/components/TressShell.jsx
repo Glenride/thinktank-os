@@ -7,6 +7,7 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import '../../../css/tress-tokens.css';
 import { CHAIN_ID, CHAIN_NAME } from '../tressConfig';
 import { useChainGuard } from '../useChain';
+import { opsUrl, plusUrl, tcUrl, tradeUrl } from '../urls';
 
 function Icon({ d }) {
     return (
@@ -62,28 +63,28 @@ const ICONS = {
 
 const RAIL_ITEMS = {
     tc: [
-        { key: 'launches', label: 'Launches', href: '/staging/tress-column', icon: 'list' },
-        { key: 'create', label: 'Start a launch', href: '/staging/tress-column/start', icon: 'plus' },
-        { key: 'mine', label: 'My launches', href: '/staging/tress-column/mine', icon: 'user' },
+        { key: 'launches', label: 'Launches', href: tcUrl(), icon: 'list' },
+        { key: 'create', label: 'Start a launch', href: tcUrl('/start'), icon: 'plus' },
+        { key: 'mine', label: 'My launches', href: tcUrl('/mine'), icon: 'user' },
     ],
     trade: [
-        { key: 'markets', label: 'Markets', href: '/staging/terminal', icon: 'list' },
-        { key: 'activity', label: 'My activity', href: '/staging/terminal/activity', icon: 'activity' },
+        { key: 'markets', label: 'Markets', href: tradeUrl(), icon: 'list' },
+        { key: 'activity', label: 'My activity', href: tradeUrl('/activity'), icon: 'activity' },
     ],
     ops: [
-        { key: 'console', label: 'Console', href: '/staging/ops-console', icon: 'grid' },
+        { key: 'console', label: 'Console', href: opsUrl(), icon: 'grid' },
     ],
     plus: [
-        { key: 'portal', label: 'Portal', href: '/staging/plus', icon: 'layers' },
+        { key: 'portal', label: 'Portal', href: plusUrl(), icon: 'layers' },
     ],
 };
 
 const MARKS = { tc: 'TC', trade: 'TC', ops: 'TC', plus: 'P+' };
 const HOME = {
-    tc: '/staging/tress-column',
-    trade: '/staging/terminal',
-    ops: '/staging/ops-console',
-    plus: '/staging/plus',
+    tc: tcUrl(),
+    trade: tradeUrl(),
+    ops: opsUrl(),
+    plus: plusUrl(),
 };
 
 function AccountItem({ user, returnTo }) {
@@ -230,7 +231,7 @@ export function SignInPrompt({ what, returnTo }) {
             </p>
             <a
                 className="tc-button-primary"
-                href={`/auth/tress-entry?return=${encodeURIComponent(returnTo || '/staging/tress-column')}`}
+                href={`/auth/tress-entry?return=${encodeURIComponent(returnTo || (typeof window !== 'undefined' ? window.location.pathname : '/'))}`}
             >
                 Sign in with Albert Pass
             </a>

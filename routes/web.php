@@ -134,25 +134,33 @@ Route::middleware('auth')->group(function () {
     Route::get('/sops/{slug}', [SopController::class, 'show'])->name('sops.show');
 });
 
-// Tress Column Three Interlocking Applications (Subdomain bindings)
+// Tress Column Three Interlocking Applications (Subdomain bindings).
+// Live cutover Nov 20, 2026 (his tap): each domain serves the
+// logged-in build at its root. Staging routes below stay live as the
+// pre-live check. The legacy domain controllers are no longer served.
 Route::domain('tc.dvaughnhouse.com')->group(function () {
-    Route::get('/', [TressColumnController::class, 'index'])->name('tress-column.domain');
+    Route::get('/', [TressColumnLoggedInController::class, 'index'])->name('tress-column.domain');
+    Route::get('/launches/{id}', [TressColumnLoggedInController::class, 'show'])->whereNumber('id')->name('tress-column.domain.show');
+    Route::get('/start', [TressColumnLoggedInController::class, 'create'])->name('tress-column.domain.create');
+    Route::get('/mine', [TressColumnLoggedInController::class, 'mine'])->name('tress-column.domain.mine');
 });
 Route::domain('trade.dvaughnhouse.com')->group(function () {
-    Route::get('/', [TradingTerminalController::class, 'index'])->name('trading-terminal.domain');
+    Route::get('/', [TradingTerminalLoggedInController::class, 'markets'])->name('trading-terminal.domain');
+    Route::get('/token/{address}', [TradingTerminalLoggedInController::class, 'token'])->name('trading-terminal.domain.token');
+    Route::get('/activity', [TradingTerminalLoggedInController::class, 'activity'])->name('trading-terminal.domain.activity');
 });
 Route::domain('ops.dvaughnhouse.com')->group(function () {
-    // Gated, not deleted: the legacy unauthenticated staff view used to
-    // live here with no middleware. Until a live cutover is tapped, the
-    // domain redirects to the gated staging entry, which enforces auth
-    // plus the staff allowlist (D'Vaughn only) in its controller.
-    Route::get('/', fn () => redirect()->route('ops-console.preview'))->name('ops-console.domain');
+    // Gated in the controller: no unauthenticated staff view exists
+    // at any URL; signed-out requests go to the sign-in entry.
+    Route::get('/', [OpsConsoleLoggedInController::class, 'index'])->name('ops-console.domain');
+});
+Route::domain('plus.dvaughnhouse.com')->group(function () {
+    Route::get('/', [PlusPortalController::class, 'index'])->name('plus-portal.domain');
 });
 
 // Staging Preview Routes (Direct URL access across environments).
 // The logged-in-state build renders the new pages on the staging
-// routes. Domain routes above still point at the legacy controllers
-// until a live cutover is tapped.
+// routes too, so staging stays a working pre-live check after cutover.
 Route::prefix('staging')->group(function () {
     Route::get('/tress-column', [TressColumnLoggedInController::class, 'index'])->name('tress-column.preview');
     Route::get('/tress-column/launches/{id}', [TressColumnLoggedInController::class, 'show'])->whereNumber('id')->name('tress-column.preview.show');

@@ -1,6 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 import { TressShell } from '../../../TressColumn/components/TressShell';
 import { LaunchList } from '../../../TressColumn/components/LaunchList';
+import { tcUrl } from '../../../TressColumn/urls';
 
 export default function Index() {
     const { auth } = usePage().props;
@@ -8,7 +9,7 @@ export default function Index() {
     const signInHref = '/auth/tress-entry?return=%2Fstaging%2Ftress-column';
 
     const action = user ? (
-        <Link className="tc-button-primary" href="/staging/tress-column/start">
+        <Link className="tc-button-primary" href={tcUrl('/start')}>
             Start a launch
         </Link>
     ) : (
@@ -18,7 +19,7 @@ export default function Index() {
     );
 
     const emptyAction = user ? (
-        <Link className="tc-button-primary" href="/staging/tress-column/start">
+        <Link className="tc-button-primary" href={tcUrl('/start')}>
             Start a launch
         </Link>
     ) : (

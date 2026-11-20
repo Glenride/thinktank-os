@@ -6,10 +6,10 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * tc surface, logged-in state (staging routes only).
+ * tc surface, logged-in state.
  *
- * The domain routes still point at TressColumnController. No live
- * cutover happens without his explicit tap naming it.
+ * Live on tc.dvaughnhouse.com since the Nov 20, 2026 cutover (his
+ * tap); staging at /staging/tress-column stays as the pre-live check.
  */
 class TressColumnLoggedInController extends Controller
 {
