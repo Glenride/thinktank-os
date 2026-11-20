@@ -19,10 +19,27 @@ import {
 } from './tressConfig';
 import { ethGetTransactionReceipt } from './rpc';
 
-export const WALLETCONNECT_STATUS = 'not-wired';
+// WalletConnect project ID (Reown Cloud). Empty = WalletConnect stays
+// off and the injected path is the only way to connect. Create a project
+// at cloud.reown.com and set VITE_WALLETCONNECT_PROJECT_ID in .env.
+export function getWalletConnectProjectId() {
+    if (typeof import.meta === 'undefined' || !import.meta.env) return null;
+    const id = (import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || '').trim();
+    return id || null;
+}
 
-export const WALLETCONNECT_NOTE =
-    'WalletConnect is not connected yet. Use a browser wallet for now.';
+export function isWalletConnectConfigured() {
+    return getWalletConnectProjectId() !== null;
+}
+
+// 'wired' once a project ID is configured; 'not-configured' until then.
+// Nothing here fakes a WalletConnect session: without a project ID the
+// WalletConnect path refuses to start (fail-closed).
+export const WALLETCONNECT_STATUS = isWalletConnectConfigured() ? 'wired' : 'not-configured';
+
+export const WALLETCONNECT_NOTE = isWalletConnectConfigured()
+    ? 'WalletConnect is available. Use a browser wallet or scan with a mobile wallet.'
+    : 'WalletConnect is not set up yet (no project ID). Use a browser wallet for now.';
 
 export class WalletError extends Error {
     constructor(message, code = null) {
@@ -39,6 +56,20 @@ export function getInjectedProvider() {
 
 export function hasInjectedWallet() {
     return getInjectedProvider() !== null;
+}
+
+// The provider the user connected with (injected or WalletConnect).
+// Null until a connect call succeeds; getActiveProvider() falls back to
+// window.ethereum so read-only calls keep working before any connect.
+let activeProvider = null;
+let activeProviderKind = null; // 'injected' | 'walletconnect' | null
+
+export function getActiveProvider() {
+    return activeProvider || getInjectedProvider();
+}
+
+export function getActiveProviderKind() {
+    return activeProviderKind;
 }
 
 function friendlyError(err) {
@@ -64,10 +95,72 @@ export async function connectInjected() {
         if (!accounts || accounts.length === 0) {
             throw new WalletError('No account was shared by the wallet.', 'no-account');
         }
+        activeProvider = provider;
+        activeProviderKind = 'injected';
         return accounts[0].toLowerCase();
     } catch (err) {
         if (err instanceof WalletError) throw err;
         throw friendlyError(err);
+    }
+}
+
+// WalletConnect path. Lazy-imports the provider package so the main
+// bundle stays lean; refuses to start without a project ID (fail-closed).
+let walletConnectProvider = null;
+
+export async function connectWalletConnect() {
+    const projectId = getWalletConnectProjectId();
+    if (!projectId) {
+        throw new WalletError(
+            'WalletConnect is not set up yet. Add a Reown project ID (VITE_WALLETCONNECT_PROJECT_ID) and try again.',
+            'not-configured',
+        );
+    }
+    try {
+        const { default: EthereumProvider } = await import('@walletconnect/ethereum-provider');
+        walletConnectProvider = await EthereumProvider.init({
+            projectId,
+            chains: [CHAIN_ID],
+            showQrModal: true,
+            rpcMap: { [CHAIN_ID]: 'https://sepolia.base.org' },
+        });
+        const accounts = await walletConnectProvider.enable();
+        if (!accounts || accounts.length === 0) {
+            throw new WalletError('No account was shared by the wallet.', 'no-account');
+        }
+        activeProvider = walletConnectProvider;
+        activeProviderKind = 'walletconnect';
+        return accounts[0].toLowerCase();
+    } catch (err) {
+        if (err instanceof WalletError) throw err;
+        throw friendlyError(err);
+    }
+}
+
+export async function getWalletConnectAccounts() {
+    if (!walletConnectProvider) return [];
+    try {
+        const accounts =
+            walletConnectProvider.accounts ||
+            (await walletConnectProvider.request({ method: 'eth_accounts' }));
+        return (accounts || []).map((a) => a.toLowerCase());
+    } catch {
+        return [];
+    }
+}
+
+export async function disconnectWalletConnect() {
+    if (walletConnectProvider) {
+        try {
+            await walletConnectProvider.disconnect();
+        } catch {
+            // Already disconnected; the local state below still clears.
+        }
+        walletConnectProvider = null;
+    }
+    if (activeProviderKind === 'walletconnect') {
+        activeProvider = null;
+        activeProviderKind = null;
     }
 }
 
@@ -83,7 +176,7 @@ export async function getInjectedAccounts() {
 }
 
 export async function getWalletChainId() {
-    const provider = getInjectedProvider();
+    const provider = getActiveProvider();
     if (!provider) return null;
     try {
         const hex = await provider.request({ method: 'eth_chainId' });
@@ -94,7 +187,7 @@ export async function getWalletChainId() {
 }
 
 export async function switchToSepolia() {
-    const provider = getInjectedProvider();
+    const provider = getActiveProvider();
     if (!provider) {
         throw new WalletError('No browser wallet was found.', 'no-provider');
     }
@@ -128,7 +221,7 @@ export async function switchToSepolia() {
 }
 
 export async function sendWalletTransaction({ from, to, data, valueWei = 0n }) {
-    const provider = getInjectedProvider();
+    const provider = getActiveProvider();
     if (!provider) {
         throw new WalletError('No browser wallet was found.', 'no-provider');
     }
@@ -159,7 +252,7 @@ export async function sendWalletTransaction({ from, to, data, valueWei = 0n }) {
 }
 
 export function onWalletAccountsChanged(handler) {
-    const provider = getInjectedProvider();
+    const provider = getActiveProvider();
     if (!provider || !provider.on) return () => {};
     const wrapped = (accounts) => handler((accounts || []).map((a) => a.toLowerCase()));
     provider.on('accountsChanged', wrapped);
@@ -167,7 +260,7 @@ export function onWalletAccountsChanged(handler) {
 }
 
 export function onWalletChainChanged(handler) {
-    const provider = getInjectedProvider();
+    const provider = getActiveProvider();
     if (!provider || !provider.on) return () => {};
     const wrapped = (hex) => handler(Number(BigInt(hex)));
     provider.on('chainChanged', wrapped);

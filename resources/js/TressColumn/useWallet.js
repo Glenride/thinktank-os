@@ -5,9 +5,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { CHAIN_ID } from './tressConfig';
 import {
     connectInjected,
+    connectWalletConnect as connectWalletConnectProvider,
+    disconnectWalletConnect as disconnectWalletConnectProvider,
     getInjectedAccounts,
     getWalletChainId,
     hasInjectedWallet,
+    isWalletConnectConfigured,
     onWalletAccountsChanged,
     onWalletChainChanged,
     resurfacePending,
@@ -20,6 +23,7 @@ export function useWallet() {
     const [connecting, setConnecting] = useState(false);
     const [error, setError] = useState(null);
     const [settled, setSettled] = useState([]);
+    const [connectMethod, setConnectMethod] = useState(null); // 'injected' | 'walletconnect' | null
 
     useEffect(() => {
         let alive = true;
@@ -50,6 +54,29 @@ export function useWallet() {
             setChainId(id);
             const done = await resurfacePending(account);
             setSettled(done);
+            setConnectMethod('injected');
+            return account;
+        } catch (err) {
+            setError(err);
+            return null;
+        } finally {
+            setConnecting(false);
+        }
+    }, []);
+
+    // WalletConnect path (QR / mobile wallet). Refuses to start without
+    // a configured project ID — see wallet.js, fail-closed by design.
+    const connectWalletConnect = useCallback(async () => {
+        setConnecting(true);
+        setError(null);
+        try {
+            const account = await connectWalletConnectProvider();
+            setAddress(account);
+            const id = await getWalletChainId();
+            setChainId(id);
+            const done = await resurfacePending(account);
+            setSettled(done);
+            setConnectMethod('walletconnect');
             return account;
         } catch (err) {
             setError(err);
@@ -60,12 +87,16 @@ export function useWallet() {
     }, []);
 
     const disconnect = useCallback(() => {
+        if (connectMethod === 'walletconnect') {
+            disconnectWalletConnectProvider();
+        }
         // Injected wallets have no programmatic disconnect. This forgets
         // the wallet here. The wallet itself stays connected until the
         // user disconnects there. Said plainly in the UI.
         setAddress(null);
         setSettled([]);
-    }, []);
+        setConnectMethod(null);
+    }, [connectMethod]);
 
     const switchNetwork = useCallback(async () => {
         setError(null);
@@ -83,9 +114,12 @@ export function useWallet() {
         chainId,
         isCorrectNetwork: chainId === CHAIN_ID,
         hasProvider: hasInjectedWallet(),
+        walletConnectAvailable: isWalletConnectConfigured(),
+        connectMethod,
         connecting,
         error,
         connect,
+        connectWalletConnect,
         disconnect,
         switchNetwork,
         settled,
