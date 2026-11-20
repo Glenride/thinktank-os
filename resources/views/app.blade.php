@@ -7,17 +7,30 @@
         {{-- Social cards: X / link previews read the served HTML, so these
              live in the shell, not in JS. Per-page titles come from Inertia;
              these are the site-wide defaults. --}}
+        @php($isTress = isset($page['component']) && (str_starts_with($page['component'], 'TressColumn/') || str_starts_with($page['component'], 'TradingTerminal/') || str_starts_with($page['component'], 'OpsConsole/') || str_starts_with($page['component'], 'PlusPortal/')))
         <meta property="og:type" content="website" />
+        @if($isTress)
+        <meta property="og:site_name" content="Tress Column" />
+        <meta property="og:url" content="{{ url()->current() }}" />
+        <meta property="og:title" content="Tress Column — The fair-launch exchange on Base" />
+        <meta property="og:description" content="Launch a token with every term locked at launch, printed in plain language, and kept by contracts that answer to no one." />
+        @else
         <meta property="og:site_name" content="Glenride" />
         <meta property="og:url" content="https://dvaughnhouse.org/" />
         <meta property="og:title" content="Glenride — Independent, AI-native think tank" />
         <meta property="og:description" content="Find where critical systems break before harm, and publish a record anyone can check." />
+        @endif
         <meta property="og:image" content="https://dvaughnhouse.org/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="628" />
         <meta name="twitter:card" content="summary_large_image" />
+        @if($isTress)
+        <meta name="twitter:title" content="Tress Column — The fair-launch exchange on Base" />
+        <meta name="twitter:description" content="Launch a token with every term locked at launch, printed in plain language, and kept by contracts that answer to no one." />
+        @else
         <meta name="twitter:title" content="Glenride — Independent, AI-native think tank" />
         <meta name="twitter:description" content="Find where critical systems break before harm, and publish a record anyone can check." />
+        @endif
         <meta name="twitter:image" content="https://dvaughnhouse.org/og-image.jpg" />
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
@@ -46,7 +59,7 @@
         <script type="application/ld+json">{!! $pageJsonLd !!}</script>
         @endisset
     </head>
-    <body class="bg-paper font-serif text-ink antialiased dark:bg-night dark:text-cream">
+    <body @if($isTress) class="tc-page" @else class="bg-paper font-serif text-ink antialiased dark:bg-night dark:text-cream" @endif>
         @inertia
         {{-- Global Mission Control backlink — every ThinkTank OS page carries a visible link back to Mission Control. Tress Column surfaces are excluded: they use the Tress shell (TressShell), which carries its own footer note. --}}
         @if(!str_starts_with($page['component'] ?? '', 'TressColumn/') && !str_starts_with($page['component'] ?? '', 'TradingTerminal/') && !str_starts_with($page['component'] ?? '', 'OpsConsole/') && !str_starts_with($page['component'] ?? '', 'PlusPortal/'))

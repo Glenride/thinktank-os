@@ -7,6 +7,7 @@ use App\Http\Controllers\ManuscriptController;
 use App\Http\Controllers\MarkdownController;
 use App\Http\Controllers\OpsConsoleLoggedInController;
 use App\Http\Controllers\PlusPortalController;
+use App\Http\Controllers\PlusApiController;
 use App\Http\Controllers\TressAuthController;
 use App\Http\Controllers\TressColumnLoggedInController;
 use App\Http\Controllers\TressLandingController;
@@ -172,6 +173,39 @@ Route::domain('ops.dvaughnhouse.com')->group(function () {
 Route::domain('plus.dvaughnhouse.com')->group(function () {
     Route::get('/', [PlusPortalController::class, 'index'])->name('plus-portal.domain');
 });
+
+// Tress Column Plus+ API. Signed-in only; each route enforces its
+// tier in PlusApiController. Subscription state is SaaS state;
+// launch figures are on-chain state, labelled at the source.
+Route::prefix('plus/api')->middleware(['web', 'auth'])->group(function () {
+    Route::get('/subscription', [PlusApiController::class, 'subscription']);
+    Route::post('/subscribe', [PlusApiController::class, 'subscribe']);
+    Route::post('/subscription/cancel', [PlusApiController::class, 'cancelSubscription']);
+    Route::get('/indexer-status', [PlusApiController::class, 'indexerStatus']);
+    Route::get('/feed', [PlusApiController::class, 'feed']);
+    Route::get('/feed/stream', [PlusApiController::class, 'feedStream']);
+    Route::get('/radar', [PlusApiController::class, 'radar']);
+    Route::post('/radar/verify', [PlusApiController::class, 'verifyClaim']);
+    Route::get('/whales', [PlusApiController::class, 'whales']);
+    Route::get('/snapshots', [PlusApiController::class, 'listSnapshots']);
+    Route::post('/snapshots', [PlusApiController::class, 'createSnapshot']);
+    Route::post('/snapshots/{snapshot}/compute', [PlusApiController::class, 'computeSnapshot']);
+    Route::post('/snapshots/{snapshot}/generate-root', [PlusApiController::class, 'generateSnapshotRoot']);
+    Route::get('/snapshots/{snapshot}/proof', [PlusApiController::class, 'snapshotProof']);
+    Route::get('/snapshots/{snapshot}/export', [PlusApiController::class, 'exportSnapshot']);
+    Route::get('/alerts', [PlusApiController::class, 'listAlerts']);
+    Route::post('/alerts', [PlusApiController::class, 'createAlert']);
+    Route::post('/alerts/{alert}/toggle', [PlusApiController::class, 'toggleAlert']);
+    Route::delete('/alerts/{alert}', [PlusApiController::class, 'deleteAlert']);
+    Route::get('/rebates', [PlusApiController::class, 'listRebates']);
+    Route::post('/rebates', [PlusApiController::class, 'claimRebate']);
+    Route::get('/support', [PlusApiController::class, 'listSupport']);
+    Route::post('/support', [PlusApiController::class, 'createSupport']);
+});
+
+// Vanity certificate URL: /p/<tokenId> resolves to the same
+// certificate record, on the launch page. Cosmetic only.
+Route::get('/p/{tokenId}', [PlusPortalController::class, 'vanity'])->whereNumber('tokenId');
 
 // Staging Preview Routes (Direct URL access across environments).
 // The logged-in-state build renders the new pages on the staging
