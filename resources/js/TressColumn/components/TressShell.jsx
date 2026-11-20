@@ -87,6 +87,18 @@ const HOME = {
     plus: plusUrl(),
 };
 
+// Cross-surface menu: every surface links the other three live
+// surfaces, so launchpad, trade, ops, and plus are reachable from
+// the rail on each surface. Only live surfaces appear; nothing
+// here is dead. The current surface is not listed: it is already
+// the surface this rail belongs to.
+const SURFACES = [
+    { key: 'tc', label: 'Launchpad', href: tcUrl(), icon: 'list' },
+    { key: 'trade', label: 'Trading terminal', href: tradeUrl(), icon: 'activity' },
+    { key: 'ops', label: 'Ops console', href: opsUrl(), icon: 'grid' },
+    { key: 'plus', label: 'Plus+', href: plusUrl(), icon: 'layers' },
+];
+
 function AccountItem({ user, returnTo }) {
     const [open, setOpen] = useState(false);
     const wrapRef = useRef(null);
@@ -178,6 +190,18 @@ export function TressShell({ surface, title, action = null, active, children }) 
                     >
                         <Icon d={ICONS[item.icon]} />
                     </Link>
+                ))}
+                <div className="tc-rail-divider" aria-hidden="true" />
+                {SURFACES.filter((item) => item.key !== surface).map((item) => (
+                    <a
+                        key={item.key}
+                        className="tc-rail-btn"
+                        href={item.href}
+                        aria-label={item.label}
+                        data-tip={item.label}
+                    >
+                        <Icon d={ICONS[item.icon]} />
+                    </a>
                 ))}
                 <div className="tc-rail-spacer" />
                 <AccountItem user={user} returnTo={returnTo} />

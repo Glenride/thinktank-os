@@ -1,0 +1,110 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
+use Tests\TestCase;
+
+class TressLandingTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * Signed-out, tc root serves the restored landing page: hero,
+     * waitlist, and a sign-in link. Not the logged-in Launches page.
+     */
+    public function test_tc_root_signed_out_serves_landing(): void
+    {
+        $response = $this->get('http://tc.dvaughnhouse.com/');
+
+        $response->assertStatus(200);
+        $response->assertSee('Tress Column');
+        $response->assertSee('Join the waitlist');
+        $response->assertSee('Sign in');
+        $response->assertSee('https://trade.dvaughnhouse.com/');
+        $response->assertSee('https://ops.dvaughnhouse.com/');
+        $response->assertSee('https://plus.dvaughnhouse.com/');
+    }
+
+    /**
+     * Signed-in, the same URL serves Launches (PRD §3).
+     */
+    public function test_tc_root_signed_in_serves_launches(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('http://tc.dvaughnhouse.com/');
+
+        $response->assertStatus(200);
+        $response->assertSee('TressColumn/LoggedIn/Index');
+    }
+
+    /**
+     * Each landing sub-page serves on the tc host.
+     */
+    public function test_tc_subpages_serve(): void
+    {
+        foreach (['how-it-works', 'certificate', 'fees', 'passes', 'terminal', 'console', 'security'] as $page) {
+            $this->get("http://tc.dvaughnhouse.com/{$page}")->assertStatus(200);
+        }
+    }
+
+    /**
+     * The landing markdown serves on the tc host.
+     */
+    public function test_tc_markdown_serves(): void
+    {
+        $response = $this->get('http://tc.dvaughnhouse.com/fees.md');
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'text/markdown; charset=utf-8');
+    }
+
+    /**
+     * The waitlist form posts here and the signup is proxied to the
+     * live Pages function, whose answer comes back unchanged.
+     */
+    public function test_waitlist_proxy_forwards_to_pages_function(): void
+    {
+        Http::fake([
+            'tc-7bi.pages.dev/api/waitlist' => Http::response(['ok' => true], 200),
+        ]);
+
+        $response = $this->postJson('http://tc.dvaughnhouse.com/api/waitlist', [
+            'email' => 'test@example.com',
+            'name' => 'Test',
+            'interest' => 'both',
+            'company' => '',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson(['ok' => true]);
+        Http::assertSent(function ($request) {
+            return $request->url() === 'https://tc-7bi.pages.dev/api/waitlist'
+                && $request->data()['email'] === 'test@example.com';
+        });
+    }
+
+    /**
+     * When the Pages function is down, the form gets an honest 503,
+     * not a silent drop.
+     */
+    public function test_waitlist_proxy_returns_503_when_function_down(): void
+    {
+        Http::fake([
+            'tc-7bi.pages.dev/*' => Http::response(['ok' => false], 503),
+        ]);
+
+        $response = $this->postJson('http://tc.dvaughnhouse.com/api/waitlist', [
+            'email' => 'test@example.com',
+            'name' => '',
+            'interest' => 'both',
+            'company' => '',
+        ]);
+
+        $response->assertStatus(503);
+        $response->assertJson(['ok' => false]);
+    }
+}

@@ -146,7 +146,7 @@ export default function Index({ billingConnected }) {
                         title="Sign in to see your subscription."
                         body="Plus+ passes belong to your account."
                         action={
-                            <a className="tc-button-primary" href="/auth/tress-entry?return=%2Fstaging%2Fplus">
+                            <a className="tc-button-primary" href={`/auth/tress-entry?return=${encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname : '/')}`}>
                                 Sign in with Albert Pass
                             </a>
                         }

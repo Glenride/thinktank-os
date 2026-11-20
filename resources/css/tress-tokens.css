@@ -180,6 +180,13 @@
 
 .tc-rail-spacer { flex: 1; }
 
+.tc-rail-divider {
+  width: 32px;
+  height: 1px;
+  margin: 4px 0;
+  background: var(--tc-divider);
+}
+
 .tc-rail-btn {
   position: relative;
   display: flex;

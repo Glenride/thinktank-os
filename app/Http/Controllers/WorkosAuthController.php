@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -45,6 +46,14 @@ class WorkosAuthController extends Controller
         $states[] = ['state' => $state, 'at' => time()];
         $request->session()->put('workos_states', array_slice($states, -5));
         $request->session()->put('workos_state', $state);
+        // The session cookie does not always survive the WorkOS round
+        // trip on iPhone: the flow can start in one browser view and
+        // the callback can land in another, and the session is gone.
+        // The state check must not depend on the session alone, so a
+        // cache copy is kept keyed by the state value itself. The
+        // callback accepts a state it finds in the cache, bound to the
+        // host that started the login, single-use, 10 minutes.
+        Cache::put('workos_state:'.$state, ['host' => $request->getHost(), 'at' => time()], 600);
         $authUrl = 'https://api.workos.com/user_management/authorize?'.http_build_query([
             'response_type' => 'code',
             'client_id' => $config['client_id'],
@@ -104,6 +113,14 @@ class WorkosAuthController extends Controller
                 }
             }
         }
+        // Cache copy (see login()): a callback whose session did not
+        // survive the round trip still validates when the state is in
+        // the cache for this host and younger than 10 minutes.
+        $cached = $state !== '' ? Cache::get('workos_state:'.$state) : null;
+        $cachedMatch = is_array($cached)
+            && ($cached['host'] ?? '') === $request->getHost()
+            && time() - (int) ($cached['at'] ?? 0) < 600;
+        $matched = $matched || $cachedMatch;
         $parts = explode('.', $state);
         $stateOk = $code && $matched && count($parts) === 2 && $parts[1] !== ''
             && hash_equals(hash_hmac('sha256', $parts[0], config('app.key')), $parts[1]);
@@ -115,6 +132,8 @@ class WorkosAuthController extends Controller
             ->values()->all();
         $request->session()->put('workos_states', $remaining);
         $request->session()->forget('workos_state');
+        // Consume the cache copy too: a used state never validates twice.
+        Cache::forget('workos_state:'.$state);
         try {
             $res = Http::asJson()->post('https://api.workos.com/user_management/authenticate', [
                 'grant_type' => 'authorization_code',
@@ -152,6 +171,11 @@ class WorkosAuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard'));
+        // Land back on the surface the sign-in started on. The entry
+        // page stores it as the intended URL; without one, the surface
+        // root is the right default on every host (tc shows Launches,
+        // trade shows Markets, ops shows the console, plus shows the
+        // portal). The main dashboard is not a Tress surface.
+        return redirect()->intended('/');
     }
 }

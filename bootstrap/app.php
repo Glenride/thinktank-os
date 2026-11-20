@@ -20,8 +20,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Stripe cannot send a CSRF token; the webhook route verifies the
         // Stripe signature instead (see StoreController::webhook).
+        // The Tress Column waitlist is a public signup form with no
+        // session; the Pages function it proxies to validates the
+        // signup and rate-limits per IP.
         $middleware->validateCsrfTokens(except: [
             'store/webhook',
+            'api/waitlist',
         ]);
 
         $middleware->web(append: [

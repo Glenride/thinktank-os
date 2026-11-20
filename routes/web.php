@@ -9,6 +9,7 @@ use App\Http\Controllers\OpsConsoleLoggedInController;
 use App\Http\Controllers\PlusPortalController;
 use App\Http\Controllers\TressAuthController;
 use App\Http\Controllers\TressColumnLoggedInController;
+use App\Http\Controllers\TressLandingController;
 use App\Http\Controllers\TressRpcController;
 use App\Http\Controllers\TradingTerminalLoggedInController;
 use App\Http\Controllers\WorkosAuthController;
@@ -25,6 +26,13 @@ use App\Http\Controllers\TradingTerminalController;
 use App\Http\Controllers\TressColumnController;
 use App\Http\Controllers\VanguardLibraryController;
 use Illuminate\Support\Facades\Route;
+
+// Tress Column landing markdown (tc host only): the landing's own
+// .md files. Registered before the global MarkdownController catch-all
+// below, so /index.md on tc serves the landing markdown, not a 404.
+Route::domain('tc.dvaughnhouse.com')->group(function () {
+    Route::get('/{page}.md', [TressLandingController::class, 'markdown'])->name('tress-landing.md');
+});
 
 // AI-readable surfaces (ScrollLaunch prompt 1): generated from code,
 // never hand-written static files. robots.txt is served by a route so
@@ -139,7 +147,14 @@ Route::middleware('auth')->group(function () {
 // logged-in build at its root. Staging routes below stay live as the
 // pre-live check. The legacy domain controllers are no longer served.
 Route::domain('tc.dvaughnhouse.com')->group(function () {
-    Route::get('/', [TressColumnLoggedInController::class, 'index'])->name('tress-column.domain');
+    // tc root: landing page when signed out, Launches when signed in
+    // (PRD §3). The seven landing sub-pages stay public, and the
+    // waitlist form posts here and is proxied to the Pages function.
+    Route::get('/', [TressLandingController::class, 'root'])->name('tress-column.domain');
+    Route::get('/{page}', [TressLandingController::class, 'page'])
+        ->where('page', 'how-it-works|certificate|fees|passes|terminal|console|security')
+        ->name('tress-landing.page');
+    Route::post('/api/waitlist', [TressLandingController::class, 'waitlist'])->name('tress-landing.waitlist');
     Route::get('/launches/{id}', [TressColumnLoggedInController::class, 'show'])->whereNumber('id')->name('tress-column.domain.show');
     Route::get('/start', [TressColumnLoggedInController::class, 'create'])->name('tress-column.domain.create');
     Route::get('/mine', [TressColumnLoggedInController::class, 'mine'])->name('tress-column.domain.mine');
