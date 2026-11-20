@@ -233,7 +233,7 @@ export default function TradingTerminalIndex() {
 
     return (
         <div className="min-h-screen bg-abyssal-black text-pearls-white font-mono selection:bg-abyssal-gold selection:text-abyssal-black">
-            <Head title="Tress Column — Trading Terminal (Staging Preview)" />
+            <Head title="Tress Column — Trading Terminal" />
 
             {/* Staging Preview & Non-Custodial Notice Bar */}
             <div className="bg-abyssal-card border-b border-abyssal-gold/30 px-4 py-2 text-[11px] text-nacre-cream/80">

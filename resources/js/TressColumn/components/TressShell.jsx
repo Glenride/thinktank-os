@@ -174,7 +174,7 @@ export function TressShell({ surface, title, action = null, active, children }) 
 
     return (
         <div className="tc-shell">
-            <Head title={title} />
+            <Head title={`Tress Column — ${title}`} />
             <nav className="tc-rail" aria-label={`${title} navigation`}>
                 <Link className="tc-rail-mark" href={HOME[surface]} aria-label="Tress Column home">
                     {MARKS[surface]}

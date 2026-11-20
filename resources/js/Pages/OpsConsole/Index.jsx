@@ -212,7 +212,7 @@ export default function OpsConsoleIndex() {
 
     return (
         <div className="min-h-screen bg-abyssal-black text-pearls-white font-mono selection:bg-abyssal-gold selection:text-abyssal-black">
-            <Head title="Tress Column — Ops Console (Staging Preview)" />
+            <Head title="Tress Column — Ops Console" />
 
             {/* Staging Gate & Auth Decision Banner (Task 4 Requirement) */}
             <div className="bg-abyssal-card border-b border-abyssal-gold/40 px-4 py-2 text-[11px] text-nacre-cream/80">

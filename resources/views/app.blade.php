@@ -20,7 +20,11 @@
         <meta property="og:title" content="Glenride — Independent, AI-native think tank" />
         <meta property="og:description" content="Find where critical systems break before harm, and publish a record anyone can check." />
         @endif
+        @if($isTress)
+        <meta property="og:image" content="{{ url('/tress-column-assets/og-image.jpg') }}" />
+        @else
         <meta property="og:image" content="https://dvaughnhouse.org/og-image.jpg" />
+        @endif
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="628" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -31,9 +35,13 @@
         <meta name="twitter:title" content="Glenride — Independent, AI-native think tank" />
         <meta name="twitter:description" content="Find where critical systems break before harm, and publish a record anyone can check." />
         @endif
+        @if($isTress)
+        <meta name="twitter:image" content="{{ url('/tress-column-assets/og-image.jpg') }}" />
+        @else
         <meta name="twitter:image" content="https://dvaughnhouse.org/og-image.jpg" />
+        @endif
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>@if($isTress)Tress Column@else{{ config('app.name', 'Laravel') }}@endif</title>
 
         <!-- Fonts: self-hosted (see @font-face in resources/css/app.css) -->
 
