@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class TressLandingTest extends TestCase
@@ -14,18 +15,24 @@ class TressLandingTest extends TestCase
     /**
      * Signed-out, tc root serves the restored landing page: hero,
      * waitlist, and a sign-in link. Not the logged-in Launches page.
+     *
+     * The landing is a BinaryFileResponse, whose body streams on send
+     * and is empty under the test client, so the copy is asserted on
+     * the served file itself; the response asserts status + type.
      */
     public function test_tc_root_signed_out_serves_landing(): void
     {
         $response = $this->get('http://tc.dvaughnhouse.com/');
 
         $response->assertStatus(200);
-        $response->assertSee('Tress Column');
-        $response->assertSee('Join the waitlist');
-        $response->assertSee('Sign in');
-        $response->assertSee('https://trade.dvaughnhouse.com/');
-        $response->assertSee('https://ops.dvaughnhouse.com/');
-        $response->assertSee('https://plus.dvaughnhouse.com/');
+        $response->assertHeader('Content-Type', 'text/html; charset=utf-8');
+        $landing = file_get_contents(resource_path('tress-landing/index.html'));
+        $this->assertStringContainsString('Tress Column', $landing);
+        $this->assertStringContainsString('Join the waitlist', $landing);
+        $this->assertStringContainsString('Sign in', $landing);
+        $this->assertStringContainsString('https://trade.dvaughnhouse.com/', $landing);
+        $this->assertStringContainsString('https://ops.dvaughnhouse.com/', $landing);
+        $this->assertStringContainsString('https://plus.dvaughnhouse.com/', $landing);
     }
 
     /**
@@ -38,7 +45,7 @@ class TressLandingTest extends TestCase
         $response = $this->actingAs($user)->get('http://tc.dvaughnhouse.com/');
 
         $response->assertStatus(200);
-        $response->assertSee('TressColumn/LoggedIn/Index');
+        $response->assertInertia(fn (AssertableInertia $page) => $page->component('TressColumn/LoggedIn/Index'));
     }
 
     /**
