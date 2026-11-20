@@ -80,7 +80,10 @@ class TressLandingController extends Controller
         try {
             $res = Http::timeout(10)
                 ->withHeaders([
-                    'CF-Connecting-IP' => $request->ip(),
+                    // Forward the visitor IP so the function's own
+                    // per-IP rate limit still works. Do NOT forward
+                    // CF-Connecting-IP: Cloudflare rejects inbound
+                    // requests carrying its own header (error 1000).
                     'X-Forwarded-For' => $request->ip(),
                 ])
                 ->withBody((string) $request->getContent(), 'application/json')
