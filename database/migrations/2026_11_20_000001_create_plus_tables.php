@@ -51,7 +51,7 @@ return new class extends Migration
 
         Schema::create('plus_subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->string('tier', 16);
             $table->string('status', 16)->default('active');
             $table->string('provider', 32)->default('test');
@@ -66,7 +66,7 @@ return new class extends Migration
 
         Schema::create('plus_snapshots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->string('name', 128);
             $table->string('token_address', 42);
             $table->unsignedBigInteger('snapshot_block');
@@ -81,7 +81,7 @@ return new class extends Migration
 
         Schema::create('plus_alerts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->string('type', 32);
             $table->string('target', 128);
             $table->string('threshold_bps', 16)->nullable();
@@ -92,7 +92,7 @@ return new class extends Migration
 
         Schema::create('plus_airdrop_rebates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->string('campaign', 128);
             $table->string('fee_wei', 78)->default('0');
             $table->string('rebate_status', 32)->default('pending');
@@ -103,7 +103,7 @@ return new class extends Migration
 
         Schema::create('plus_support_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->string('subject', 160);
             $table->text('body');
             $table->string('status', 16)->default('open');
