@@ -29,11 +29,13 @@ export function formatPercent1(value) {
     return `${Number(value).toFixed(1)}%`;
 }
 
-// Basis points as a fee: 0 -> 0%, 30 -> 0.3%.
+// Basis points as a fee: 0 -> 0%, 30 -> 0.3%, 5 -> 0.05%.
+// Two decimals, trailing zero trimmed, so 5 bps never rounds
+// to 0.1% (the old one-decimal form did exactly that).
 export function formatBps(bps) {
     const n = Number(bps);
     const pct = n / 100;
-    return `${Number.isInteger(pct) ? String(pct) : pct.toFixed(1)}%`;
+    return `${Number(pct.toFixed(2))}%`;
 }
 
 // Gate progress from BigInt reads, computed in integers so no float

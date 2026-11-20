@@ -54,10 +54,12 @@ export const MIN_TIMED_LOCK_DAYS = 180;
 export const MIN_TIMED_LOCK_SECONDS = 180 * 24 * 3600;
 export const AIRDROP_CAMPAIGN_FEE_WEI = 19400000000000000n; // 0.0194 ETH flat
 
-// Routing markup, non-Tress-Column swaps only. The value is his alone
-// (0, 5, or 10 bps). Default 0. No hardcoded fee value anywhere in the
-// swap path: the ticket reads this constant.
-export const ROUTING_MARKUP_BPS = 0;
+// Routing markup, non-Tress-Column swaps only. Locked Nov 15, 2026
+// at 5 bps (0.05%). No hardcoded fee value anywhere in the
+// swap path: the ticket reads this constant. No swap executes yet
+// (no quote source is wired), so nothing is charged today; the
+// rate is disclosed here and in the ticket before any execution.
+export const ROUTING_MARKUP_BPS = 5;
 
 export const TC_HOOK_FLAGS = '0x00CC';
 export const LOAD_TIMEOUT_MS = 30000;
@@ -139,6 +141,8 @@ export const PLUS_TIERS = {
         name: 'Sapphire',
         priceMonthly: 7,
         target: 'Trader',
+        billingCycle: 'Monthly only',
+        stateType: 'SaaS / Off-Chain State',
         features: [
             'Pure Tress Column market feed',
             'Airdrop Claim Radar & batch claimer',
@@ -149,6 +153,8 @@ export const PLUS_TIERS = {
         name: 'Emerald',
         priceMonthly: 27,
         target: 'Creator',
+        billingCycle: 'Monthly only',
+        stateType: 'SaaS / Off-Chain State',
         features: [
             'Creator workbench & launch staging',
             'No-code Merkle airdrop snapshot builder',
@@ -161,6 +167,8 @@ export const PLUS_TIERS = {
         name: 'Ruby',
         priceMonthly: 97,
         target: 'Studio',
+        billingCycle: 'Monthly only',
+        stateType: 'SaaS / Off-Chain State',
         features: [
             '1 free AirdropDistributor deploy/month (via rebate)',
             'Citadel 24/7 automated monitoring',

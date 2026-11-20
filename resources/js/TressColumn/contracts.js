@@ -33,14 +33,21 @@ export const TC_POOL_TERMINAL_EXTRA_FEE_BPS = 0; // 0.00% — no additional Tres
 export const MIN_TIMED_LOCK_DAYS = 180;
 export const AIRDROP_CAMPAIGN_FEE_ETH = '0.0194'; // Flat per campaign (locked 2026-10-25)
 
-// Non-Tress Column Base Token Routing Fee (PRD proposal: 0.05%–0.10% on non-Tress Column Base swaps only)
-// PROPOSED, NOT LOCKED — Built as OFF (single deliberate switch; never charged or buried in quotes)
-export const NON_TC_ROUTING_FEE_ENABLED = false;
-export const NON_TC_ROUTING_FEE_BPS = 0;
-export const NON_TC_ROUTING_FEE_PROPOSED_LABEL = '0.05%–0.10% (PROPOSED, NOT LOCKED — BUILT AS OFF)';
+// Non-Tress Column Base Token Routing Fee — LOCKED Nov 15, 2026:
+// 5 bps (0.05%) on non-Tress Column Base swaps only. Single
+// deliberate switch; the rate is disclosed in the ticket and on
+// the terminal, never buried in a quote. No swap executes yet
+// (no quote source is wired), so nothing is charged today.
+export const NON_TC_ROUTING_FEE_ENABLED = true;
+export const NON_TC_ROUTING_FEE_BPS = 5;
+export const NON_TC_ROUTING_FEE_PROPOSED_LABEL = '0.05% (5 bps, LOCKED Nov 15, 2026 — non-Tress Column Base swaps only)';
 
-// Launch Tier Doctrine (Platinum LOCKED 2026-11-02; Gold PROPOSED)
-// Silver tier dropped Nov 20, 2026: the ~0.58% / $20K modeled figure was removed.
+// Launch Tier Doctrine (Platinum LOCKED 2026-11-02; Gold LOCKED 2026-11-20;
+// Silver DECIDED 2026-11-20: $20K gate, ~0.58% (58 bps). Silver is
+// NOT rendered on live tc/trade copy per Q3 — do not re-add it to any
+// rendered tier list without his tap. It is recorded here only so the
+// decided numbers are not lost; the rendered map below stays Platinum
+// + Gold until he taps Silver back into live copy.)
 export const LAUNCH_TIERS = {
     PLATINUM: {
         name: 'Platinum',
@@ -52,11 +59,11 @@ export const LAUNCH_TIERS = {
     },
     GOLD: {
         name: 'Gold',
-        status: 'PROPOSED (Not Locked)',
-        lpRequirement: 'Proposed tier parameters pending lock',
+        status: 'LOCKED (2026-11-20)',
+        lpRequirement: 'Short timed lock',
         volumeGateUsd: 250_000,
-        postGateFeeLabel: '0.45% proposed (not locked)',
-        isLocked: false,
+        postGateFeeLabel: '0.45% in quote asset only',
+        isLocked: true,
     },
 };
 

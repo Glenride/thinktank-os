@@ -189,34 +189,40 @@ export function useBlockTime(blockNumber) {
 }
 
 // Creator scan window, in blocks. The relay pages in 200-block
-// chunks (25 per request) and this hook caps total pages at 10, so a
-// scan covers at most 10 x 25 x 200 = 50,000 blocks from DEPLOY_BLOCK.
-// That is the earliest window only. Any launch after scanTo is
-// invisible here until an indexer exists.
+// chunks (25 per request) and this hook caps total pages at 10, so
+// one scan covers at most 10 x 25 x 200 = 50,000 blocks. The scan
+// runs BACKWARD from the latest block, so it covers the most recent
+// 50,000 blocks: a launch made today is found, a launch older than
+// that window is not. Full coverage from DEPLOY_BLOCK needs the
+// indexer, which is not built. An incomplete scan says so instead
+// of pretending it finished.
 const CREATOR_SCAN_MAX_BLOCKS = 50000;
 
-// Launches created by one address, from Launched events. Bounded scan:
-// the relay pages in 200-block chunks and this hook caps total pages.
-// An incomplete scan says so instead of pretending it finished.
+// Launches created by one address, from Launched events. Bounded
+// backward scan: the most recent CREATOR_SCAN_MAX_BLOCKS blocks.
+// complete is true only when the scan reached DEPLOY_BLOCK; any
+// older window left unscanned makes it false, and the page says so.
 export function useLaunchedByCreator(creator) {
     return useAsyncData(async () => {
         if (!creator) return { launches: [], complete: true, scanFrom: DEPLOY_BLOCK, scanTo: DEPLOY_BLOCK + CREATOR_SCAN_MAX_BLOCKS - 1 };
         const latest = await ethBlockNumber();
+        const scanFrom = Math.max(DEPLOY_BLOCK, latest - CREATOR_SCAN_MAX_BLOCKS + 1);
+        const scanTo = latest;
         const topic = `0x${creator.toLowerCase().replace(/^0x/, '').padStart(64, '0')}`;
-        const { logs, complete } = await ethGetLogs(
+        const { logs, complete: windowComplete } = await ethGetLogs(
             {
                 address: HOOK_CERTIFICATE_FACTORY,
                 topics: [TOPICS.launched, null, null, topic],
-                fromBlock: `0x${DEPLOY_BLOCK.toString(16)}`,
-                toBlock: `0x${latest.toString(16)}`,
+                fromBlock: `0x${scanFrom.toString(16)}`,
+                toBlock: `0x${scanTo.toString(16)}`,
             },
             { maxPages: 10 },
         );
         return {
             launches: logs.map(decodeLaunchedLog).reverse(),
-            complete,
-            scanFrom: DEPLOY_BLOCK,
-            scanTo: DEPLOY_BLOCK + CREATOR_SCAN_MAX_BLOCKS - 1,
+            complete: windowComplete && scanFrom === DEPLOY_BLOCK,
+            scanFrom,
+            scanTo,
         };
     }, [creator], 'launchList');
 }

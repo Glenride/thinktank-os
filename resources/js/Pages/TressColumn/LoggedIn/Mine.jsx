@@ -197,11 +197,11 @@ export default function Mine() {
                                 })}
                                 {created.data.complete === false && (
                                     <p className="tc-loading-line">
-                                        The scan stopped early. It covers blocks{' '}
+                                        The scan covers the most recent 50,000 blocks only, blocks{' '}
                                         {created.data.scanFrom?.toLocaleString()} to{' '}
-                                        {created.data.scanTo?.toLocaleString()} only, the
-                                        earliest window, not recent launches. Launches
-                                        after that need the indexer, which is not built.
+                                        {created.data.scanTo?.toLocaleString()}. Launches
+                                        older than that are not shown here. Older launches
+                                        need the indexer, which is not built.
                                     </p>
                                 )}
                             </div>

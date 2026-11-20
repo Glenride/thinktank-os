@@ -795,8 +795,8 @@ export default function TradingTerminalIndex() {
                                         </button>
                                     </div>
                                     <p className="text-nacre-cream/50 leading-relaxed">
-                                        Flagged constant: <code className="text-pearls-white">NON_TC_ROUTING_FEE_ENABLED = false</code>. PRD proposal is{' '}
-                                        {NON_TC_ROUTING_FEE_PROPOSED_LABEL} on non-Tress Column Base swaps only. Never charged, never buried in a quote, and held until D&apos;Vaughn locks price and disclosure copy.
+                                        Flagged constant: <code className="text-pearls-white">NON_TC_ROUTING_FEE_ENABLED = true</code>. Locked Nov 15, 2026:{' '}
+                                        {NON_TC_ROUTING_FEE_PROPOSED_LABEL} on non-Tress Column Base swaps only. Disclosed here and in the ticket, never buried in a quote. No swap executes yet, so nothing is charged today.
                                     </p>
                                 </div>
 
