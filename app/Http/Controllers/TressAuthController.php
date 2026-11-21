@@ -33,7 +33,21 @@ class TressAuthController extends Controller
             && ! empty($config['redirect_uri'])
             && Route::has('workos.login');
 
+        // The entry page is served on all four surfaces from one route,
+        // so the surface comes from the host: the rail, the mark, and
+        // the "signing in to" line must match the surface the user is
+        // on, not always the Launchpad.
+        $host = (string) $request->getHost();
+        $surface = 'tc';
+        foreach (['trade' => 'trade', 'ops' => 'ops', 'plus' => 'plus'] as $prefix => $key) {
+            if (str_starts_with($host, $prefix.'.')) {
+                $surface = $key;
+                break;
+            }
+        }
+
         return Inertia::render('TressColumn/Auth/Entry', [
+            'surface' => $surface,
             'workosReady' => $workosReady,
             'workosUrl' => $workosReady ? route('workos.login') : null,
             'loginUrl' => route('login'),

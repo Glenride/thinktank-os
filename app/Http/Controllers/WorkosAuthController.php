@@ -59,6 +59,7 @@ class WorkosAuthController extends Controller
             'client_id' => $config['client_id'],
             'redirect_uri' => $redirectUri,
             'provider' => 'authkit',
+            'screen_hint' => 'sign-in',
             'prompt' => 'login',
             'state' => $state,
         ]);

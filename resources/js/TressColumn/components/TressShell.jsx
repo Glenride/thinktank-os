@@ -247,19 +247,21 @@ export function TressShell({ surface, title, action = null, active, children, in
 
 export function SignInPrompt({ what, returnTo }) {
     return (
-        <div className="tc-empty">
-            <p className="tc-empty-title">Sign in to {what}.</p>
-            <p className="tc-empty-body">
-                Sign-in is Albert Pass by Glenride. One identity across the Tress
-                Column surfaces, with a session on each. Your wallet stays
-                separate: signing in does not connect a wallet.
-            </p>
-            <a
-                className="tc-button-primary"
-                href={`/auth/tress-entry?return=${encodeURIComponent(returnTo || (typeof window !== 'undefined' ? window.location.pathname : '/'))}`}
-            >
-                Sign in with Albert Pass
-            </a>
+        <div className="tc-tier-glass-field">
+            <div className="tc-card tc-tier-card">
+                <p className="tc-empty-title">Sign in to {what}.</p>
+                <p className="tc-empty-body">
+                    Sign-in is Albert Pass by Glenride. One identity across the Tress
+                    Column surfaces, with a session on each. Your wallet stays
+                    separate: signing in does not connect a wallet.
+                </p>
+                <a
+                    className="tc-button-primary"
+                    href={`/auth/tress-entry?return=${encodeURIComponent(returnTo || (typeof window !== 'undefined' ? window.location.pathname : '/'))}`}
+                >
+                    Sign in with Albert Pass
+                </a>
+            </div>
         </div>
     );
 }
