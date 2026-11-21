@@ -41,7 +41,7 @@
         <meta name="twitter:image" content="https://dvaughnhouse.org/og-image.jpg" />
         @endif
 
-        <title inertia>@if($isTress)Tress Column@else{{ config('app.name', 'Laravel') }}@endif</title>
+        <title inertia>{{ $isTress ? 'Tress Column' : config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts: self-hosted (see @font-face in resources/css/app.css) -->
 
