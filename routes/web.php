@@ -227,6 +227,11 @@ Route::prefix('staging')->group(function () {
 Route::get('/auth/tress-entry', [TressAuthController::class, 'entry'])->name('tress.auth.entry');
 Route::get('/auth/workos/login', [WorkosAuthController::class, 'login'])->name('workos.login');
 Route::get('/auth/workos/callback', [WorkosAuthController::class, 'callback'])->name('workos.callback');
+// The registered WorkOS redirect wildcard is https://*.dvaughnhouse.com/auth/callback
+// (his words, Nov 20). The old /auth/workos/callback path does not match it, so
+// WorkOS rejected every sign-in with redirect-uri-invalid. This is the live
+// callback route now; login() sends this path. The workos path stays as an alias.
+Route::get('/auth/callback', [WorkosAuthController::class, 'callback'])->name('workos.callback.alt');
 
 // Tress Column read-only chain relay. Read methods only; the
 // controller enforces the allowlist and rejects sends.

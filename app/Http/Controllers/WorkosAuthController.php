@@ -29,9 +29,12 @@ class WorkosAuthController extends Controller
         // The callback must come back to the host the sign-in started
         // on: sessions are host-only, so a shared redirect would strand
         // the state on another host and fail the check in callback().
-        // Each surface's https://<host>/auth/workos/callback must be
-        // registered for this app in the WorkOS dashboard.
-        $redirectUri = 'https://'.$request->getHost().'/auth/workos/callback';
+        // The redirect URI must match the wildcard registered for this
+        // app in the WorkOS dashboard: https://*.dvaughnhouse.com/auth/callback
+        // (his words, Nov 20). The old /auth/workos/callback path does not
+        // match that wildcard, so WorkOS rejected every sign-in with
+        // redirect-uri-invalid on all four surfaces.
+        $redirectUri = 'https://'.$request->getHost().'/auth/callback';
         $nonce = (string) Str::uuid();
         $sig = hash_hmac('sha256', $nonce, config('app.key'));
         $state = $nonce.'.'.$sig;

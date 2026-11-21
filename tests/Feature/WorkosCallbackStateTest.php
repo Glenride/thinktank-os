@@ -17,7 +17,7 @@ class WorkosCallbackStateTest extends TestCase
         config([
             'services.workos.client_id' => 'client_test',
             'services.workos.client_secret' => 'secret_test',
-            'services.workos.redirect_uri' => 'https://tc.dvaughnhouse.com/auth/workos/callback',
+            'services.workos.redirect_uri' => 'https://tc.dvaughnhouse.com/auth/callback',
             'services.workos.owner_emails' => 'dvaughn@dvaughnhouse.com',
         ]);
         Http::fake([
@@ -43,6 +43,34 @@ class WorkosCallbackStateTest extends TestCase
         Cache::put('workos_state:'.$state, ['host' => $host, 'at' => time()], 600);
 
         return $state;
+    }
+
+    /**
+     * The login must send the redirect URI the WorkOS dashboard has
+     * registered: https://*.dvaughnhouse.com/auth/callback (his words,
+     * Nov 20). Sending /auth/workos/callback failed every sign-in with
+     * redirect-uri-invalid on all four surfaces. The new /auth/callback
+     * route must complete the same code exchange as the old path.
+     */
+    public function test_login_sends_auth_callback_redirect_uri(): void
+    {
+        $this->workosConfig();
+
+        $response = $this->get('http://tc.dvaughnhouse.com/auth/workos/login');
+        $response->assertStatus(302);
+        $location = (string) $response->headers->get('Location');
+        $this->assertStringContainsString(
+            'redirect_uri='.urlencode('https://tc.dvaughnhouse.com/auth/callback'),
+            $location
+        );
+        $states = session('workos_states');
+        $this->assertCount(1, $states);
+
+        $response = $this->get(
+            'http://tc.dvaughnhouse.com/auth/callback?code=test-code&state='.urlencode($states[0]['state'])
+        );
+        $response->assertStatus(302);
+        $this->assertAuthenticated();
     }
 
     /**
