@@ -146,11 +146,16 @@
 
   /* Plus+ tier glass: the card alone cannot read as glass on a flat
      canvas, because backdrop blur has nothing to distort. The wash
-     behind the card is the thing the frost blurs: PDF tones only, no
-     Dichroic Spectrum (proof badges only). */
-  --tc-tier-frost: rgb(245 244 240 / 0.55);
-  --tc-tier-wash: radial-gradient(120% 90% at 18% 0%, rgb(255 255 255 / 0.9), rgb(255 255 255 / 0) 55%), radial-gradient(90% 70% at 85% 100%, rgb(184 93 67 / 0.16), rgb(184 93 67 / 0) 60%), radial-gradient(70% 60% at 72% 0%, rgb(122 121 116 / 0.12), rgb(122 121 116 / 0) 55%), linear-gradient(135deg, #F5F4F0, #EAE9E5);
-  --tc-tier-sheen: linear-gradient(180deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.12) 30%, rgb(255 255 255 / 0) 55%);
+     behind the card is the thing the frost blurs: three hard-edged
+     diagonal streaks (white light band, Oxidized Terracotta band,
+     Weathered Stone band) plus soft pools, all PDF tones only, no
+     Dichroic Spectrum (proof badges only). The streaks cross the
+     whole field so they pass behind the card; the 28px blur softens
+     their edges, which is what reads as frosted glass. Frost is 40%
+     so the wash reads through with 30-40+ RGB units of variation. */
+  --tc-tier-frost: rgb(245 244 240 / 0.4);
+  --tc-tier-wash: linear-gradient(115deg, rgb(255 255 255 / 0) 18%, rgb(255 255 255 / 0.95) 18%, rgb(255 255 255 / 0.95) 30%, rgb(255 255 255 / 0) 30%), linear-gradient(115deg, rgb(184 93 67 / 0) 52%, rgb(184 93 67 / 0.5) 52%, rgb(184 93 67 / 0.5) 66%, rgb(184 93 67 / 0) 66%), linear-gradient(65deg, rgb(122 121 116 / 0) 74%, rgb(122 121 116 / 0.4) 74%, rgb(122 121 116 / 0.4) 86%, rgb(122 121 116 / 0) 86%), radial-gradient(80% 60% at 90% 100%, rgb(184 93 67 / 0.28), rgb(184 93 67 / 0) 60%), radial-gradient(90% 70% at 10% 0%, rgb(255 255 255 / 0.9), rgb(255 255 255 / 0) 55%), linear-gradient(135deg, #F5F4F0, #EAE9E5);
+  --tc-tier-sheen: linear-gradient(180deg, rgb(255 255 255 / 0.95) 0, rgb(255 255 255 / 0.55) 12%, rgb(255 255 255 / 0.18) 28%, rgb(255 255 255 / 0) 45%);
 }
 
 /* Dark mode (PDF): Deep Basalt canvas, Warm Alabaster type, Terracotta
@@ -179,8 +184,8 @@
     --tc-cert-line-soft: rgb(240 239 234 / 0.14);
     --tc-cert-ink-soft: rgb(240 239 234 / 0.62);
     --tc-tier-frost: rgb(240 239 234 / 0.1);
-    --tc-tier-wash: radial-gradient(120% 90% at 18% 0%, rgb(240 239 234 / 0.16), rgb(240 239 234 / 0) 55%), radial-gradient(90% 70% at 85% 100%, rgb(201 106 78 / 0.22), rgb(201 106 78 / 0) 60%), radial-gradient(70% 60% at 72% 0%, rgb(240 239 234 / 0.08), rgb(240 239 234 / 0) 55%), linear-gradient(135deg, #1C1C1B, #121211);
-    --tc-tier-sheen: linear-gradient(180deg, rgb(240 239 234 / 0.2), rgb(240 239 234 / 0.05) 30%, rgb(240 239 234 / 0) 55%);
+    --tc-tier-wash: linear-gradient(115deg, rgb(240 239 234 / 0) 18%, rgb(240 239 234 / 0.3) 18%, rgb(240 239 234 / 0.3) 30%, rgb(240 239 234 / 0) 30%), linear-gradient(115deg, rgb(201 106 78 / 0) 52%, rgb(201 106 78 / 0.55) 52%, rgb(201 106 78 / 0.55) 66%, rgb(201 106 78 / 0) 66%), linear-gradient(65deg, rgb(240 239 234 / 0) 74%, rgb(240 239 234 / 0.18) 74%, rgb(240 239 234 / 0.18) 86%, rgb(240 239 234 / 0) 86%), radial-gradient(80% 60% at 90% 100%, rgb(201 106 78 / 0.3), rgb(201 106 78 / 0) 60%), radial-gradient(90% 70% at 10% 0%, rgb(240 239 234 / 0.18), rgb(240 239 234 / 0) 55%), linear-gradient(135deg, #1C1C1B, #121211);
+    --tc-tier-sheen: linear-gradient(180deg, rgb(240 239 234 / 0.5) 0, rgb(240 239 234 / 0.25) 12%, rgb(240 239 234 / 0.08) 28%, rgb(240 239 234 / 0) 45%);
   }
 }
 
@@ -383,6 +388,8 @@
 
 /* Buttons */
 .tc-button-primary {
+  position: relative;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -404,6 +411,15 @@
 }
 
 .tc-button-primary:hover { filter: brightness(0.96); }
+
+/* A disabled primary button keeps the locked accent at full strength:
+   no UA dimming, no translucent veil over #B85D43. */
+.tc-button-primary:disabled {
+  opacity: 1;
+  background: var(--tc-accent);
+  color: var(--tc-on-accent);
+  cursor: default;
+}
 
 .tc-button-quiet {
   display: inline-flex;
@@ -1172,8 +1188,9 @@ button.tc-row:hover {
 }
 
 /* The tier card is frosted glass over the wash: the wash is what the
-   28px backdrop blur distorts, and the sheen is the top light. No
-   shadow, no glow, no Dichroic Spectrum. */
+   28px backdrop blur distorts, and the sheen is the top light band
+   only (120px, never over the Subscribe button). No shadow, no glow,
+   no Dichroic Spectrum. */
 .tc-tier-card {
   position: relative;
   margin-top: 0;
@@ -1184,7 +1201,10 @@ button.tc-row:hover {
 .tc-tier-card::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
   border-radius: inherit;
   background: var(--tc-tier-sheen);
   pointer-events: none;
