@@ -105,7 +105,7 @@ function TierScreen({ tierKey, subscription, billing, onSubscribe, subscribeNote
     const tier = PLUS_TIERS[tierKey];
     const isCurrent = subscription && subscription.tier === tierKey && subscription.status === 'active';
     return (
-        <div>
+        <div className="tc-card tc-tier-card">
             <p className="tc-lede">
                 {tier.name}, ${tier.priceMonthly} per month. {tier.target}. Monthly only.
             </p>

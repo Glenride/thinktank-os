@@ -1152,6 +1152,10 @@ button.tc-row:hover {
 }
 
 /* Plus+ feature screens */
+.tc-tier-card {
+  margin-top: 16px;
+}
+
 .tc-feature-list {
   margin: 0;
   padding: 0;
