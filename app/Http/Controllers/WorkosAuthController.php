@@ -27,8 +27,12 @@ class WorkosAuthController extends Controller
             return redirect('/');
         }
         // The callback must come back to the host the sign-in started
-        // on: sessions are host-only, so a shared redirect would strand
-        // the state on another host and fail the check in callback().
+        // on: the WorkOS state-cache copy is bound to that host, so a
+        // shared redirect would strand the state and fail the check
+        // in callback(). Sessions themselves are shared across the
+        // four surfaces since Nov 20, 2026 (TressSessionDomain sets
+        // the cookie domain to .dvaughnhouse.com), so a signed-in
+        // user never reaches login() by navigating between surfaces.
         // The redirect URI must match the wildcard registered for this
         // app in the WorkOS dashboard: https://*.dvaughnhouse.com/auth/callback
         // (his words, Nov 20). The old /auth/workos/callback path does not

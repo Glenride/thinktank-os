@@ -57,7 +57,7 @@ export default function Entry({ surface, workosReady, workosUrl, loginUrl }) {
                     </ul>
                     <p className="tc-empty-body">
                         One identity for Tress Column, Markets, the ops console, and Plus+.
-                        Each surface keeps its own session. Sessions last 50 minutes.
+                        One sign-in covers all four surfaces. Sessions last 50 minutes.
                         Your wallet stays separate: signing in does not connect a wallet.
                     </p>
                     {workosReady ? (

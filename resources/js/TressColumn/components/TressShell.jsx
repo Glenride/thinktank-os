@@ -91,12 +91,14 @@ const HOME = {
 // surfaces, so launchpad, trade, ops, and plus are reachable from
 // the rail on each surface. Only live surfaces appear; nothing
 // here is dead. The current surface is not listed: it is already
-// the surface this rail belongs to.
+// the surface this rail belongs to. Labels are visible text, not
+// tooltips: on a phone there is no hover, and Nov 20 he could not
+// tell where the other pages were from the icon-only rail.
 const SURFACES = [
-    { key: 'tc', label: 'Launchpad', href: tcUrl(), icon: 'list' },
-    { key: 'trade', label: 'Trading terminal', href: tradeUrl(), icon: 'activity' },
-    { key: 'ops', label: 'Ops console', href: opsUrl(), icon: 'grid' },
-    { key: 'plus', label: 'Plus+', href: plusUrl(), icon: 'layers' },
+    { key: 'tc', label: 'Launchpad', host: 'tc.dvaughnhouse.com', href: tcUrl(), icon: 'list' },
+    { key: 'trade', label: 'Markets', host: 'trade.dvaughnhouse.com', href: tradeUrl(), icon: 'activity' },
+    { key: 'ops', label: 'Ops console', host: 'ops.dvaughnhouse.com', href: opsUrl(), icon: 'grid' },
+    { key: 'plus', label: 'Plus+', host: 'plus.dvaughnhouse.com', href: plusUrl(), icon: 'layers' },
 ];
 
 function AccountItem({ user, returnTo }) {
@@ -128,6 +130,7 @@ function AccountItem({ user, returnTo }) {
                 data-tip="Sign in"
             >
                 <Icon d={ICONS.account} />
+                <span className="tc-rail-label">Sign in</span>
             </a>
         );
     }
@@ -143,6 +146,7 @@ function AccountItem({ user, returnTo }) {
                 onClick={() => setOpen((v) => !v)}
             >
                 <Icon d={ICONS.account} />
+                <span className="tc-rail-label">Account</span>
             </button>
             {open && (
                 <div className="tc-menu" role="menu">
@@ -189,6 +193,7 @@ export function TressShell({ surface, title, action = null, active, children, in
                         data-tip={item.label}
                     >
                         <Icon d={ICONS[item.icon]} />
+                        <span className="tc-rail-label">{item.label}</span>
                     </Link>
                 ))}
                 <div className="tc-rail-divider" aria-hidden="true" />
@@ -201,6 +206,7 @@ export function TressShell({ surface, title, action = null, active, children, in
                         data-tip={item.label}
                     >
                         <Icon d={ICONS[item.icon]} />
+                        <span className="tc-rail-label">{item.label}</span>
                     </a>
                 ))}
                 <div className="tc-rail-spacer" />
@@ -231,6 +237,29 @@ export function TressShell({ surface, title, action = null, active, children, in
 
                     {children}
 
+                    <nav className="tc-surfaces" aria-label="All Tress Column surfaces">
+                        <p className="tc-surfaces-title">
+                            Surfaces
+                        </p>
+                        <ul className="tc-surfaces-list">
+                            {SURFACES.map((item) => (
+                                <li key={item.key}>
+                                    <a
+                                        className="tc-surfaces-link"
+                                        href={item.href}
+                                        aria-current={item.key === surface ? 'page' : undefined}
+                                    >
+                                        <span className="tc-surfaces-name">{item.label}</span>
+                                        <span className="tc-surfaces-host">{item.host}</span>
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="tc-surfaces-note">
+                            One sign-in covers all four surfaces. One tap takes you there signed in.
+                        </p>
+                    </nav>
+
                     <p className="tc-footer-note">
                         Tress Column is a fair-launch exchange on Base where every
                         launch parameter is configured, locked, and printed in plain
@@ -252,7 +281,8 @@ export function SignInPrompt({ what, returnTo }) {
                 <p className="tc-empty-title">Sign in to {what}.</p>
                 <p className="tc-empty-body">
                     Sign-in is Albert Pass by Glenride. One identity across the Tress
-                    Column surfaces, with a session on each. Your wallet stays
+                    Column surfaces, and one sign-in covers Launchpad, Markets, the
+                    Ops console, and Plus+. Your wallet stays
                     separate: signing in does not connect a wallet.
                 </p>
                 <a

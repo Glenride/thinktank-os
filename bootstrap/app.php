@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\MarkdownNegotiation;
+use App\Http\Middleware\TressSessionDomain;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -26,6 +27,15 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'store/webhook',
             'api/waitlist',
+        ]);
+
+        // Tress Column, Nov 20 2026: the session cookie domain must be
+        // shared across tc/trade/ops/plus before StartSession issues
+        // it, or one sign-in does not carry to the other surfaces.
+        // Prepended, not appended: StartSession runs in the default
+        // web group, and this has to land before it.
+        $middleware->web(prepend: [
+            TressSessionDomain::class,
         ]);
 
         $middleware->web(append: [

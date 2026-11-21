@@ -42,6 +42,12 @@ return [
     |   ends the session immediately and never cancels a pending
     |   on-chain transaction. Results resurface on return by address
     |   scan when the wallet reconnects (see wallet.js).
+    | - One sign-in covers all four surfaces (Nov 20, 2026, his word:
+    |   the surfaces "just loop around" on host-only cookies). The
+    |   TressSessionDomain middleware shares the session cookie across
+    |   *.dvaughnhouse.com (SESSION_SHARED_DOMAIN); staging keeps
+    |   host-only cookies. Per-surface logged-in states stay distinct
+    |   — sharing the session does not merge what each surface shows.
     | - The lifetime value itself lives in the host .env
     |   (SESSION_LIFETIME), not in this file, because it is an
     |   environment setting. Do not change config/session.php defaults

@@ -21,7 +21,14 @@ import { AddressLink, ErrorFix, SourceLabel } from '../../../TressColumn/compone
 function useSafeTransfers() {
     return useAsyncData(async () => {
         const latest = await ethBlockNumber();
-        const from = latest - 1000n;
+        // ethBlockNumber returns a Number. The old code subtracted the
+        // BigInt literal 1000n from it, which throws "Cannot mix
+        // BigInt and other types" before any eth_getLogs request is
+        // sent — the Nov 20 failure box, with the relay never seeing
+        // the call (nginx: 4 relay calls per ops load, not 6) and
+        // "Try again" re-running the same throw. Plain Number
+        // arithmetic here: block numbers fit safely in a Number.
+        const from = latest - 1000;
         const transferTopic = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
         const padded = `0x${TREASURY_SAFE.slice(2).toLowerCase().padStart(64, '0')}`;
         const { logs, complete } = await ethGetLogs(
@@ -97,7 +104,11 @@ export default function Index({ staffEmail }) {
                 <SourceLabel source="on-chain" />
                 {nextId.loading && <p className="tc-loading-line">Reading the certificate factory.</p>}
                 {nextId.error && (
-                    <ErrorFix title="The chain read failed." fix="Check the network and try again." onRetry={nextId.retry} />
+                    <ErrorFix
+                        title="The launch count did not load."
+                        fix={`nextLaunchId (eth_call to the LaunchCertificate contract) failed: ${nextId.error.message || 'the chain read failed'}. Nothing below depends on it.`}
+                        onRetry={nextId.retry}
+                    />
                 )}
                 {!nextId.loading && !nextId.error && (
                     <p className="tc-module-copy">
@@ -124,7 +135,11 @@ export default function Index({ staffEmail }) {
                 </p>
                 {transfers.loading && <p className="tc-loading-line">Scanning for Safe transfers.</p>}
                 {transfers.error && (
-                    <ErrorFix title="The chain read failed." fix="Check the network and try again." onRetry={transfers.retry} />
+                    <ErrorFix
+                        title="The Safe transfer scan did not finish."
+                        fix={`eth_getLogs over the most recent 1,000 blocks failed: ${transfers.error.message || 'the chain read failed'}. ${balance.data ? 'The native balance below was read live, so the Safe address itself reads fine.' : 'The native balance below could not be read either.'} Earlier windows need the indexer.`}
+                        onRetry={transfers.retry}
+                    />
                 )}
                 {!transfers.loading && !transfers.error && transfers.data && (
                     <div>
