@@ -1,6 +1,7 @@
 // The ThinkTank OS stylesheet loads only on non-Tress pages. Tress Column
-// surfaces are scoped to tress-tokens.css (ORDER-02 tokens) via TressShell,
-// so the shared stylesheet and its off-brand palette never reach them.
+// surfaces are scoped to tress-tokens.css (Brand Guidelines 2026-11-20)
+// via TressShell, so the shared stylesheet and its off-brand palette
+// never reach them.
 // Dynamic import keeps app.css out of the Tress bundle entirely.
 if (!document.body.classList.contains('tc-page')) {
     import('../css/app.css');

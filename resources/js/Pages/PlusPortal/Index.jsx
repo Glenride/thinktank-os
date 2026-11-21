@@ -282,7 +282,7 @@ function RadarSection({ hasAccess }) {
                 <p className="tc-module-note">{data.batch_claimer}</p>
             )}
 
-            <h3 className="tc-h2">Check a claim</h3>
+            <h3 className="tc-h2"><span className="tc-index">//03</span>Check a claim</h3>
             <p className="tc-lede">
                 Paste the index, account, amount, and proof from the campaign
                 list. The portal checks the proof against the root on chain.
@@ -576,7 +576,7 @@ function WorkbenchSection({ hasAccess, indexer }) {
                 </ul>
             )}
 
-            <h3 className="tc-h2">Proof lookup</h3>
+            <h3 className="tc-h2"><span className="tc-index">//04</span>Proof lookup</h3>
             <p className="tc-lede">
                 Pick a snapshot above, paste an account, and get its leaf
                 index, amount, and proof for the root.
@@ -609,7 +609,7 @@ function WorkbenchSection({ hasAccess, indexer }) {
                 )}
             </div>
 
-            <h3 className="tc-h2">Scout</h3>
+            <h3 className="tc-h2"><span className="tc-index">//05</span>Scout</h3>
             <p className="tc-lede">
                 {indexer.launch_count || 0} launches indexed. Last indexed
                 block {indexer.last_block || 0}, latest seen{' '}
@@ -620,7 +620,7 @@ function WorkbenchSection({ hasAccess, indexer }) {
                 plus.dvaughnhouse.com/p/1. Each one resolves to the same
                 certificate record on the launch page.
             </p>
-            <h3 className="tc-h2">Start from the workbench</h3>
+            <h3 className="tc-h2"><span className="tc-index">//06</span>Start from the workbench</h3>
             <p className="tc-lede">
                 The creator workbench is the launch flow on Tress Column. It
                 is open to every signed-in account.
@@ -754,7 +754,7 @@ function AlertsSection({ hasAccess, feedData }) {
                 </ul>
             )}
 
-            <h3 className="tc-h2">Lock countdowns</h3>
+            <h3 className="tc-h2"><span className="tc-index">//07</span>Lock countdowns</h3>
             {timed.length === 0 && (
                 <EmptyState
                     title="No timed locks to count down."
@@ -1065,7 +1065,7 @@ export default function Index({ billing, subscription: initialSubscription, enti
             </PortalErrorBoundary>
 
             <section className="tc-section" aria-labelledby="tc-status-h">
-                <h2 className="tc-h2" id="tc-status-h">Your subscription</h2>
+                <h2 className="tc-h2" id="tc-status-h"><span className="tc-index">//02</span>Your subscription</h2>
                 <SourceLabel source="saas" />
                 {!user && (
                     <EmptyState

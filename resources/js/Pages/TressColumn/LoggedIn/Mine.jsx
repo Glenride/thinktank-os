@@ -114,7 +114,7 @@ export default function Mine() {
                 <div>
                     {part1Pending && (
                         <section className="tc-section" aria-labelledby="tc-pending-h">
-                            <h2 className="tc-h2" id="tc-pending-h">Step 1 done, step 2 pending</h2>
+                            <h2 className="tc-h2" id="tc-pending-h"><span className="tc-index">//02</span>Step 1 done, step 2 pending</h2>
                             <p className="tc-lede">
                                 Part 1 deployed for {stored.form?.symbol || 'this launch'}. Nothing is
                                 economically live until Part 2 confirms. The launch is resumable.
@@ -138,7 +138,7 @@ export default function Mine() {
                     )}
 
                     <section className="tc-section" aria-labelledby="tc-created-h">
-                        <h2 className="tc-h2" id="tc-created-h">Launches you created</h2>
+                        <h2 className="tc-h2" id="tc-created-h"><span className="tc-index">//03</span>Launches you created</h2>
                         {created.loading && <SkeletonRows copy="Loading your launches." />}
                         {created.error && (
                             <ErrorFix

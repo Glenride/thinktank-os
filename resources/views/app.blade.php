@@ -13,7 +13,7 @@
         <meta property="og:site_name" content="Tress Column" />
         <meta property="og:url" content="{{ url()->current() }}" />
         <meta property="og:title" content="Tress Column — The fair-launch exchange on Base" />
-        <meta property="og:description" content="Launch a token with every term locked at launch, printed in plain language, and kept by contracts that answer to no one." />
+        <meta property="og:description" content="Configure, lock, prove — the fair-launch exchange on Base where every term is set in plain language at inception and never changed after." />
         @else
         <meta property="og:site_name" content="Glenride" />
         <meta property="og:url" content="https://dvaughnhouse.org/" />
@@ -30,7 +30,7 @@
         <meta name="twitter:card" content="summary_large_image" />
         @if($isTress)
         <meta name="twitter:title" content="Tress Column — The fair-launch exchange on Base" />
-        <meta name="twitter:description" content="Launch a token with every term locked at launch, printed in plain language, and kept by contracts that answer to no one." />
+        <meta name="twitter:description" content="Configure, lock, prove — the fair-launch exchange on Base where every term is set in plain language at inception and never changed after." />
         @else
         <meta name="twitter:title" content="Glenride — Independent, AI-native think tank" />
         <meta name="twitter:description" content="Find where critical systems break before harm, and publish a record anyone can check." />

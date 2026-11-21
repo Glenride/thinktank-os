@@ -97,7 +97,7 @@ export default function Token({ tokenAddress }) {
 
                     {record && (
                         <section className="tc-section" aria-labelledby="tc-gate-h">
-                            <h2 className="tc-h2" id="tc-gate-h">Gate progress</h2>
+                            <h2 className="tc-h2" id="tc-gate-h"><span className="tc-index">//02</span>Gate progress</h2>
                             {gateState.loading && <p className="tc-loading-line">Loading gate progress.</p>}
                             {gateState.error && (
                                 <ErrorFix
@@ -120,7 +120,7 @@ export default function Token({ tokenAddress }) {
                     )}
 
                     <section className="tc-section" aria-labelledby="tc-swap-h">
-                        <h2 className="tc-h2" id="tc-swap-h">Swap</h2>
+                        <h2 className="tc-h2" id="tc-swap-h"><span className="tc-index">//03</span>Swap</h2>
                         <SwapTicket
                             tokenMeta={meta}
                             isTcToken={!!record}
@@ -131,7 +131,7 @@ export default function Token({ tokenAddress }) {
 
                     {record && (
                         <section className="tc-section" aria-labelledby="tc-cert-h">
-                            <h2 className="tc-h2" id="tc-cert-h">Certificate</h2>
+                            <h2 className="tc-h2" id="tc-cert-h"><span className="tc-index">//04</span>Certificate</h2>
                             <Link className="tc-button-primary" href={tcUrl(`/launches/${record.id}`)}>
                                 Read the certificate
                             </Link>

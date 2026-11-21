@@ -33,6 +33,25 @@ class TressLandingTest extends TestCase
         $this->assertStringContainsString('https://trade.dvaughnhouse.com/', $landing);
         $this->assertStringContainsString('https://ops.dvaughnhouse.com/', $landing);
         $this->assertStringContainsString('https://plus.dvaughnhouse.com/', $landing);
+        // Brand Guidelines 2026-11-20 (canonical): boilerplate, functional
+        // tagline, and editorial indexing on the landing page.
+        $this->assertStringContainsString('Every term set at inception. Never changed after.', $landing);
+        $this->assertStringContainsString('every launch parameter is configured, locked, and printed in plain language at inception', $landing);
+        $this->assertStringContainsString('//01', $landing);
+        $this->assertStringNotContainsString('Prices and fees are subject to change without notice', $landing);
+    }
+
+    /**
+     * The landing stylesheet carries the Brand Guidelines palette.
+     */
+    public function test_landing_stylesheet_uses_brand_guidelines_palette(): void
+    {
+        $css = file_get_contents(public_path('tress-column-assets/site.css'));
+
+        $this->assertStringContainsString('#EAE9E5', $css);
+        $this->assertStringContainsString('#B85D43', $css);
+        $this->assertStringNotContainsString('#D4AF37', $css);
+        $this->assertStringNotContainsString('#E97451', $css);
     }
 
     /**

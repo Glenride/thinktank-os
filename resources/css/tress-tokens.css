@@ -1,79 +1,90 @@
 /* Tress Column logged-in surfaces: design tokens + components.
-   Source: pons-template/tokens.css, re-skinned per PRD section 2.
+   Source: Brand Guidelines & Identity System 2026-11-20 (PDF canonical).
+   It supersedes the ORDER-02 tokens and the earlier brand-book split:
+   ONE palette everywhere, landing and shell alike.
    Change values only in :root. No hardcoded hex outside this file.
-   Accent is his brand colors (Q1, option C): burnt sienna and sienna
-   text. The Pons green and orange-red accents appear nowhere.
    Up and down are carried by sign, slope, shape, and labels only.
-   The certificate scope keeps its spec-locked palette
-   (PRD section 2.2 exception). Nunito is self-hosted; the rounded
-   system fallbacks keep the page usable offline. */
+   The Dichroic Spectrum gradient is reserved EXCLUSIVELY for
+   cryptographic proof badges (the certificate seal), nowhere else.
+   Fonts are already in the project; nothing was installed. Newsreader
+   500 is the display face. Public Sans stands in for Inter and IBM Plex
+   Mono for JetBrains Mono: neither is in the project (flagged for his
+   tap if he wants the exact faces installed). */
 
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/newsreader-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/newsreader-latin-ext-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Public Sans';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/nunito-latin-400-normal.woff2') format('woff2');
+  src: url('/tress-column-assets/fonts/public-sans-latin.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Public Sans';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/nunito-latin-600-normal.woff2') format('woff2');
+  src: url('/tress-column-assets/fonts/public-sans-latin.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'IBM Plex Mono';
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   font-display: swap;
-  src: url('/fonts/nunito-latin-700-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: url('/fonts/nunito-latin-800-normal.woff2') format('woff2');
+  src: url('/tress-column-assets/fonts/ibm-plex-mono-500-latin.woff2') format('woff2');
 }
 
 :root {
-  /* Color: Pons values, verified Nov 14, 2026 */
-  --tc-bg: #F5F5F7;
-  --tc-surface: #FFFFFF;
-  --tc-ink: #0C1500;
-  --tc-divider: #D4D5D4;
-  --tc-hover: #E8E8E8;
-  --tc-nav-active: #E7E7E8;
-  --tc-eth: #627EEA;
+  /* Color: Brand Guidelines 2026-11-20 (PDF canonical) */
+  --tc-bg: #EAE9E5; /* Limestone Mist, primary background */
+  --tc-frost: rgb(245 244 240 / 0.7); /* Frosted Glass / Pearl at 70% */
+  --tc-surface: #FFFFFF; /* Pure Vellum, core content cards */
+  --tc-ink: #111111; /* Architectural Carbon, headlines */
+  --tc-body: #4A4A48; /* Slate Graphite, body + secondary labels */
+  --tc-border: #7A7974; /* Weathered Stone, borders + metadata */
+  --tc-divider: #7A7974;
+  --tc-hover: #F5F4F0;
+  --tc-nav-active: rgb(17 17 17 / 0.06);
+  --tc-meta: #7A7974; /* Weathered Stone, metadata labels */
 
-  /* Color: accent, decided (Q1 option C). Ink text on the sienna fill. */
-  --tc-accent: #E97451;
-  --tc-accent-text: #B84A2B;
-  --tc-on-accent: #0C1500;
+  /* Accent: Oxidized Terracotta. Verified indicators, focus states. */
+  --tc-accent: #B85D43;
+  --tc-accent-text: #B85D43;
+  --tc-on-accent: #FFFFFF;
 
-  /* Color: approx, sampled only. Contrast unverified on the live page. */
-  --tc-muted: #5C6254;
-  --tc-muted-strong: #3E4636;
+  /* Dichroic Spectrum: cryptographic proof badges ONLY, nowhere else. */
+  --tc-dichroic-a: #BCE3D8;
+  --tc-dichroic-b: #D6CBEB;
 
-  /* Asset brand color, pair icons only. USDC brand blue. */
-  --tc-usdc: #2775CA;
+  /* Body + metadata text. */
+  --tc-muted: #4A4A48;
+  --tc-muted-strong: #4A4A48;
+  --tc-text-muted: #4A4A48;
 
-  /* Certificate scope, spec-locked palette (PRD 2.2 exception). */
-  --tc-cert-canvas: #FAF9F6;
-  --tc-cert-surface: #F5EFE6;
-  --tc-cert-gold: #D4AF37;
-  --tc-cert-signal: #FF6B2B;
-  --tc-cert-ink: #0D0E11;
-
-  /* Typography */
-  --tc-font: "Nunito", ui-rounded, "SF Pro Rounded", "Segoe UI Rounded",
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  --tc-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
-  --tc-h1-size: 31px;
-  --tc-h1-weight: 800;
+  /* Typography: Newsreader 500 display 40-56px tracking -0.02em;
+     Public Sans (Inter stand-in) SemiBold 600 section headers 18-22px,
+     Regular 400 body 15-16px line-height 1.5; IBM Plex Mono (JetBrains
+     Mono stand-in) Medium 500 status badges 11-12px +0.08em UPPERCASE. */
+  --tc-font-display: "Newsreader", Georgia, serif;
+  --tc-font: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --tc-mono: "IBM Plex Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --tc-h1-size: 44px;
+  --tc-h1-weight: 500;
   --tc-h1-line-height: 1.1;
-  --tc-h2-size: 19px;
+  --tc-h2-size: 20px;
   --tc-h2-leading: 1.2;
   --tc-name-size: 15px;
   --tc-name-weight: 600;
@@ -83,32 +94,35 @@
   --tc-value-weight: 600;
   --tc-button-size: 15px;
   --tc-body-size: 15px;
-  --tc-body-leading: 1.6;
+  --tc-body-leading: 1.5;
   --tc-note-size: 13px;
   --tc-note-leading: 1.5;
-  --tc-text-muted: #5C6254;
 
   /* Borders */
-  --tc-border: #D4D5D4;
   --tc-border-w: 1px;
 
-  /* Depth: flat. One very soft shadow, grid cards only. */
-  --tc-shadow-card: 0 1px 3px rgb(12 21 0 / 0.06);
-  --tc-shadow-menu: 0 4px 16px rgb(12 21 0 / 0.12);
+  /* Depth: flat. No glow, no drop shadows on any surface. */
+  --tc-shadow-card: none;
+  --tc-shadow-menu: none;
 
-  /* Certificate scope: translucent ink steps, spec palette only. */
-  --tc-cert-faint: rgb(13 14 17 / 0.12);
-  --tc-cert-line: rgb(13 14 17 / 0.2);
-  --tc-cert-line-soft: rgb(13 14 17 / 0.14);
-  --tc-cert-ink-soft: rgb(13 14 17 / 0.62);
+  /* Certificate scope: PDF palette. The seal is the proof badge, so it
+     alone carries the Dichroic Spectrum gradient. */
+  --tc-cert-canvas: #EAE9E5;
+  --tc-cert-surface: #FFFFFF;
+  --tc-cert-ink: #111111;
+  --tc-cert-faint: rgb(17 17 17 / 0.12);
+  --tc-cert-line: rgb(17 17 17 / 0.2);
+  --tc-cert-line-soft: rgb(17 17 17 / 0.14);
+  --tc-cert-ink-soft: rgb(17 17 17 / 0.62);
 
   /* Clear: the transparent keyword lives here, nowhere else. */
   --tc-clear: transparent;
 
-  /* Shape */
-  --tc-radius-button: 13px;
+  /* Shape: tier containers 28px. Primary CTAs carry the chamfered
+     bottom-right 45-degree bevel, 12px (see .tc-button-primary). */
+  --tc-radius-button: 12px;
   --tc-radius-avatar: 11px;
-  --tc-radius-card: 18px;
+  --tc-radius-card: 28px;
   --tc-radius-row-hover: 12px;
   --tc-radius-pill: 999px;
   --tc-radius-badge: 6px;
@@ -127,8 +141,36 @@
   --tc-button-w: 150px;
   --tc-button-h: 44px;
 
-  /* Motion */
-  --tc-motion-fast: 120ms ease;
+  /* Motion: mechanical, 250ms cubic-bezier(0.22, 1, 0.36, 1). */
+  --tc-motion-fast: 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Dark mode (PDF): Deep Basalt canvas, Warm Alabaster type, Terracotta
+   Flare accent. Surface, hover, and body values are derived from the
+   PDF tokens; the PDF names no dark surface. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tc-bg: #121211;
+    --tc-frost: rgb(240 239 234 / 0.08);
+    --tc-surface: #1C1C1B;
+    --tc-ink: #F0EFEA;
+    --tc-body: #D8D7D2;
+    --tc-hover: rgb(240 239 234 / 0.06);
+    --tc-nav-active: rgb(240 239 234 / 0.08);
+    --tc-accent: #C96A4E;
+    --tc-accent-text: #C96A4E;
+    --tc-on-accent: #121211;
+    --tc-muted: #D8D7D2;
+    --tc-muted-strong: #D8D7D2;
+    --tc-text-muted: #D8D7D2;
+    --tc-cert-canvas: #121211;
+    --tc-cert-surface: #1C1C1B;
+    --tc-cert-ink: #F0EFEA;
+    --tc-cert-faint: rgb(240 239 234 / 0.12);
+    --tc-cert-line: rgb(240 239 234 / 0.2);
+    --tc-cert-line-soft: rgb(240 239 234 / 0.14);
+    --tc-cert-ink-soft: rgb(240 239 234 / 0.62);
+  }
 }
 
 /* Base */
@@ -172,8 +214,9 @@
   border-radius: var(--tc-radius-avatar);
   background: var(--tc-accent);
   color: var(--tc-on-accent);
+  font-family: var(--tc-font-display);
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 500;
   text-decoration: none;
   letter-spacing: -0.02em;
 }
@@ -259,17 +302,40 @@
 
 .tc-h1 {
   margin: 0;
+  font-family: var(--tc-font-display);
   font-size: var(--tc-h1-size);
   font-weight: var(--tc-h1-weight);
   line-height: var(--tc-h1-line-height);
   letter-spacing: -0.02em;
+  color: var(--tc-ink);
+}
+
+/* Editorial indexing //0X: every main section, data point, and step
+   carries its mono index before the heading. */
+.tc-index {
+  font-family: var(--tc-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tc-meta);
+  white-space: nowrap;
+}
+
+.tc-h1 .tc-index,
+.tc-h2 .tc-index,
+.tc-module-title .tc-index,
+.tc-step .tc-index {
+  margin-right: 10px;
 }
 
 .tc-h2 {
   margin: 0 0 12px;
   font-size: var(--tc-h2-size);
-  font-weight: 700;
-  line-height: 1.2;
+  font-weight: 600;
+  line-height: var(--tc-h2-leading);
+  letter-spacing: -0.015em;
+  color: var(--tc-ink);
 }
 
 .tc-lede {
@@ -300,7 +366,7 @@
   border-top: 1px solid var(--tc-divider);
   font-size: var(--tc-meta-size);
   line-height: 1.6;
-  color: var(--tc-muted);
+  color: var(--tc-meta);
   max-width: 640px;
 }
 
@@ -314,6 +380,8 @@
   padding: 0 20px;
   border: 0;
   border-radius: var(--tc-radius-button);
+  /* Chamfered CTA signature: bottom-right 45-degree bevel cut, 12px. */
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
   background: var(--tc-accent);
   color: var(--tc-on-accent);
   font-size: var(--tc-button-size);
@@ -447,6 +515,7 @@
   padding: 0 14px;
   border: 0;
   border-radius: var(--tc-radius-pill);
+  box-shadow: inset 0 0 0 1px var(--tc-border);
   background: var(--tc-hover);
   color: var(--tc-ink);
   font-size: 13px;
@@ -497,7 +566,7 @@
   grid-template-columns: minmax(0, 1fr) 120px 140px 160px;
   gap: 16px;
   padding: 8px 12px;
-  color: var(--tc-muted);
+  color: var(--tc-meta);
   font-size: var(--tc-meta-size);
   font-weight: 600;
 }
@@ -565,7 +634,7 @@ button.tc-row:hover {
   align-items: center;
   gap: 6px;
   margin-top: 3px;
-  color: var(--tc-muted);
+  color: var(--tc-meta);
   font-size: var(--tc-meta-size);
   white-space: nowrap;
   overflow: hidden;
@@ -580,7 +649,7 @@ button.tc-row:hover {
 }
 
 .tc-row-meta {
-  color: var(--tc-muted);
+  color: var(--tc-meta);
   font-size: var(--tc-meta-size);
   font-weight: 500;
   text-align: right;
@@ -609,27 +678,32 @@ button.tc-row:hover {
   font-weight: 800;
 }
 
-.tc-pair-icon-eth { background: var(--tc-eth); }
-.tc-pair-icon-usdc { background: var(--tc-usdc); }
+.tc-pair-icon-eth { background: var(--tc-accent); }
+.tc-pair-icon-usdc { background: var(--tc-ink); }
 .tc-pair-icon-other {
   background: var(--tc-clear);
   color: var(--tc-ink);
   box-shadow: inset 0 0 0 1px var(--tc-divider);
 }
 
-/* Static badge. Not a pill, not a button. */
+/* Static badge. Not a pill, not a button. Solid fill, single-pixel
+   inner border, no glow, no drop shadow. */
 .tc-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   min-height: 22px;
   padding: 2px 8px;
-  border: 1px solid var(--tc-divider);
+  border: 0;
   border-radius: var(--tc-radius-badge);
+  box-shadow: inset 0 0 0 1px var(--tc-border);
   background: var(--tc-surface);
   color: var(--tc-ink);
+  font-family: var(--tc-mono);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
@@ -677,8 +751,13 @@ button.tc-row:hover {
   gap: var(--tc-card-gap);
 }
 
+/* Glassmorphic tier containers: 28px radius + 28px backdrop blur over
+   Frosted Glass. */
 .tc-card {
-  background: var(--tc-surface);
+  background: var(--tc-frost);
+  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(28px);
+  border: 1px solid var(--tc-border);
   border-radius: var(--tc-radius-card);
   box-shadow: var(--tc-shadow-card);
   padding: 16px;
@@ -749,17 +828,18 @@ button.tc-row:hover {
 }
 
 .tc-stale {
-  color: var(--tc-muted);
+  color: var(--tc-meta);
   font-size: var(--tc-meta-size);
   font-weight: 600;
 }
 
 .tc-source-label {
-  color: var(--tc-muted);
+  color: var(--tc-meta);
+  font-family: var(--tc-mono);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
 }
 
 .tc-mono {
@@ -878,9 +958,11 @@ button.tc-row:hover {
 }
 
 .tc-review {
-  border: 1px solid var(--tc-divider);
-  border-radius: var(--tc-radius-field);
-  background: var(--tc-surface);
+  border: 1px solid var(--tc-border);
+  border-radius: var(--tc-radius-card);
+  background: var(--tc-frost);
+  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(28px);
   padding: 4px 16px;
   margin-bottom: 24px;
 }
@@ -889,8 +971,11 @@ button.tc-row:hover {
 .tc-ticket {
   max-width: 480px;
   padding: 20px;
+  border: 1px solid var(--tc-border);
   border-radius: var(--tc-radius-card);
-  background: var(--tc-surface);
+  background: var(--tc-frost);
+  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(28px);
   box-shadow: var(--tc-shadow-card);
 }
 
@@ -965,10 +1050,11 @@ button.tc-row:hover {
 
 .tc-menu-item:hover { background: var(--tc-hover); }
 
-/* Certificate: spec-locked palette, record document. */
+/* Certificate: PDF palette, record document. */
 .tc-certificate {
   background: var(--tc-cert-canvas);
   color: var(--tc-cert-ink);
+  border: 1px solid var(--tc-border);
   border-radius: var(--tc-radius-card);
   padding: 28px;
 }
@@ -981,9 +1067,11 @@ button.tc-row:hover {
 
 .tc-certificate-title {
   margin: 0 0 4px;
+  font-family: var(--tc-font-display);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .tc-certificate-sub {
@@ -998,21 +1086,24 @@ button.tc-row:hover {
   gap: 8px;
   padding: 8px 14px;
   border-radius: var(--tc-radius-pill);
-  background: var(--tc-cert-gold);
+  box-shadow: inset 0 0 0 1px var(--tc-border);
+  /* Dichroic Spectrum: proof badges only. This seal is the one place. */
+  background: linear-gradient(135deg, var(--tc-dichroic-a), var(--tc-dichroic-b));
   color: var(--tc-cert-ink);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
-/* Timed locks get no gold seal: outlined on the certificate surface,
-   so the Abyssal gold seal stays Abyssal-only. */
+/* The seal is the cryptographic proof badge: the one place the
+   Dichroic Spectrum gradient appears. Timed locks get no gradient
+   seal: outlined on the certificate surface instead. */
 .tc-certificate-seal-timed {
   background: var(--tc-cert-surface);
   border: 1px solid var(--tc-cert-ink);
 }
 
 .tc-certificate .tc-gate-track { background: var(--tc-cert-faint); }
-.tc-certificate .tc-gate-fill { background: var(--tc-cert-signal); }
+.tc-certificate .tc-gate-fill { background: var(--tc-accent); }
 
 .tc-certificate-note {
   margin-top: 20px;
@@ -1040,14 +1131,17 @@ button.tc-row:hover {
 .tc-module-title {
   margin: 0 0 8px;
   font-size: var(--tc-h2-size);
-  font-weight: 700;
+  font-weight: 600;
   line-height: var(--tc-h2-leading);
+  letter-spacing: -0.015em;
+  color: var(--tc-ink);
 }
 
 .tc-module-copy {
   margin: 8px 0;
   font-size: var(--tc-body-size);
   line-height: var(--tc-body-leading);
+  color: var(--tc-body);
 }
 
 .tc-module-note {
@@ -1084,8 +1178,8 @@ button.tc-row:hover {
   color: var(--tc-text-muted);
 }
 
-/* Responsive: phone layout is unverified against Pons. Functional
-   collapse, paint check still open. */
+/* Responsive: phone layout is a functional collapse; paint check
+   still open. */
 @media (max-width: 900px) {
   .tc-rail {
     position: static;

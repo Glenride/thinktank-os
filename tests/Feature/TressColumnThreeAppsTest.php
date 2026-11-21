@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TressColumnThreeAppsTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * Staging routes return successful Inertia responses for all 3 apps.
      */

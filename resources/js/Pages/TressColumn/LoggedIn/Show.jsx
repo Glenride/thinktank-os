@@ -150,7 +150,7 @@ export default function Show({ launchId }) {
                     </p>
 
                     <section className="tc-section" aria-labelledby="tc-terms-h">
-                        <h2 className="tc-h2" id="tc-terms-h">Terms</h2>
+                        <h2 className="tc-h2" id="tc-terms-h"><span className="tc-index">//02</span>Terms</h2>
                         <dl className="tc-terms">
                             <div className="tc-term">
                                 <dt>Supply</dt>
@@ -271,7 +271,7 @@ export default function Show({ launchId }) {
                     </section>
 
                     <section className="tc-section" aria-labelledby="tc-gate-h">
-                        <h2 className="tc-h2" id="tc-gate-h">Gate progress</h2>
+                        <h2 className="tc-h2" id="tc-gate-h"><span className="tc-index">//03</span>Gate progress</h2>
                         {gateState.loading && <p className="tc-loading-line">Loading gate progress.</p>}
                         {gateState.error && (
                             <ErrorFix
@@ -301,7 +301,7 @@ export default function Show({ launchId }) {
                     </section>
 
                     <section className="tc-section" aria-labelledby="tc-cert-h">
-                        <h2 className="tc-h2" id="tc-cert-h">Certificate</h2>
+                        <h2 className="tc-h2" id="tc-cert-h"><span className="tc-index">//04</span>Certificate</h2>
                         <CertificateDoc
                             record={record}
                             launchId={launchId}
@@ -315,7 +315,7 @@ export default function Show({ launchId }) {
                     </section>
 
                     <section className="tc-section" aria-labelledby="tc-trade-h">
-                        <h2 className="tc-h2" id="tc-trade-h">Trade</h2>
+                        <h2 className="tc-h2" id="tc-trade-h"><span className="tc-index">//05</span>Trade</h2>
                         <Link className="tc-button-primary" href={tradeUrl(`/token/${record.token}`)}>
                             Open the token page
                         </Link>

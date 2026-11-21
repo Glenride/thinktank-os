@@ -36,7 +36,7 @@ export default function Index() {
             <LaunchList linkTo="launch" emptyAction={emptyAction} />
             {user && (
                 <section className="tc-section" aria-labelledby="tc-plus-h">
-                    <h2 className="tc-h2" id="tc-plus-h">Plus+</h2>
+                    <h2 className="tc-h2" id="tc-plus-h"><span className="tc-index">//02</span>Plus+</h2>
                     <p className="tc-lede">
                         Launches stays free. Sign in and start one. Plus+ adds tools
                         for traders, creators, and studios. The passes page says what

@@ -161,7 +161,7 @@ function AccountItem({ user, returnTo }) {
     );
 }
 
-export function TressShell({ surface, title, action = null, active, children }) {
+export function TressShell({ surface, title, action = null, active, children, index = '//01' }) {
     const { auth } = usePage().props;
     const user = auth?.user || null;
     const { error: chainError } = useChainGuard();
@@ -225,18 +225,19 @@ export function TressShell({ surface, title, action = null, active, children }) 
                     )}
 
                     <div className="tc-header">
-                        <h1 className="tc-h1">{title}</h1>
+                        <h1 className="tc-h1"><span className="tc-index">{index}</span>{title}</h1>
                         {action}
                     </div>
 
                     {children}
 
                     <p className="tc-footer-note">
-                        Tress Column is the fair-launch exchange on Base. Launches and
-                        trades here run on {CHAIN_NAME}, a test network. The terminal
-                        never holds funds and never trades for you. Listing a launch
-                        is not an endorsement. Every term on a launch page is read
-                        from the chain, and every figure names its source.
+                        Tress Column is a fair-launch exchange on Base where every
+                        launch parameter is configured, locked, and printed in plain
+                        language at inception. Built around verifiable immutability
+                        and transparent fee tiers, Tress Column eliminates post-launch
+                        rule changes and issues a permanent on-chain certificate
+                        proving exact launch terms from block zero.
                     </p>
                 </div>
             </main>

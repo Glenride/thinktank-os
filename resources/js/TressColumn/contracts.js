@@ -46,7 +46,20 @@ export const NON_TC_ROUTING_FEE_PROPOSED_LABEL = '0.05% (5 bps, LOCKED Nov 15, 2
 // Silver DECIDED 2026-11-20: $20K gate, ~0.58% (58 bps), no lock or burn.
 // Silver was dropped from live copy per Q3 (H7) and restored on his tap
 // "Add silver" 2026-11-20, which supersedes the Q3 drop rule. The map
-// below renders all three tiers on the terminal and Tress Column pages.)
+// below renders all three tiers on the terminal and Tress Column pages.
+//
+// Display copy follows the Brand Guidelines PDF 2026-11-20 (canonical):
+// fee immutability, exemption gate, and certificate per tier. The DECIDED
+// NUMBERS below are unchanged: Platinum $10M / 0.30%, Gold $250K / 0.45%,
+// Silver $20K / ~0.58%. Where the PDF matrix differs from the decided
+// record, the decided record wins in display and the conflict is flagged
+// for his ruling (see CONFLICTS in the rebrand report, 2026-11-20):
+//   1. PDF Gold lock "24-Month Hard Lock" vs decided "Short timed lock".
+//   2. PDF Silver gate "Standard fee applies from block 0" vs decided
+//      $20K exemption gate.
+//   3. PDF Platinum lock "Permanent / Owner Burned" vs the accepted rule
+//      "Abyssal (permanent) or Timed lock >= 180 days".
+// Do NOT change a gate, a rate, or a lock term here without his tap.
 export const LAUNCH_TIERS = {
     PLATINUM: {
         name: 'Platinum',
@@ -54,6 +67,9 @@ export const LAUNCH_TIERS = {
         lpRequirement: 'Abyssal (permanent) or Timed lock >= 180 days',
         volumeGateUsd: 10_000_000,
         postGateFeeLabel: '0.30% in quote asset only',
+        feeImmutability: 'LOCKED AT LAUNCH',
+        feeExemption: 'Zero fee until $10M volume',
+        certificate: 'Platinum Holographic Badge',
         isLocked: true,
     },
     GOLD: {
@@ -62,6 +78,9 @@ export const LAUNCH_TIERS = {
         lpRequirement: 'Short timed lock',
         volumeGateUsd: 250_000,
         postGateFeeLabel: '0.45% in quote asset only',
+        feeImmutability: 'LOCKED AT LAUNCH',
+        feeExemption: 'Zero fee until $250K volume',
+        certificate: 'Gold Standard Certificate',
         isLocked: true,
     },
     SILVER: {
@@ -70,6 +89,9 @@ export const LAUNCH_TIERS = {
         lpRequirement: 'No lock or burn',
         volumeGateUsd: 20000,
         postGateFeeLabel: '~0.58% in quote asset only',
+        feeImmutability: 'DECIDED AT LAUNCH',
+        feeExemption: 'Zero fee until $20K volume',
+        certificate: 'Basic Verification Record',
         isLocked: true,
     },
 };

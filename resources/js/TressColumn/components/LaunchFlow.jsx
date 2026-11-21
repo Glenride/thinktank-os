@@ -590,9 +590,9 @@ export function LaunchFlow() {
         return (
             <div>
                 <ol className="tc-steps" aria-label="Launch steps">
-                    <li className="tc-step">Configure</li>
-                    <li className="tc-step" aria-current="step">Lock</li>
-                    <li className="tc-step">Prove</li>
+                    <li className="tc-step"><span className="tc-index">//01</span>Configure</li>
+                    <li className="tc-step" aria-current="step"><span className="tc-index">//02</span>Lock</li>
+                    <li className="tc-step"><span className="tc-index">//03</span>Prove</li>
                 </ol>
                 <p className="tc-lede">
                     Step 1 finished. The token, the locker, and the optional vault and
@@ -705,14 +705,16 @@ export function LaunchFlow() {
         return (
             <div>
                 <ol className="tc-steps" aria-label="Launch steps">
-                    <li className="tc-step">Configure</li>
-                    <li className="tc-step" aria-current="step">Lock</li>
-                    <li className="tc-step">Prove</li>
+                    <li className="tc-step"><span className="tc-index">//01</span>Configure</li>
+                    <li className="tc-step" aria-current="step"><span className="tc-index">//02</span>Lock</li>
+                    <li className="tc-step"><span className="tc-index">//03</span>Prove</li>
                 </ol>
                 <p className="tc-lede">
-                    Review every choice. Every choice is immutable after launch, and no
-                    admin key exists. A launch is two transactions: Part 1 deploys, Part 2
-                    launches. The launch is not complete until Part 2 confirms.
+                    Review your configured parameters below. Once committed to Base,
+                    these fee structures, liquidity gates, and lock schedules cannot
+                    be modified by any address. A launch is two transactions: Part 1
+                    deploys, Part 2 launches. The launch is not complete until Part 2
+                    confirms.
                 </p>
 
                 <div className="tc-review">

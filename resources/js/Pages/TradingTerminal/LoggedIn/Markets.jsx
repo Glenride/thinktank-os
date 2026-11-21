@@ -37,7 +37,7 @@ export default function Markets() {
     return (
         <TressShell surface="trade" title="Markets" active="markets" action={<WalletAction />}>
             <section className="tc-section" aria-labelledby="tc-launches-h">
-                <h2 className="tc-h2" id="tc-launches-h">Tress Column launches</h2>
+                <h2 className="tc-h2" id="tc-launches-h"><span className="tc-index">//02</span>Tress Column launches</h2>
                 <p className="tc-lede">
                     Fee rule: 0% before the pool crosses the gate, 0.3% after, taken
                     only in the quote asset. The crossing swap pays no fee.
@@ -46,7 +46,7 @@ export default function Markets() {
             </section>
 
             <section className="tc-section" aria-labelledby="tc-other-h">
-                <h2 className="tc-h2" id="tc-other-h">Other Base tokens</h2>
+                <h2 className="tc-h2" id="tc-other-h"><span className="tc-index">//03</span>Other Base tokens</h2>
                 <p className="tc-lede">
                     Standard DEX routing. A routing markup line shows on every quote,
                     even when it is 0.

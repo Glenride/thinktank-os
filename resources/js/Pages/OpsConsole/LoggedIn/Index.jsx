@@ -44,10 +44,10 @@ function useSafeBalance() {
     }, [], 'safeBalance');
 }
 
-function Module({ title, children }) {
+function Module({ title, index, children }) {
     return (
         <section className="tc-module" aria-label={title}>
-            <h2 className="tc-module-title">{title}</h2>
+            <h2 className="tc-module-title">{index && <span className="tc-index">{index}</span>}{title}</h2>
             {children}
         </section>
     );
@@ -75,7 +75,7 @@ export default function Index({ staffEmail }) {
                 records and shows them.
             </p>
 
-            <Module title="Plus+ subscriptions">
+            <Module title="Plus+ subscriptions" index="//02">
                 <SourceLabel source="saas" />
                 <p className="tc-module-copy">
                     Subscription records are not wired. No billing connection exists on
@@ -84,7 +84,7 @@ export default function Index({ staffEmail }) {
                 <p className="tc-module-note">No figure is shown rather than an invented one.</p>
             </Module>
 
-            <Module title="Airdrop campaigns">
+            <Module title="Airdrop campaigns" index="//03">
                 <SourceLabel source="saas" />
                 <p className="tc-module-copy">
                     Campaign records are not wired. The campaign fee is 0.0194 ETH per
@@ -93,7 +93,7 @@ export default function Index({ staffEmail }) {
                 <p className="tc-module-note">No campaign has run.</p>
             </Module>
 
-            <Module title="Launch monitoring">
+            <Module title="Launch monitoring" index="//04">
                 <SourceLabel source="on-chain" />
                 {nextId.loading && <p className="tc-loading-line">Reading the certificate factory.</p>}
                 {nextId.error && (
@@ -108,7 +108,7 @@ export default function Index({ staffEmail }) {
                 )}
             </Module>
 
-            <Module title="Certificates">
+            <Module title="Certificates" index="//05">
                 <SourceLabel source="on-chain" />
                 <p className="tc-module-copy">
                     The LaunchCertificate contract records every launch. Certificates
@@ -117,7 +117,7 @@ export default function Index({ staffEmail }) {
                 <AddressLink address={LAUNCH_CERTIFICATE} />
             </Module>
 
-            <Module title="Treasury-fee accounting">
+            <Module title="Treasury-fee accounting" index="//06">
                 <SourceLabel source="on-chain" />
                 <p className="tc-module-copy">
                     Treasury Safe: <AddressLink address={TREASURY_SAFE} />
