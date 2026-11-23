@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttestationController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LegalController;
 use App\Http\Controllers\ManuscriptController;
 use App\Http\Controllers\MarkdownController;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -84,6 +85,10 @@ Route::get('/attestations/{key}', [AttestationController::class, 'show'])->name(
 
 // Public Glenride standards
 Route::get('/standards', [StandardsController::class, 'show'])->name('standards.show');
+
+// Public Glenride legal documents (canonical home is glenride.com)
+Route::get('/terms', [LegalController::class, 'terms'])->name('legal.terms');
+Route::get('/privacy', [LegalController::class, 'privacy'])->name('legal.privacy');
 
 // Public Essays
 Route::get('/essays', [EssayController::class, 'index'])->name('essays.index');

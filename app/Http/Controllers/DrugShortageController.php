@@ -6,7 +6,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 /**
- * Public U.S. drug-shortage hub pages (dvaughnhouse.org/drug-shortages/*).
+ * Public U.S. drug-shortage hub pages (glenride.com/drug-shortages/*).
  *
  * Static pages, no database, no models, no live API calls. Every number
  * on them is a verified figure with its date and source shown on the

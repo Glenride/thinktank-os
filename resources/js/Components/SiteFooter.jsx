@@ -1,15 +1,14 @@
 /**
  * SiteFooter — shared legal footer for the public ThinkTank OS surfaces
  * (Vanguard Library, Store). Legal documents live centrally on
- * dvaughnhouse.com; this footer links there.
+ * glenride.com; this footer links there.
  */
 export default function SiteFooter() {
     const legal = [
-        { label: 'Mission Control', href: 'https://mission.dvaughnhouse.com' },
-        { label: 'About', href: 'https://dvaughnhouse.com/#about' },
-        { label: 'Contact', href: 'https://dvaughnhouse.com/#contact' },
-        { label: 'Terms of Service', href: 'https://dvaughnhouse.com/terms' },
-        { label: 'Privacy Policy', href: 'https://dvaughnhouse.com/privacy' },
+        { label: 'About', href: 'https://glenride.com/#about' },
+        { label: 'Contact', href: 'https://glenride.com/#contact' },
+        { label: 'Terms of Service', href: 'https://glenride.com/terms' },
+        { label: 'Privacy Policy', href: 'https://glenride.com/privacy' },
     ];
 
     return (

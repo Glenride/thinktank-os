@@ -54,7 +54,7 @@ class MarkdownNegotiation
 
         // Advertise the AI-readable files from every HTML page.
         if (str_contains((string) $response->headers->get('Content-Type', ''), 'text/html')) {
-            $base = rtrim(config('site.url', 'https://dvaughnhouse.org'), '/');
+            $base = rtrim(config('site.url', 'https://glenride.com'), '/');
             $describedBy = '<'.$base.'/llms.txt>; rel="describedby", <'.$base.'/llms-full.txt>; rel="describedby", <'.$base.'/ai.txt>; rel="describedby"';
             $existing = $response->headers->get('Link');
             $response->headers->set('Link', $existing ? $existing.', '.$describedBy : $describedBy);

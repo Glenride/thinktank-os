@@ -11,7 +11,7 @@
 | this config, so a rename or a URL change is one edit, not a hunt.
 |
 | Canonical URL: the Glenride institutional front door is
-| https://dvaughnhouse.org (see HomeController). APP_URL stays the
+| https://glenride.com. APP_URL stays the
 | deployment default for the framework; the public canonical URL is
 | this value unless SITE_URL is set explicitly.
 |
@@ -20,7 +20,7 @@
 return [
     'name' => 'Glenride',
     'full_name' => 'Glenride — Independent, AI-Native Think Tank',
-    'url' => env('SITE_URL', 'https://dvaughnhouse.org'),
+    'url' => env('SITE_URL', 'https://glenride.com'),
     'description' => 'Glenride is an independent, AI-native think tank. We find where critical systems break before the break becomes harm — and we publish a record anyone can check. We study supply chains, pharmaceutical data, and the software systems modern life quietly depends on.',
     'tagline' => 'Find where critical systems break before the break becomes harm, publish a checkable record, and carry strong findings to the people who write the rules.',
     'founder' => "D'Vaughn House",

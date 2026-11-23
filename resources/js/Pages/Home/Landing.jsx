@@ -144,7 +144,10 @@ export default function Landing({
             </HeroCarousel>
 
             {/* What Glenride is */}
-            <section className="border-b border-line dark:border-line-dark">
+            <section
+                id="about"
+                className="border-b border-line dark:border-line-dark"
+            >
                 <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
                     <div className="max-w-3xl">
                         <h2 className="font-display text-3xl font-bold tracking-tight text-ink dark:text-cream sm:text-4xl">
@@ -384,6 +387,7 @@ export default function Landing({
                             </ul>
                         </div>
                         <a
+                            id="contact"
                             href="https://dvaughnhouse.com/#contact"
                             className="group flex flex-wrap items-baseline justify-between gap-2 border-b border-line py-6 transition dark:border-line-dark"
                         >

@@ -25,7 +25,7 @@ class SiteConfig
 
     public static function url(): string
     {
-        return rtrim((string) Config::get('site.url', 'https://dvaughnhouse.org'), '/');
+        return rtrim((string) Config::get('site.url', 'https://glenride.com'), '/');
     }
 
     public static function description(): string

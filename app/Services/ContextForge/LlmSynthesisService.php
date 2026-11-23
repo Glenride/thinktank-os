@@ -226,7 +226,7 @@ EOT;
     protected function buildSystemPrompt(): string
     {
         return <<<'PROMPT'
-You are ContextForge, the agentic synthesis engine for Glenride (dvaughnhouse.org).
+You are ContextForge, the agentic synthesis engine for Glenride (glenride.com).
 Your objective is to ingest dense, academic research manuscripts and distill them into a high-impact, four-page Vanguard Policy Brief tailored for corporate executives, policymakers, and institutional leaders.
 
 Guidelines:

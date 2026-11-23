@@ -13,7 +13,7 @@ use Inertia\Response;
 class HomeController extends Controller
 {
     /**
-     * The Glenride institutional front door (dvaughnhouse.org root).
+     * The Glenride institutional front door (glenride.com root).
      *
      * The Vanguard Library lives at /library; this page introduces the
      * institution, its research areas, its attestation proof layer, and

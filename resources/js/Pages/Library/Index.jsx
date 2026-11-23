@@ -219,7 +219,7 @@ export default function Index({ briefs = [], auth }) {
             <footer className="border-t border-line dark:border-line-dark bg-paper dark:bg-night-card py-12 text-xs text-ink-soft dark:text-cream-soft font-mono">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div>
-                        © {new Date().getFullYear()} Glenride. dvaughnhouse.org. All rights reserved.
+                        © {new Date().getFullYear()} Glenride. glenride.com. All rights reserved.
                     </div>
                     <div className="flex items-center space-x-6">
                         <Link href={route('library.index')} className="hover:text-ink dark:hover:text-cream transition">

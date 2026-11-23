@@ -160,7 +160,7 @@ export default function Thesis({ auth }) {
             {/* Footer */}
             <footer className="border-t border-line dark:border-line-dark bg-paper dark:bg-night-card py-12 text-xs text-ink-soft dark:text-cream-soft font-mono">
                 <div className="mx-auto max-w-5xl px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div>© {new Date().getFullYear()} Glenride. dvaughnhouse.org.</div>
+                    <div>© {new Date().getFullYear()} Glenride. glenride.com.</div>
                     <div className="flex items-center space-x-6">
                         <Link href={route('library.index')} className="hover:text-ink dark:hover:text-cream transition">
                             Vanguard Library

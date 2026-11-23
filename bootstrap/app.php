@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\MarkdownNegotiation;
+use App\Http\Middleware\RedirectLegacyHost;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,6 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
+
+        // Global, so it covers every route: the retired host
+        // dvaughnhouse.org (and www) 301s to glenride.com, GET/HEAD
+        // only. Appended to the global stack, after the trusted-proxy
+        // handling, so getHost() respects X-Forwarded-Host.
+        $middleware->append(RedirectLegacyHost::class);
 
         // Stripe cannot send a CSRF token; the webhook route verifies the
         // Stripe signature instead (see StoreController::webhook).

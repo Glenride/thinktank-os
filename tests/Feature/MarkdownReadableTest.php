@@ -61,10 +61,10 @@ class MarkdownReadableTest extends TestCase
         $response->assertOk();
         $response->assertHeader('Content-Type', 'text/markdown; charset=utf-8');
         $response->assertHeader('X-Robots-Tag', 'noindex, follow');
-        $response->assertHeader('Content-Location', 'https://dvaughnhouse.org/standards');
+        $response->assertHeader('Content-Location', 'https://glenride.com/standards');
         $this->assertNotEmpty($response->headers->get('X-Markdown-Tokens'));
         $response->assertSee('# How Glenride Works', false);
-        $response->assertSee('Canonical: https://dvaughnhouse.org/standards', false);
+        $response->assertSee('Canonical: https://glenride.com/standards', false);
     }
 
     public function test_homepage_md_is_index_md(): void
@@ -171,7 +171,7 @@ class MarkdownReadableTest extends TestCase
         $response = $this->get('/llms-full.txt');
 
         $response->assertOk();
-        $response->assertSee('<!-- source: https://dvaughnhouse.org/standards -->', false);
+        $response->assertSee('<!-- source: https://glenride.com/standards -->', false);
         $this->assertLessThanOrEqual(500000, strlen($response->getContent()));
     }
 
@@ -196,7 +196,7 @@ class MarkdownReadableTest extends TestCase
         $response->assertSee('Claude-SearchBot', false);
         $response->assertSee('Disallow: /dashboard', false);
         $response->assertSee('Disallow: /sops', false);
-        $response->assertSee('Sitemap: https://dvaughnhouse.org/sitemap.xml', false);
+        $response->assertSee('Sitemap: https://glenride.com/sitemap.xml', false);
         // Training crawlers are NOT newly allowed (no decision given).
         $response->assertDontSee('GPTBot', false);
         $response->assertDontSee('ClaudeBot', false);
@@ -209,8 +209,8 @@ class MarkdownReadableTest extends TestCase
         $response = $this->get('/sitemap.xml');
 
         $response->assertOk();
-        $response->assertSee('https://dvaughnhouse.org/standards', false);
-        $response->assertSee('https://dvaughnhouse.org/research/attestations', false);
+        $response->assertSee('https://glenride.com/standards', false);
+        $response->assertSee('https://glenride.com/research/attestations', false);
         $response->assertDontSee('.md', false);
     }
 
@@ -232,7 +232,7 @@ class MarkdownReadableTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('<meta name="ai-summary"', false)
-            ->assertSee('<link rel="alternate" type="text/markdown" href="https://dvaughnhouse.org/index.md">', false);
+            ->assertSee('<link rel="alternate" type="text/markdown" href="https://glenride.com/index.md">', false);
     }
 
     public function test_login_page_carries_no_ai_signals(): void

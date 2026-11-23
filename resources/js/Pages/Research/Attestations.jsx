@@ -163,7 +163,7 @@ export default function Attestations({ study, auth }) {
                     <h2 className="font-display text-2xl font-bold text-ink dark:text-cream">Suggested citation</h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-soft dark:text-cream-soft">
                         Glenride. &ldquo;Glenride Attestations {study.year}: {study.total} Issued.&rdquo;{' '}
-                        https://dvaughnhouse.org/research/attestations ({month}).
+                        https://glenride.com/research/attestations ({month}).
                     </p>
                     <p className="mt-4 font-mono text-xs text-ink-soft dark:text-cream-soft">
                         <a href="/research/attestations.md" className="underline underline-offset-4">
