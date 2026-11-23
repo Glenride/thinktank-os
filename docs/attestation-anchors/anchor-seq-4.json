@@ -1,0 +1,9 @@
+{
+    "seq": 4,
+    "entry_hash": "50e4b6f7c8cdcdcf096f90190685cdbdd1a08af2806baf0e33110b2cc68aec53",
+    "public_id": "GLR-AT-2026-6ZGY2J",
+    "issued_at": "2026-11-23T14:01:29+00:00",
+    "chain_digest": "0e6d10d9e5dd62d585f72f35acd11bee2dbb76e3d2136eb3d289face977de2ef",
+    "anchored_at": "2026-11-23T16:00:00+00:00",
+    "source": "thinktank-os attestation issuance log"
+}
