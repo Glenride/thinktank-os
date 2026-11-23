@@ -756,17 +756,16 @@ repository. The deposit path, documented here for the account holder:
 4. Publish. Record the DOI in the deposit log below.
 5. Repeat monthly, or after any revocation.
 
-No account has been created and nothing has been deposited: the deposit
-step needs the human principal's repository account and approval. This is
-the blocked remainder of the preservation work, reported plainly, with
-the exact steps above.
+First deposit published 2026-11-23 (see log below). The deposit step is
+no longer blocked; it repeats monthly, or after any revocation.
 
-**Deposit log.** (No deposits yet.)
+**Deposit log.**
+
+- 2026-11-23: DOI 10.5281/zenodo.24466968 — "Glenride attestation registry — metadata export 2026-11-23" (registry-metadata.json + README.md; GLR-AT-2026-O1AAJD and GLR-AT-2026-FA1D8S issued, GLR-AT-2026-VFFUBN revoked test). CC-BY 4.0, Dataset, Open access. Published 2026-11-23, Version v1.
 
 ### 23.4 Residual blocked items
 
-- **Independent deposit.** Blocked on the human principal's repository
-  account + approval. Package builder built; steps documented above.
+- **Independent deposit.** First deposit published 2026-11-23 (DOI 10.5281/zenodo.24466968). Repeats monthly, or after any revocation.
 - **Mail delivery for the run email.** Blocked on SMTP configuration
   (`MAIL_MAILER` + host/port/username/password + real from address).
   Payloads queue in the outbox meanwhile; no credentials are invented.
