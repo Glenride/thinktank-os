@@ -1,6 +1,61 @@
 import AttestationSeal from '@/Components/AttestationSeal';
 import { Head, Link } from '@inertiajs/react';
 import { useState, useMemo } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
+// Brief bodies are stored as Markdown. Render them as formatted text:
+// headings, bold, lists, and GitHub tables (remark-gfm). Raw HTML in a
+// brief is never rendered. The page header already shows the manuscript
+// title, so a leading H1 that repeats it is dropped at render time; the
+// stored file is never modified.
+const markdownComponents = {
+    h1: ({ children }) => (
+        <h2 className="font-display text-2xl font-bold text-ink dark:text-cream mt-10 mb-4">{children}</h2>
+    ),
+    h2: ({ children }) => (
+        <h2 className="font-display text-2xl font-bold text-ink dark:text-cream mt-10 mb-4 border-b border-line dark:border-line-dark pb-2">
+            {children}
+        </h2>
+    ),
+    h3: ({ children }) => (
+        <h3 className="font-display text-xl font-bold text-ink dark:text-cream mt-8 mb-3">{children}</h3>
+    ),
+    p: ({ children }) => <p className="mb-5 leading-relaxed">{children}</p>,
+    strong: ({ children }) => <strong className="font-bold text-ink dark:text-cream">{children}</strong>,
+    em: ({ children }) => <em className="italic">{children}</em>,
+    a: ({ href, children }) => (
+        <a href={href} className="text-sienna-deep dark:text-sienna underline" target="_blank" rel="noreferrer">
+            {children}
+        </a>
+    ),
+    ul: ({ children }) => <ul className="list-disc pl-6 mb-5 space-y-2">{children}</ul>,
+    ol: ({ children }) => <ol className="list-decimal pl-6 mb-5 space-y-2">{children}</ol>,
+    li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+    hr: () => <hr className="my-8 border-line dark:border-line-dark" />,
+    table: ({ children }) => (
+        <div className="overflow-x-auto mb-6">
+            <table className="w-full border-collapse text-sm">{children}</table>
+        </div>
+    ),
+    th: ({ children }) => (
+        <th className="border border-line dark:border-line-dark bg-paper-deep dark:bg-night-deep px-3 py-2 text-left font-mono text-xs uppercase tracking-wider">
+            {children}
+        </th>
+    ),
+    td: ({ children }) => (
+        <td className="border border-line dark:border-line-dark px-3 py-2 align-top">{children}</td>
+    ),
+    code: ({ children }) => (
+        <code className="font-mono text-sm bg-paper-deep dark:bg-night-deep px-1 rounded">{children}</code>
+    ),
+    pre: ({ children }) => (
+        <pre className="overflow-x-auto bg-paper-deep dark:bg-night-deep p-4 rounded-lg mb-5">{children}</pre>
+    ),
+    blockquote: ({ children }) => (
+        <blockquote className="border-l-2 border-sienna-deep pl-4 italic mb-5">{children}</blockquote>
+    ),
+};
 
 export default function Show({ manuscript = {}, content = '', related = [], isPreview = false, attestation = null, latestRecord = null }) {
     const [copiedCitation, setCopiedCitation] = useState(false);
@@ -23,6 +78,15 @@ export default function Show({ manuscript = {}, content = '', related = [], isPr
         const words = manuscript.word_count || (content ? content.split(/\s+/).length : 850);
         return Math.max(1, Math.ceil(words / 220));
     }, [manuscript.word_count, content]);
+
+    // Drop a leading H1 that repeats the page title. Render-time only;
+    // the stored file is untouched, so its sealed hash still holds.
+    const bodyContent = useMemo(() => {
+        if (!content) return '';
+        const lines = content.split('\n');
+        if (lines[0]?.trim() === `# ${manuscript.title}`) lines.shift();
+        return lines.join('\n');
+    }, [content, manuscript.title]);
 
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
@@ -143,8 +207,10 @@ export default function Show({ manuscript = {}, content = '', related = [], isPr
                 {/* Brief Body Typography */}
                 <article className="font-serif text-ink dark:text-cream leading-relaxed text-lg space-y-6">
                     {content ? (
-                        <div className="whitespace-pre-wrap font-serif text-base leading-relaxed text-ink dark:text-cream space-y-4">
-                            {content}
+                        <div className="brief-body font-serif text-base leading-relaxed text-ink dark:text-cream">
+                            <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                                {bodyContent}
+                            </ReactMarkdown>
                         </div>
                     ) : (
                         <div className="space-y-8 font-serif text-base leading-relaxed">
