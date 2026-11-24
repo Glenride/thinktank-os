@@ -54,8 +54,7 @@ export default function About({ auth }) {
                 <p className="mt-4 leading-relaxed text-ink-soft dark:text-cream-soft">
                     Glenride is self-funded. The store, executive briefings,
                     and salons fund the work. There are no sponsors, and no
-                    buyer or funder shapes the findings. Buying from the store
-                    funds the work; it does not shape it.
+                    buyer or funder shapes the findings.
                 </p>
 
                 <h2 className="mt-14 font-display text-2xl font-bold text-ink dark:text-cream">
