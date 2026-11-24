@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Built to close the power-wisdom gap — Glenride V1</title>
+<meta name="description" content="Glenride V1 power-wisdom diagram. Capability plus wisdom, leading to responsible application. Standalone visual, before redesign.">
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=bricolage-grotesque:700,800|newsreader:400,400i,500,600">
+<style>
+  :root{--paper:#FAF5EC;--paper-deep:#F3ECDC;--ink:#221D18;--ink-soft:#57504A;--sienna:#E97451;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:40px 24px 48px}
+  header{margin-bottom:28px}
+  h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.02em}
+  .lede{font-size:20px;color:var(--ink-soft);max-width:620px;margin-top:12px}
+  .lede strong{color:var(--ink);font-weight:600}
+  .hint{font-size:14px;color:var(--ink-soft);margin-top:10px}
+  .diagram{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+  svg{width:100%;height:auto;display:block}
+  .node{cursor:pointer}
+  .node rect{fill:var(--paper);stroke:var(--line);stroke-width:1;rx:8}
+  .node:hover rect,.node:focus rect{stroke:var(--sienna-deep);stroke-width:2}
+  .node.active rect{fill:var(--sienna-deep);stroke:var(--sienna-deep)}
+  .node.active text{fill:var(--paper)}
+  .node text{font-family:"Newsreader",Georgia,serif;font-size:16px;fill:var(--ink)}
+  .col-title{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:15px;letter-spacing:.08em;fill:var(--sienna-deep)}
+  .gap-label{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:18px;fill:var(--ink)}
+  .gap-sub{font-size:13px;fill:var(--ink-soft)}
+  .outcome rect{fill:var(--ink);stroke:var(--ink)}
+  .outcome text{fill:var(--paper);font-family:"Newsreader",Georgia,serif}
+  .outcome .o-title{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:16px;letter-spacing:.06em}
+  #detail{margin-top:20px;border-top:1px solid var(--line);padding-top:20px;min-height:96px}
+  #detail h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:22px;margin-bottom:6px}
+  #detail p{font-size:18px;color:var(--ink-soft);max-width:640px}
+  #detail p strong{color:var(--ink)}
+  blockquote{margin-top:28px;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:21px;line-height:1.45}
+  blockquote footer{font-size:14px;color:var(--ink-soft);margin-top:10px}
+  blockquote a{color:var(--sienna-deep)}
+  .source{margin-top:20px;font-size:14px;color:var(--ink-soft)}
+  .source a{color:var(--sienna-deep)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .chips button{font:inherit;font-size:15px;background:var(--paper-deep);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+  .chips button:hover,.chips button[aria-pressed="true"]{background:var(--sienna-deep);color:var(--paper);border-color:var(--sienna-deep)}
+  @media (max-width:640px){.wrap{padding:28px 16px 36px}.diagram{padding:12px}blockquote{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Built to close the power-wisdom gap.</h1>
+    <p class="lede">Capability is growing faster than wisdom. <strong>Glenride closes the gap with evidence.</strong></p>
+    <p class="hint">Tap a term to read what it means here. No paragraph carries this section. The diagram does.</p>
+  </header>
+
+  <div class="diagram" role="img" aria-label="Power-wisdom diagram. Capability on the left, wisdom on the right, the gap in the middle, leading to responsible application below.">
+    <svg viewBox="0 0 920 460" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Power-wisdom diagram">
+      <text x="20" y="34" class="col-title">CAPABILITY</text>
+      <text x="620" y="34" class="col-title">WISDOM</text>
+
+      <g class="node" data-key="technology" tabindex="0" role="button" aria-label="Technology">
+        <rect x="20" y="50" width="280" height="48" rx="8"></rect><text x="36" y="80">Technology</text>
+      </g>
+      <g class="node" data-key="evidence" tabindex="0" role="button" aria-label="Evidence">
+        <rect x="620" y="50" width="280" height="48" rx="8"></rect><text x="636" y="80">Evidence</text>
+      </g>
+      <g class="node" data-key="capital" tabindex="0" role="button" aria-label="Capital">
+        <rect x="20" y="110" width="280" height="48" rx="8"></rect><text x="36" y="140">Capital</text>
+      </g>
+      <g class="node" data-key="judgment" tabindex="0" role="button" aria-label="Judgment">
+        <rect x="620" y="110" width="280" height="48" rx="8"></rect><text x="636" y="140">Judgment</text>
+      </g>
+      <g class="node" data-key="infrastructure" tabindex="0" role="button" aria-label="Infrastructure">
+        <rect x="20" y="170" width="280" height="48" rx="8"></rect><text x="36" y="200">Infrastructure</text>
+      </g>
+      <g class="node" data-key="accountability" tabindex="0" role="button" aria-label="Accountability">
+        <rect x="620" y="170" width="280" height="48" rx="8"></rect><text x="636" y="200">Accountability</text>
+      </g>
+      <g class="node" data-key="intelligence" tabindex="0" role="button" aria-label="Intelligence">
+        <rect x="20" y="230" width="280" height="48" rx="8"></rect><text x="36" y="260">Intelligence</text>
+      </g>
+      <g class="node" data-key="ethics" tabindex="0" role="button" aria-label="Ethics">
+        <rect x="620" y="230" width="280" height="48" rx="8"></rect><text x="636" y="260">Ethics</text>
+      </g>
+
+      <rect x="330" y="50" width="260" height="228" rx="12" fill="#F3ECDC" stroke="rgba(34,29,24,.14)"></rect>
+      <text x="460" y="110" text-anchor="middle" class="gap-label">THE GAP</text>
+      <text x="460" y="136" text-anchor="middle" class="gap-sub">Power without wisdom</text>
+      <text x="460" y="160" text-anchor="middle" class="gap-sub">moves fast</text>
+      <text x="460" y="184" text-anchor="middle" class="gap-sub">and breaks things.</text>
+      <text x="460" y="228" text-anchor="middle" class="gap-sub">Glenride works here.</text>
+
+      <line x1="300" y1="164" x2="330" y2="164" stroke="#B84A2B" stroke-width="2"></line>
+      <line x1="590" y1="164" x2="620" y2="164" stroke="#B84A2B" stroke-width="2"></line>
+      <line x1="460" y1="278" x2="460" y2="312" stroke="#B84A2B" stroke-width="2"></line>
+      <polygon points="460,326 452,312 468,312" fill="#B84A2B"></polygon>
+
+      <g class="outcome">
+        <rect x="20" y="330" width="880" height="104" rx="12"></rect>
+        <text x="460" y="366" text-anchor="middle" class="o-title">RESPONSIBLE APPLICATION</text>
+        <text x="460" y="398" text-anchor="middle">Better decisions. Better systems. Measurable outcomes.</text>
+      </g>
+    </svg>
+
+    <div class="chips" aria-label="Choose a term">
+      <button type="button" data-key="technology">Technology</button>
+      <button type="button" data-key="capital">Capital</button>
+      <button type="button" data-key="infrastructure">Infrastructure</button>
+      <button type="button" data-key="intelligence">Intelligence</button>
+      <button type="button" data-key="evidence">Evidence</button>
+      <button type="button" data-key="judgment">Judgment</button>
+      <button type="button" data-key="accountability">Accountability</button>
+      <button type="button" data-key="ethics">Ethics</button>
+    </div>
+
+    <div id="detail" aria-live="polite">
+      <h2>The gap</h2>
+      <p>Capability is what we <strong>can</strong> do. Wisdom is how we <strong>should</strong> decide. When the first outruns the second, speed becomes risk. Tap a term above.</p>
+    </div>
+  </div>
+
+  <blockquote>
+    “When an institution gains infinite analytical horsepower without corresponding ethical maturity, it does not become enlightened. It merely accelerates its capability to make catastrophic misjudgments at light speed.”
+    <footer>Glenride, <a href="https://glenride.com/thesis">The Foundational Thesis, Essay I: The Power-Wisdom Gap</a></footer>
+  </blockquote>
+
+  <p class="source">V1, standalone visual, built Nov 24, 2026, before any homepage redesign. Terms from the thesis and the visual brief. Palette is canonical Glenride only: paper #FAF5EC, ink #221D18, sienna-deep #B84A2B. No new palette. No invented figures. Data packet: visual-data-packets-2026-11-24.json, power_wisdom.</p>
+</div>
+<script>
+const details = {
+  technology: ["Technology", "Tools that extend what we can do. Useful, and dangerous without a check."],
+  capital: ["Capital", "Money that funds what gets built, and what gets built fast."],
+  infrastructure: ["Infrastructure", "The ports, rails, roads, grids, and systems modern life runs on."],
+  intelligence: ["Intelligence", "The ability to understand complex systems, and to act on that understanding."],
+  evidence: ["Evidence", "What we can check. Sources, dates, and records anyone can follow."],
+  judgment: ["Judgment", "Human choice about what matters, and what the evidence means."],
+  accountability: ["Accountability", "Signing the work, showing the method, and correcting it in public when it is wrong."],
+  ethics: ["Ethics", "The line we do not cross, even when we can."],
+  gap: ["The gap", "Capability is what we can do. Wisdom is how we should decide. When the first outruns the second, speed becomes risk."]
+};
+const detail = document.getElementById('detail');
+function show(key){
+  const d = details[key];
+  if(!d) return;
+  detail.innerHTML = '<h2>' + d[0] + '</h2><p>' + d[1] + '</p>';
+  document.querySelectorAll('.node').forEach(n => n.classList.toggle('active', n.dataset.key === key));
+  document.querySelectorAll('.chips button').forEach(b => b.setAttribute('aria-pressed', b.dataset.key === key ? 'true' : 'false'));
+}
+document.querySelectorAll('.node').forEach(n => {
+  n.addEventListener('click', () => show(n.dataset.key));
+  n.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); show(n.dataset.key); } });
+});
+document.querySelectorAll('.chips button').forEach(b => b.addEventListener('click', () => show(b.dataset.key)));
+</script>
+</body>
+</html>

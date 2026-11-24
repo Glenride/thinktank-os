@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proof, not promises. - Glenride V3</title>
+<meta name="description" content="Glenride V3 proof panels. Every attested work carries a signed record anyone can check. Standalone visual.">
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=bricolage-grotesque:700,800|newsreader:400,400i,500,600">
+<style>
+  :root{--paper:#FAF5EC;--paper-deep:#F3ECDC;--ink:#221D18;--ink-soft:#57504A;--sienna:#E97451;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14);--cream:#F3ECDC}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .hero{background:var(--ink);color:var(--paper);padding:56px 24px 48px}
+  .hero-inner{max-width:960px;margin:0 auto}
+  .hero h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(44px,7vw,76px);line-height:.98;letter-spacing:-.02em}
+  .hero h1 em{font-style:normal;color:var(--sienna)}
+  .hero p{font-size:21px;color:var(--cream);max-width:640px;margin-top:16px}
+  .wrap{max-width:960px;margin:0 auto;padding:36px 24px 48px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+  .stat .num{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:52px;line-height:1;color:var(--sienna-deep)}
+  .stat .label{font-size:17px;font-weight:600;margin-top:6px}
+  .stat .sub{font-size:14px;color:var(--ink-soft);margin-top:2px}
+  .note{font-size:15px;color:var(--ink-soft);margin-bottom:24px}
+  .note strong{color:var(--ink)}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .panel{font:inherit;text-align:left;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;cursor:pointer}
+  .panel:hover{border-color:var(--sienna-deep)}
+  .panel.active{background:var(--sienna-deep);border-color:var(--sienna-deep);color:var(--paper)}
+  .panel.active .sub{color:var(--paper)}
+  .panel .num{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:13px;color:var(--sienna-deep);letter-spacing:.08em}
+  .panel.active .num{color:var(--paper)}
+  .panel h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:24px;margin-top:6px}
+  .panel .sub{font-size:16px;color:var(--ink-soft);margin-top:4px}
+  #detail{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;min-height:140px}
+  #detail h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:24px}
+  #detail p{font-size:19px;color:var(--ink-soft);margin-top:8px;max-width:680px}
+  #detail p strong{color:var(--ink)}
+  #detail ul{margin:10px 0 0 20px;font-size:18px;color:var(--ink-soft)}
+  .registry{margin-top:28px}
+  .registry h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:28px}
+  .registry p{font-size:17px;color:var(--ink-soft);margin-top:6px}
+  table{width:100%;border-collapse:collapse;margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:13px;letter-spacing:.08em;color:var(--sienna-deep)}
+  td{font-size:16px}
+  td a{color:var(--sienna-deep)}
+  tr:last-child td{border-bottom:0}
+  .pill{display:inline-block;font-size:13px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--paper-deep);color:var(--ink)}
+  .pill.revoked{background:var(--ink);color:var(--paper)}
+  .latest{margin-top:24px;background:var(--ink);color:var(--paper);border-radius:16px;padding:28px}
+  .latest h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:28px}
+  .latest p{font-size:19px;color:var(--cream);margin-top:8px}
+  .latest p strong{color:var(--paper)}
+  .latest .meta{font-size:14px;color:var(--cream);margin-top:14px}
+  .latest a{color:var(--sienna)}
+  blockquote{margin-top:28px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:21px;line-height:1.45}
+  .source{margin-top:20px;font-size:14px;color:var(--ink-soft)}
+  .source a{color:var(--sienna-deep)}
+  @media (max-width:680px){.hero{padding:40px 20px 36px}.stats{grid-template-columns:1fr 1fr}.panels{grid-template-columns:1fr}table,thead,tbody,th,td,tr{display:block}th{display:none}td{border-bottom:1px solid var(--line)}td::before{content:attr(data-label);display:block;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:12px;letter-spacing:.08em;color:var(--sienna-deep)}}
+</style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Proof, <em>not promises.</em></h1>
+      <p>Every attested work carries a signed record. The claim, the evidence, the verifier, and the time. Anyone can check it, or challenge it.</p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="stats" aria-label="Registry totals, verified Nov 24, 2026">
+      <div class="stat"><div class="num">4</div><div class="label">Issued</div><div class="sub">Total attestations</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">In force</div><div class="sub">75 percent of issued</div></div>
+      <div class="stat"><div class="num">1</div><div class="label">Anchored</div><div class="sub">25 percent, on chain</div></div>
+      <div class="stat"><div class="num">15</div><div class="label">Briefs</div><div class="sub">Vanguard Library</div></div>
+    </div>
+    <p class="note">Correct count: <strong>4 issued, 3 in force.</strong> The homepage still says 3 attestations. That is the total in force, not the total issued. The test record is counted openly below, not hidden.</p>
+
+    <div class="panels" role="group" aria-label="Proof panels">
+      <button class="panel active" type="button" data-key="evidence"><span class="num">01</span><h2>Evidence</h2><p class="sub">Sources and documentation, with the date on every number.</p></button>
+      <button class="panel" type="button" data-key="methodology"><span class="num">02</span><h2>Methodology</h2><p class="sub">How findings are established, and what the count leaves out.</p></button>
+      <button class="panel" type="button" data-key="demonstration"><span class="num">03</span><h2>Demonstration</h2><p class="sub">Working prototypes and software, not slides about them.</p></button>
+      <button class="panel" type="button" data-key="verification"><span class="num">04</span><h2>Verification</h2><p class="sub">Independent checks, and what attestation does not certify.</p></button>
+    </div>
+
+    <div id="detail" aria-live="polite">
+      <h3>Evidence</h3>
+      <p>Each attestation names <strong>the claim, the evidence behind it, the verifier who checked it, and the timestamp.</strong> The record is public. Follow it back to the source, or challenge it.</p>
+    </div>
+
+    <section class="registry" aria-label="Public registry">
+      <h2>The public registry</h2>
+      <p>Four records. One is a test record, marked to be revoked. All four count in the total.</p>
+      <table>
+        <thead><tr><th>ID</th><th>Subject</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td data-label="ID"><a href="https://glenride.com/attestations/GLR-AT-2026-6ZGY2J">GLR-AT-2026-6ZGY2J</a></td><td data-label="Subject">Weekly Drug Shortage Digest, Nov 23, 2026</td><td data-label="Status"><span class="pill">Issued, anchored</span></td></tr>
+          <tr><td data-label="ID"><a href="https://glenride.com/attestations/GLR-AT-2026-FA1D8S">GLR-AT-2026-FA1D8S</a></td><td data-label="Subject">Weekly Drug Shortage Digest, Oct 26, 2026</td><td data-label="Status"><span class="pill">Issued</span></td></tr>
+          <tr><td data-label="ID"><a href="https://glenride.com/attestations/GLR-AT-2026-O1AAJD">GLR-AT-2026-O1AAJD</a></td><td data-label="Subject">Weekly Drug Shortage Digest, Oct 19, 2026</td><td data-label="Status"><span class="pill">Issued</span></td></tr>
+          <tr><td data-label="ID"><a href="https://glenride.com/attestations/GLR-AT-2026-VFFUBN">GLR-AT-2026-VFFUBN</a></td><td data-label="Subject">Test record, federal alignment verification</td><td data-label="Status"><span class="pill revoked">To be revoked</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="latest" aria-label="Latest attested finding">
+      <h2>Latest attested finding</h2>
+      <p><strong>Nov 23, 2026 digest:</strong> ASHP tracked 197 live shortage bulletins and the FDA listed 69 of 75 database entries in shortage, retrieved and verified on Nov 23, 2026.</p>
+      <p class="meta">Issued Nov 23, 2026, 9:01:29 AM EST. Signature Ed25519, key glenride-ed25519-2026-11. RFC 3161 timestamp 9:01:30 AM EST. Full record: <a href="https://glenride.com/attestations/GLR-AT-2026-6ZGY2J">GLR-AT-2026-6ZGY2J</a></p>
+    </section>
+
+    <blockquote>Attestation certifies the identity, origin, and integrity of the record. It does not certify the truth of third-party data the record reports.</blockquote>
+
+    <p class="source">V3, standalone visual, built Nov 24, 2026, before any homepage redesign. Counts re-verified live Nov 24, 2026 from <a href="https://glenride.com/research/attestations">glenride.com/research/attestations</a>, last updated Nov 23, 2026. Counts are computed at request time from the live database, never typed by hand. Denominator 4. Below the 20-row minimum for share findings. Palette is canonical Glenride only: paper #FAF5EC, ink #221D18, sienna #E97451, sienna-deep #B84A2B. No new palette. No independent validation is implied where it has not occurred.</p>
+  </main>
+
+<script>
+const details = {
+  evidence: ["Evidence", "Each attestation names <strong>the claim, the evidence behind it, the verifier who checked it, and the timestamp.</strong> The record is public. Follow it back to the source, or challenge it."],
+  methodology: ["Methodology", "Counts are <strong>computed at request time from the live database, never typed by hand.</strong> Denominator is 4. Only 4 attestations have been issued so far, below the 20-row minimum for share findings. Percentages will appear once the registry reaches 20."],
+  demonstration: ["Demonstration", "Working prototypes and software, not slides about them. <strong>ThinkTank OS, the Pearls digest, and the Vanguard Library</strong> are live. What is still design only is labeled as design only."],
+  verification: ["Verification", "Signature verified, Ed25519. RFC 3161 trusted timestamp. One record anchored on chain. <strong>Attestation does not certify the truth of third-party data.</strong> It certifies identity, origin, and integrity. Glenride is not a federal agency, and no federal agency has endorsed it."]
+};
+const detail = document.getElementById('detail');
+function show(key){
+  const d = details[key];
+  if(!d) return;
+  detail.innerHTML = '<h3>' + d[0] + '</h3><p>' + d[1] + '</p>';
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.dataset.key === key));
+}
+document.querySelectorAll('.panel').forEach(p => p.addEventListener('click', () => show(p.dataset.key)));
+</script>
+</body>
+</html>

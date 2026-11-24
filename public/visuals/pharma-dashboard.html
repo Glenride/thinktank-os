@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is in shortage, this week. - Glenride V4</title>
+<meta name="description" content="Glenride V4 pharmaceutical data dashboard. Weekly U.S. drug shortage figures from ASHP and FDA, with source and retrieval date on every number. Standalone visual.">
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=bricolage-grotesque:700,800|newsreader:400,400i,500,600">
+<style>
+  :root{--paper:#FAF5EC;--paper-deep:#F3ECDC;--ink:#221D18;--ink-soft:#57504A;--sienna:#E97451;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14);--cream:#F3ECDC}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .hero{background:var(--ink);color:var(--paper);padding:56px 24px 48px}
+  .hero-inner{max-width:960px;margin:0 auto}
+  .hero h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(42px,6.5vw,72px);line-height:.98;letter-spacing:-.02em}
+  .hero h1 em{font-style:normal;color:var(--sienna)}
+  .hero p{font-size:21px;color:var(--cream);max-width:640px;margin-top:16px}
+  .wrap{max-width:960px;margin:0 auto;padding:36px 24px 48px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+  .stat .num{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:50px;line-height:1;color:var(--sienna-deep)}
+  .stat .label{font-size:17px;font-weight:600;margin-top:6px}
+  .stat .sub{font-size:14px;color:var(--ink-soft);margin-top:2px}
+  .asof{font-size:15px;color:var(--ink-soft);margin-top:16px}
+  .asof strong{color:var(--ink)}
+  .runs{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .runs button{font:inherit;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:15px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 16px;cursor:pointer}
+  .runs button:hover{border-color:var(--sienna-deep)}
+  .runs button.active{background:var(--sienna-deep);border-color:var(--sienna-deep);color:var(--paper)}
+  #detail{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+  #detail h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:26px}
+  #detail .meta{font-size:14px;color:var(--ink-soft);margin-top:4px}
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  .detail-grid h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:15px;letter-spacing:.06em;color:var(--sienna-deep)}
+  .detail-grid p,.detail-grid li{font-size:18px;color:var(--ink-soft)}
+  .detail-grid ul{margin-left:20px}
+  .detail-grid p strong,.detail-grid li strong{color:var(--ink)}
+  .chart{margin-top:24px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+  .chart h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:24px}
+  .chart p{font-size:16px;color:var(--ink-soft);margin-top:4px}
+  .chart svg{width:100%;height:auto;display:block;margin-top:12px}
+  .bar{fill:var(--sienna-deep)}
+  .bar.latest{fill:var(--ink)}
+  .bar-label{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:14px;fill:var(--ink)}
+  .bar-value{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:18px;fill:var(--ink)}
+  .compare{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .compare-card{background:var(--ink);color:var(--paper);border-radius:16px;padding:24px}
+  .compare-card.light{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .compare-card h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:22px}
+  .compare-card .big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:44px;line-height:1;margin-top:10px;color:var(--sienna)}
+  .compare-card.light .big{color:var(--sienna-deep)}
+  .compare-card p{font-size:17px;color:var(--cream);margin-top:8px}
+  .compare-card.light p{color:var(--ink-soft)}
+  .disclaimer{margin-top:24px;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:18px}
+  .source{margin-top:20px;font-size:14px;color:var(--ink-soft)}
+  .source a{color:var(--sienna-deep)}
+  @media (max-width:680px){.hero{padding:40px 20px 36px}.stats{grid-template-columns:1fr 1fr}.detail-grid{grid-template-columns:1fr}.compare{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>What is in shortage, <em>this week.</em></h1>
+      <p>Public U.S. drug shortage figures, with the source and the date on every number. No clinical guidance. Research citation only.</p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="stats" aria-label="Latest figures, Nov 23, 2026">
+      <div class="stat"><div class="num">197</div><div class="label">ASHP live</div><div class="sub">Shortage bulletins, Nov 23</div></div>
+      <div class="stat"><div class="num">69 / 75</div><div class="label">FDA listed</div><div class="sub">Database entries, Nov 23</div></div>
+      <div class="stat"><div class="num">225</div><div class="label">Q3 2026</div><div class="sub">ASHP quarterly, replaces Q2 227</div></div>
+      <div class="stat"><div class="num">48%</div><div class="label">Sole-source</div><div class="sub">Single-manufacturer share</div></div>
+    </div>
+    <p class="asof">Latest run: <strong>Nov 23, 2026.</strong> Attested <a href="https://glenride.com/attestations/GLR-AT-2026-6ZGY2J" style="color:#B84A2B">GLR-AT-2026-6ZGY2J</a>, issued 9:01:29 AM EST. Tap a run below to see what changed that week.</p>
+
+    <div class="runs" role="group" aria-label="Choose a run">
+      <button type="button" data-run="oct19">Oct 19</button>
+      <button type="button" data-run="nov2">Nov 2</button>
+      <button type="button" data-run="nov9">Nov 9</button>
+      <button type="button" data-run="nov16">Nov 16</button>
+      <button type="button" data-run="nov23" class="active">Nov 23</button>
+    </div>
+
+    <div id="detail" aria-live="polite">
+      <h2>Nov 23 run</h2>
+      <p class="meta">Retrieved and verified Nov 23, 2026. Source: ASHP current-shortages list and FDA drug-shortages listing.</p>
+      <div class="detail-grid">
+        <div><h3>ASHP</h3><p><strong>197 live shortage bulletins.</strong> Up from 190 on Nov 9. The jump is shown, not smoothed over.</p></div>
+        <div><h3>FDA</h3><p><strong>69 of 75 database entries in shortage.</strong> Denominator moved from 74 to 75. Same count, new base.</p></div>
+        <div><h3>WHAT CHANGED</h3><p>Latest attested digest. Full week-over-week new and resolved lists are in the attested record, not summarized here.</p></div>
+        <div><h3>ATTESTATION</h3><p><strong>GLR-AT-2026-6ZGY2J, issued.</strong> Signature Ed25519. RFC 3161 timestamp. Anchored on Base Sepolia.</p></div>
+      </div>
+    </div>
+
+    <section class="chart" aria-label="ASHP live bulletins by run">
+      <h2>ASHP live bulletins, by run</h2>
+      <p>Oct 19 to Nov 23, 2026. Nov 16 had no run. That gap is shown as a gap, not filled.</p>
+      <svg viewBox="0 0 880 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bar chart. ASHP 192 on Oct 19, 190 on Nov 2, 190 on Nov 9, no run on Nov 16, 197 on Nov 23.">
+        <rect class="bar" x="60" y="52" width="110" height="168" rx="8"></rect>
+        <rect class="bar" x="220" y="56" width="110" height="164" rx="8"></rect>
+        <rect class="bar" x="380" y="56" width="110" height="164" rx="8"></rect>
+        <rect x="540" y="56" width="110" height="164" rx="8" fill="#F3ECDC" stroke="rgba(34,29,24,.14)"></rect>
+        <rect class="bar latest" x="700" y="42" width="110" height="178" rx="8"></rect>
+        <text class="bar-value" x="115" y="40" text-anchor="middle">192</text>
+        <text class="bar-value" x="275" y="44" text-anchor="middle">190</text>
+        <text class="bar-value" x="435" y="44" text-anchor="middle">190</text>
+        <text class="bar-value" x="595" y="44" text-anchor="middle">No run</text>
+        <text class="bar-value" x="755" y="30" text-anchor="middle">197</text>
+        <text class="bar-label" x="115" y="242" text-anchor="middle">Oct 19</text>
+        <text class="bar-label" x="275" y="242" text-anchor="middle">Nov 2</text>
+        <text class="bar-label" x="435" y="242" text-anchor="middle">Nov 9</text>
+        <text class="bar-label" x="595" y="242" text-anchor="middle">Nov 16</text>
+        <text class="bar-label" x="755" y="242" text-anchor="middle">Nov 23</text>
+      </svg>
+    </section>
+
+    <section class="compare" aria-label="ASHP versus FDA">
+      <div class="compare-card">
+        <h2>ASHP</h2>
+        <div class="big">197 live</div>
+        <p>Live shortage bulletins, Nov 23. A working list that changes as bulletins open and close.</p>
+      </div>
+      <div class="compare-card light">
+        <h2>FDA</h2>
+        <div class="big">69 of 75</div>
+        <p>Database entries in shortage, Nov 23. A different list, with a different base. The two lists disagree, and Glenride shows that instead of hiding it.</p>
+      </div>
+    </section>
+
+    <p class="disclaimer"><strong>Figures are for research citation only. No clinical guidance is ever offered.</strong> If a medicine you need is in shortage, talk to your clinician or pharmacist.</p>
+
+    <p class="source">V4, standalone visual, built Nov 24, 2026, before any homepage redesign. Figures from the Glenride digest runs and the attested Nov 23 record, with source and retrieval date on every number. Live pages: <a href="https://glenride.com/drug-shortages/current">Current shortages</a>, <a href="https://glenride.com/drug-shortages/fda-list">FDA list</a>, <a href="https://glenride.com/drug-shortages/ashp-vs-fda">ASHP vs FDA</a>, <a href="https://glenride.com/research/attestations">Attestations</a>. ASHP bulletins are copyrighted. Structured facts plus attribution plus link only, never full bulletin text. Palette is canonical Glenride only: paper #FAF5EC, ink #221D18, sienna #E97451, sienna-deep #B84A2B. No new palette.</p>
+  </main>
+
+<script>
+const runs = {
+  oct19: ["Oct 19 run", "Retrieved Oct 19, 2026. Source: ASHP current-shortages list and FDA drug-shortages listing.", "<div><h3>ASHP</h3><p><strong>192 live shortage bulletins.</strong></p></div><div><h3>FDA</h3><p><strong>69 of 74 database entries in shortage.</strong></p></div><div><h3>WHAT CHANGED</h3><p><strong>Bumetanide resolved.</strong> Quarterly baseline Q2 2026: 227.</p></div><div><h3>SOLE-SOURCE</h3><p><strong>48 percent</strong> of new 2026 shortages involved a single manufacturer.</p></div>"],
+  nov2: ["Nov 2 run", "Retrieved Nov 2, 2026. Source: ASHP and FDA listings.", "<div><h3>ASHP</h3><p><strong>190 live, down 2 net.</strong> Zero new bulletins.</p></div><div><h3>FDA</h3><p><strong>69 of 74, fifth consecutive identical reading.</strong></p></div><div><h3>RESOLVED</h3><p><strong>Imatinib Mesylate Tablets, Oct 29. Mercaptopurine Tablets, Oct 27.</strong> Resolved total 965 to 967.</p></div><div><h3>QUARTERLY</h3><p><strong>Q3 2026: 225,</strong> replacing Q2 227. Sole-source 48 percent, unchanged.</p></div>"],
+  nov9: ["Nov 9 run", "Retrieved Nov 9, 2026. Source: ASHP and FDA listings.", "<div><h3>ASHP</h3><p><strong>190 live, unchanged net.</strong> 2 new, 3 resolved.</p></div><div><h3>FDA</h3><p><strong>69 to 68 of 74, first move in six weeks.</strong> Resolved 5 to 6, Clonazepam Tablet.</p></div><div><h3>NEW</h3><p><strong>23.4% Sodium Chloride Injection and Epirubicin Injection,</strong> both created Nov 4.</p></div><div><h3>RESOLVED</h3><p><strong>Nicardipine, Nov 4. Mesalamine ER, Nov 3. Timolol, Nov 3.</strong> Resolved total 967 to 970. Reconciliation gap stated openly: 190 + 2 - 3 = 189 vs live 190.</p></div>"],
+  nov16: ["Nov 16, no run", "No weekly digest run executed for Nov 16. Edition built on the Oct 19 run.", "<div><h3>ASHP</h3><p><strong>No new retrieval.</strong> Oct 19 figure carried forward: 192.</p></div><div><h3>FDA</h3><p><strong>No new retrieval.</strong> Oct 19 figure carried forward: 69 of 74.</p></div><div><h3>CORRECTION</h3><p>Recorded moves were <strong>+3 (190 to 193) and -1 (193 to 192),</strong> not plus or minus 1.</p></div><div><h3>STATUS</h3><p>Re-grounded and re-cleared Nov 23. Takes the slot after Nov 9.</p></div>"],
+  nov23: ["Nov 23 run", "Retrieved and verified Nov 23, 2026. Source: ASHP current-shortages list and FDA drug-shortages listing.", "<div><h3>ASHP</h3><p><strong>197 live shortage bulletins.</strong> Up from 190 on Nov 9. The jump is shown, not smoothed over.</p></div><div><h3>FDA</h3><p><strong>69 of 75 database entries in shortage.</strong> Denominator moved from 74 to 75. Same count, new base.</p></div><div><h3>WHAT CHANGED</h3><p>Latest attested digest. Full week-over-week new and resolved lists are in the attested record, not summarized here.</p></div><div><h3>ATTESTATION</h3><p><strong>GLR-AT-2026-6ZGY2J, issued.</strong> Signature Ed25519. RFC 3161 timestamp. Anchored on Base Sepolia.</p></div>"]
+};
+const detail = document.getElementById('detail');
+function show(key){
+  const r = runs[key];
+  if(!r) return;
+  detail.innerHTML = '<h2>' + r[0] + '</h2><p class="meta">' + r[1] + '</p><div class="detail-grid">' + r[2] + '</div>';
+  document.querySelectorAll('.runs button').forEach(b => b.classList.toggle('active', b.dataset.run === key));
+}
+document.querySelectorAll('.runs button').forEach(b => b.addEventListener('click', () => show(b.dataset.run)));
+</script>
+</body>
+</html>

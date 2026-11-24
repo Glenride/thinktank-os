@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research to business, and back. - Glenride Flywheel</title>
+<meta name="description" content="Glenride innovation flywheel. Research to knowledge to inventions to businesses to resources to research. Ventures means businesses. Model, not measured results. Standalone visual.">
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=bricolage-grotesque:700,800|newsreader:400,400i,500,600">
+<style>
+  :root{--paper:#FAF5EC;--paper-deep:#F3ECDC;--ink:#221D18;--ink-soft:#57504A;--sienna:#E97451;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14);--cream:#F3ECDC}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .hero{background:var(--ink);color:var(--paper);padding:64px 24px 56px}
+  .hero-inner{max-width:1080px;margin:0 auto}
+  .hero .kicker{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--sienna)}
+  .hero h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(44px,6.5vw,76px);line-height:.98;letter-spacing:-.02em;margin-top:12px}
+  .hero p{font-size:20px;color:var(--cream);max-width:600px;margin-top:16px}
+  .wrap{max-width:1080px;margin:0 auto;padding:36px 24px 48px}
+  .loop{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .node{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;cursor:pointer}
+  .node:hover{border-color:var(--sienna-deep)}
+  .node.active{background:var(--sienna-deep);border-color:var(--sienna-deep);color:var(--paper)}
+  .node .n{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:28px;line-height:1}
+  .node h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:22px;margin-top:8px}
+  .node p{font-size:16px;color:var(--ink-soft);margin-top:4px}
+  .node.active p{color:var(--cream)}
+  .detail{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px}
+  .detail h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:28px}
+  .detail p{font-size:19px;color:var(--ink-soft);margin-top:8px;max-width:680px}
+  .detail p strong{color:var(--ink)}
+  .detail ul{margin:12px 0 0 20px;font-size:18px;color:var(--ink-soft)}
+  .detail ul strong{color:var(--ink)}
+  .note{margin-top:24px;font-size:17px;color:var(--ink-soft)}
+  .source{margin-top:20px;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:16px}
+  .source a{color:var(--sienna-deep)}
+  @media (max-width:900px){.loop{grid-template-columns:1fr 1fr}}
+  @media (max-width:600px){.hero{padding:44px 20px 40px}.loop{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="kicker">Glenride / Innovation flywheel</span>
+      <h1>Research to business, and back.</h1>
+      <p>Ventures means businesses. Tap a stage to see the work in it.</p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="loop" role="group" aria-label="Choose a stage">
+      <button type="button" class="node active" data-stage="research"><span class="n">01</span><h2>Research</h2><p>Study where systems break.</p></button>
+      <button type="button" class="node" data-stage="knowledge"><span class="n">02</span><h2>Knowledge</h2><p>Publish a record anyone can check.</p></button>
+      <button type="button" class="node" data-stage="inventions"><span class="n">03</span><h2>Inventions</h2><p>Turn an answer into a tool.</p></button>
+      <button type="button" class="node" data-stage="businesses"><span class="n">04</span><h2>Businesses</h2><p>Ship the tool. Charge for the work.</p></button>
+      <button type="button" class="node" data-stage="resources"><span class="n">05</span><h2>Resources</h2><p>What the work returns.</p></button>
+      <button type="button" class="node" data-stage="back"><span class="n">06</span><h2>Back to research</h2><p>The loop starts again.</p></button>
+    </div>
+
+    <div class="detail" id="detail" aria-live="polite"></div>
+
+    <p class="note">Model, not measured results. Business figures are shown only where verified. No revenue or user numbers are claimed where none are on record.</p>
+    <p class="source">Source: Glenride Catalogue, Nov 14, 2026, 65 entries, 34 live. Library, Nov 6, 2026. Digest, Nov 23, 2026. Canonical palette only.</p>
+  </main>
+
+<script>
+const stages = {
+  research: ["Research", "<p><strong>Study supply chains, pharmaceutical data, and software systems.</strong></p><ul><li><strong>Drug shortages:</strong> weekly record, ASHP 197, FDA 69 of 75, Nov 23, 2026</li><li><strong>Supply chains:</strong> STEM pipelines, single point failure</li><li><strong>Governance:</strong> agentic systems in high assurance sectors</li></ul>"],
+  knowledge: ["Knowledge", "<p><strong>Publish a record anyone can check.</strong></p><ul><li><strong>15 published briefs</strong> in the Vanguard Library</li><li><strong>4 attestations issued,</strong> 3 in force, 1 anchored</li><li><strong>Witness:</strong> signed proof work happened</li></ul>"],
+  inventions: ["Inventions", "<p><strong>Turn an answer into a tool.</strong></p><ul><li><strong>Witness:</strong> attestation authority, V1 shipped Oct 22, 2026</li><li><strong>Pearls:</strong> drug shortage digest, MCP v1.0, Nov 17, 2026</li><li><strong>ThinkTank OS:</strong> submit, review, verdict</li></ul>"],
+  businesses: ["Businesses", "<p><strong>Ventures means businesses.</strong> Ship the tool. Charge for the work.</p><ul><li><strong>D'Quizz:</strong> live since Oct 22, 2026. Plans $29, $99, $399 a month. 0 subscriptions completed as of Oct 25, 2026.</li><li><strong>InspireWrite:</strong> live, Stripe live mode billing.</li><li><strong>SpinWave and STANZA:</strong> live, database and utility token.</li><li><strong>Pearls:</strong> live at pearls.glenride.com. Not sell ready yet, 2 of 12 snapshots.</li></ul>"],
+  resources: ["Resources", "<p><strong>What the work returns.</strong></p><ul><li><strong>34 live</strong> catalogue entries, of 65 total, Nov 14, 2026</li><li><strong>15 briefs,</strong> 4 attestations, 1 anchored</li><li><strong>Our money comes from our work,</strong> so conclusions answer to evidence, not to a sponsor.</li></ul>"],
+  back: ["Back to research", "<p><strong>The loop starts again.</strong> What a business learns in the field becomes the next research question.</p><p>Research, knowledge, inventions, businesses, resources, research.</p>"]
+};
+const detail = document.getElementById('detail');
+function show(key){
+  const s = stages[key];
+  detail.innerHTML = '<h2>' + s[0] + '</h2>' + s[1];
+  document.querySelectorAll('.node').forEach(b => b.classList.toggle('active', b.dataset.stage === key));
+}
+document.querySelectorAll('.node').forEach(b => b.addEventListener('click', () => show(b.dataset.stage)));
+show('research');
+</script>
+</body>
+</html>

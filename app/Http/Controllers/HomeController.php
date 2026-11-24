@@ -44,6 +44,8 @@ class HomeController extends Controller
             'featuredBriefs' => $featuredBriefs,
             'publishedCount' => Manuscript::published()->count(),
             'attestationCount' => Attestation::active()->count(),
+            'attestationIssuedCount' => Attestation::count(),
+            'attestationAnchoredCount' => Attestation::whereNotNull('anchor_tx')->count(),
             'essayCount' => count(EssayController::publishedSlugs()),
         ]);
     }

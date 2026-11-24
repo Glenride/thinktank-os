@@ -75,17 +75,34 @@ const BODY_BAND_IMAGES = [
 const RESEARCH_AREAS = [
     {
         name: 'Supply-Chain Resilience',
-        line: 'Supply chain vulnerabilities, in plain language: how critical supply chains fail, where they bend, and what keeps them running.',
+        line: 'See where the chain breaks, before harm hits.',
     },
     {
         name: 'Pharmaceutical Data Evaluation',
-        line: 'U.S. drug shortages and pharmaceutical data, evaluated for what they actually show — including where the FDA and ASHP shortage lists disagree.',
+        line: 'What is in shortage, this week, with source and date.',
     },
     {
         name: 'Applied AI & Enterprise Software Systems',
-        line: 'Autonomous systems under non-negotiable human primacy — AI prepares, humans decide.',
+        line: 'Working software, live. Work in progress, labeled as it stands.',
     },
 ];
+
+// Branding upgrade, Nov 24, 2026 — design retained, copy shortened,
+// visuals inserted in place. Standalone visuals live in public/visuals/.
+function VisualFrame({ title, src, height = 720 }) {
+    return (
+        <iframe
+            title={title}
+            src={src}
+            loading="lazy"
+            style={{ height: `${height}px` }}
+            className="mt-10 w-full overflow-hidden rounded border border-line bg-paper dark:border-line-dark dark:bg-night-card"
+        />
+    );
+}
+
+const VISUAL_HEADING =
+    'font-display text-3xl font-bold tracking-tight text-ink dark:text-cream sm:text-4xl';
 
 const CURATED_FALLBACK = {
     id: 'featured-monograph-1',
@@ -110,6 +127,8 @@ export default function Landing({
     featuredBriefs = [],
     publishedCount = 0,
     attestationCount = 0,
+    attestationIssuedCount = null,
+    attestationAnchoredCount = null,
     essayCount = 0,
     auth,
 }) {
@@ -154,14 +173,7 @@ export default function Landing({
                             Built to close the power-wisdom gap
                         </h2>
                         <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            <p>
-                                I hate that most supply-chain failures feel like
-                                surprises. They are not. I wish there was one
-                                place that just told me what is breaking, what
-                                is in shortage, and what changed this week —
-                                with the source and the date on every number,
-                                so I can check it myself.
-                            </p>
+                            <p>Capability grows fast. Wisdom has to keep up.</p>
                             <p>
                                 Glenride is an independent, AI-native think tank.
                                 We find where critical systems break before the
@@ -172,19 +184,17 @@ export default function Landing({
                                 We study supply chain vulnerabilities,
                                 pharmaceutical data, and the software systems
                                 modern life quietly depends on. Every Monday we
-                                publish a weekly U.S. drug shortage digest, and
-                                we show where the FDA and ASHP shortage lists
-                                disagree instead of hiding it. We measure what
-                                others guess at, we show our sources, and we
-                                sign our work. When a finding is strong enough
-                                to change a rule, we carry it to the people who
-                                write the rules. When an answer can become a
-                                tool, we build the tool. Our money comes from
-                                our work, so our conclusions answer to evidence,
-                                not to a sponsor.
+                                publish a weekly U.S. drug shortage digest,
+                                with source and date on every number.
                             </p>
                             <p>— D'Vaughn House, Founder</p>
                         </div>
+
+                        <VisualFrame
+                            title="Power and wisdom"
+                            src="/visuals/power-wisdom.html"
+                            height={720}
+                        />
                     </div>
 
                     <dl className="mt-14 border-t border-line dark:border-line-dark">
@@ -205,12 +215,119 @@ export default function Landing({
                 </div>
             </section>
 
+            {/* Human and AI — AI prepares, humans decide */}
+            <section className="border-b border-line dark:border-line-dark">
+                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+                    <div className="max-w-3xl">
+                        <h2 className={VISUAL_HEADING}>
+                            AI prepares, humans decide.
+                        </h2>
+                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            Machines propose, but humans are the source of all
+                            decisions.
+                        </p>
+                    </div>
+                    <VisualFrame
+                        title="Human and AI collaboration"
+                        src="/visuals/human-ai.html"
+                        height={720}
+                    />
+                </div>
+            </section>
+
             {/* The chain, end to end — rotating body band */}
             <ImageBandCarousel
                 images={BODY_BAND_IMAGES}
                 overlayLine="The chain, end to end."
                 label="The supply chain, end to end"
             />
+
+            {/* The chain, end to end — interactive journey */}
+            <section className="border-b border-line dark:border-line-dark">
+                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+                    <div className="max-w-3xl">
+                        <h2 className={VISUAL_HEADING}>
+                            The chain, end to end.
+                        </h2>
+                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            One medicine, six stages. Tap a stage to see where
+                            it breaks.
+                        </p>
+                    </div>
+                    <VisualFrame
+                        title="The chain, end to end"
+                        src="/visuals/chain-journey.html"
+                        height={720}
+                    />
+                </div>
+            </section>
+
+            {/* Pharmaceutical data evaluation — Pearls */}
+            <section className="border-b border-line dark:border-line-dark">
+                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+                    <div className="max-w-3xl">
+                        <h2 className={VISUAL_HEADING}>
+                            What is in shortage, this week.
+                        </h2>
+                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            ASHP 197 live bulletins. FDA 69 of 75. Nov 23,
+                            2026. Pearls, at{' '}
+                            <a
+                                href="https://pearls.glenride.com"
+                                className="font-semibold text-sienna-deep transition hover:text-ink dark:text-sienna dark:hover:text-cream"
+                            >
+                                pearls.glenride.com
+                            </a>
+                            . Attestation GLR-AT-2026-6ZGY2J.
+                        </p>
+                    </div>
+                    <VisualFrame
+                        title="Pharmaceutical data evaluation"
+                        src="/visuals/pharma-dashboard.html"
+                        height={800}
+                    />
+                </div>
+            </section>
+
+            {/* Applied AI — working software, live */}
+            <section className="border-b border-line dark:border-line-dark">
+                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+                    <div className="max-w-3xl">
+                        <h2 className={VISUAL_HEADING}>
+                            Built to be checked.
+                        </h2>
+                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            Working software, live. Work in progress, labeled
+                            as it stands.
+                        </p>
+                    </div>
+                    <VisualFrame
+                        title="Applied AI and enterprise software"
+                        src="/visuals/applied-ai.html"
+                        height={900}
+                    />
+                </div>
+            </section>
+
+            {/* Innovation flywheel — research to business, and back */}
+            <section className="border-b border-line dark:border-line-dark">
+                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+                    <div className="max-w-3xl">
+                        <h2 className={VISUAL_HEADING}>
+                            Research to business, and back.
+                        </h2>
+                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            Ventures means businesses. A model, not measured
+                            results.
+                        </p>
+                    </div>
+                    <VisualFrame
+                        title="Innovation flywheel"
+                        src="/visuals/flywheel.html"
+                        height={720}
+                    />
+                </div>
+            </section>
 
             {/* The proof layer */}
             <section className="border-b border-line bg-paper-deep dark:border-line-dark dark:bg-night-card">
@@ -220,18 +337,20 @@ export default function Landing({
                             Proof, not promises.
                         </h2>
                         <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            Every attested work carries a signed Glenride record: the
-                            claim, the evidence behind it, the verifier who checked
-                            it, and the timestamp. The record is public, and anyone
-                            can verify it — or challenge it.
+                            Every attested work carries a signed Glenride
+                            record: the claim, the evidence, the verifier, and
+                            the timestamp. The record is public, and anyone can
+                            verify it, or challenge it.
                         </p>
                         <p className="mt-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            The registry currently holds{' '}
                             <span className="font-semibold text-ink dark:text-cream">
-                                {attestationCount}{' '}
-                                {attestationCount === 1 ? 'attestation' : 'attestations'}
+                                {attestationIssuedCount ?? attestationCount}{' '}
+                                attestations issued. {attestationCount} in force
+                                {attestationAnchoredCount !== null &&
+                                    `. ${attestationAnchoredCount} anchored`}
+                                .
                             </span>{' '}
-                            across{' '}
+                            Across{' '}
                             <span className="font-semibold text-ink dark:text-cream">
                                 {publishedCount}{' '}
                                 {publishedCount === 1
@@ -240,6 +359,11 @@ export default function Landing({
                             </span>{' '}
                             in the Vanguard Library.
                         </p>
+                        <VisualFrame
+                            title="Proof, not promises"
+                            src="/visuals/proof.html"
+                            height={800}
+                        />
                         <Link
                             href={route('attestations.index')}
                             className="mt-8 inline-flex items-center font-mono text-sm font-semibold text-sienna-deep transition hover:text-ink dark:text-sienna dark:hover:text-cream"
@@ -264,6 +388,16 @@ export default function Landing({
                             All monographs →
                         </Link>
                     </div>
+
+                    <p className="mt-6 max-w-3xl text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                        15 published briefs. Covers, abstracts, categories,
+                        full publication links.
+                    </p>
+                    <VisualFrame
+                        title="Vanguard Library"
+                        src="/visuals/library.html"
+                        height={900}
+                    />
 
                     <div className="mt-10 border-t border-line dark:border-line-dark">
                         {briefs.map((brief) => (
@@ -372,7 +506,8 @@ export default function Landing({
                                 <li>
                                     Every Monday — a public weekly U.S. drug
                                     shortage digest, from FDA and ASHP data:
-                                    225 active shortages as of Q3 2026.
+                                    ASHP 197 live bulletins, FDA 69 of 75, Nov
+                                    23, 2026.
                                 </li>
                                 <li>
                                     Attested — every record in the public registry

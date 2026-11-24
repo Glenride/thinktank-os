@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The chain, end to end. - Glenride Chain Journey</title>
+<meta name="description" content="Glenride chain journey. The U.S. drug supply chain, end to end, using the verified weekly shortage record as the worked example. No invented routes. Standalone visual.">
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=bricolage-grotesque:700,800|newsreader:400,400i,500,600">
+<style>
+  :root{--paper:#FAF5EC;--paper-deep:#F3ECDC;--ink:#221D18;--ink-soft:#57504A;--sienna:#E97451;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14);--cream:#F3ECDC}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .hero{background:var(--ink);color:var(--paper);padding:64px 24px 56px}
+  .hero-inner{max-width:1080px;margin:0 auto}
+  .hero .kicker{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--sienna)}
+  .hero h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(44px,6.5vw,76px);line-height:.98;letter-spacing:-.02em;margin-top:12px}
+  .hero p{font-size:20px;color:var(--cream);max-width:560px;margin-top:16px}
+  .wrap{max-width:1080px;margin:0 auto;padding:36px 24px 48px}
+  .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  .node{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 14px;cursor:pointer;text-align:left;font:inherit}
+  .node:hover{border-color:var(--sienna-deep)}
+  .node.active{background:var(--sienna-deep);border-color:var(--sienna-deep);color:var(--paper)}
+  .node .n{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:28px;line-height:1}
+  .node h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:16px;line-height:1.2;margin-top:8px}
+  .node.active h2{color:var(--paper)}
+  .detail{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px}
+  .detail h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:28px}
+  .detail p{font-size:19px;color:var(--ink-soft);margin-top:8px;max-width:680px}
+  .detail p strong{color:var(--ink)}
+  .detail .fig{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:40px;color:var(--sienna-deep);margin-top:14px}
+  .detail .fig span{font-size:16px;color:var(--ink-soft);font-weight:700;display:block;margin-top:4px}
+  .moves{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+  .move{background:var(--ink);color:var(--paper);border-radius:16px;padding:22px}
+  .move b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:36px;line-height:1;display:block}
+  .move span{font-size:15px;color:var(--cream);display:block;margin-top:6px}
+  .note{margin-top:24px;font-size:17px;color:var(--ink-soft)}
+  .source{margin-top:20px;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:16px}
+  .source a{color:var(--sienna-deep)}
+  @media (max-width:900px){.flow{grid-template-columns:repeat(3,1fr)}.moves{grid-template-columns:1fr}}
+  @media (max-width:600px){.hero{padding:44px 20px 40px}.flow{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="kicker">Glenride / Supply chain</span>
+      <h1>The chain, end to end.</h1>
+      <p>One medicine, six stages. Tap a stage to see where it breaks.</p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="flow" role="group" aria-label="Choose a stage">
+      <button type="button" class="node active" data-stage="sourcing"><span class="n">01</span><h2>Sourcing</h2></button>
+      <button type="button" class="node" data-stage="manufacturing"><span class="n">02</span><h2>Manufacturing</h2></button>
+      <button type="button" class="node" data-stage="transportation"><span class="n">03</span><h2>Transportation</h2></button>
+      <button type="button" class="node" data-stage="distribution"><span class="n">04</span><h2>Distribution</h2></button>
+      <button type="button" class="node" data-stage="verification"><span class="n">05</span><h2>Verification</h2></button>
+      <button type="button" class="node" data-stage="delivery"><span class="n">06</span><h2>Delivery</h2></button>
+    </div>
+
+    <div class="detail" id="detail" aria-live="polite"></div>
+
+    <div class="moves">
+      <div class="move"><b>197</b><span>ASHP live bulletins, Nov 23, 2026</span></div>
+      <div class="move"><b>69 of 75</b><span>FDA entries in shortage, Nov 23, 2026</span></div>
+      <div class="move"><b>48%</b><span>Sole source, single manufacturer, Q3 2026</span></div>
+    </div>
+
+    <div class="detail" style="margin-top:24px">
+      <h2>Pearls</h2>
+      <p><strong>The system behind this record.</strong> Weekly drug shortage digest, live.</p>
+      <p>Web app v1 live Nov 19, 2026. MCP v1.0 live Nov 17, 2026. 17 of 17 tests.</p>
+      <p><a href="https://pearls.glenride.com" style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;color:#B84A2B;text-decoration:none">pearls.glenride.com</a></p>
+    </div>
+
+    <p class="note">Worked example: the U.S. drug shortage record. No routes, ports, or disruption figures are invented here. Where no verified route data exists, the stage says so.</p>
+    <p class="source">Source: Glenride weekly digest runs, Oct 19 to Nov 23, 2026. Attestation GLR-AT-2026-6ZGY2J, issued Nov 23, 2026, 9:01:29 AM EST. Figures for research citation only. No clinical guidance. Canonical palette only.</p>
+  </main>
+
+<script>
+const stages = {
+  sourcing: ["Sourcing", "<p><strong>Where a medicine starts.</strong> Ingredients and starting materials, from a small number of suppliers.</p><div class=\"fig\">48%<span>Sole source, single manufacturer, Q3 2026</span></div><p>One supplier fails, and the chain has no second source to fall back on.</p>"],
+  manufacturing: ["Manufacturing", "<p><strong>Where it is made.</strong> A medicine is made in a small number of plants, often one.</p><p>No verified plant level data is shown here. The concentration above is the verified signal.</p>"],
+  transportation: ["Transportation", "<p><strong>Where it moves.</strong> From plant to distributor, then to pharmacy and clinic.</p><p>No verified route data is shown here. No ports or routes are invented.</p>"],
+  distribution: ["Distribution", "<p><strong>Where it is listed.</strong> Public U.S. listings change without notice.</p><p>Nov 9, 2026: 2 new bulletins, 3 resolved. ASHP held at 190 live.</p>"],
+  verification: ["Verification", "<p><strong>Witness. Where it is checked.</strong> Retrieved, recorded, validated, attested.</p><div class=\"fig\">GLR-AT-2026-6ZGY2J<span>Issued Nov 23, 2026. Ed25519. Anchored on Base Sepolia.</span></div><p>Witness V1 shipped Oct 22, 2026. Signed attestations, public registry, issue, challenge, revoke.</p>"],
+  delivery: ["Delivery", "<p><strong>Where it reaches a patient.</strong> A medicine a clinic, hospital, or patient depends on is suddenly unavailable.</p><p>Talk to your clinician or pharmacist if a medicine you need is in shortage.</p>"]
+};
+const detail = document.getElementById('detail');
+function show(key){
+  const s = stages[key];
+  detail.innerHTML = '<h2>' + s[0] + '</h2>' + s[1];
+  document.querySelectorAll('.node').forEach(b => b.classList.toggle('active', b.dataset.stage === key));
+}
+document.querySelectorAll('.node').forEach(b => b.addEventListener('click', () => show(b.dataset.stage)));
+show('sourcing');
+</script>
+</body>
+</html>
