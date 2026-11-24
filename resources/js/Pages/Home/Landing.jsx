@@ -443,8 +443,7 @@ export default function Landing({
                             Applied AI and enterprise software.
                         </h2>
                         <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            Working software, live. Work in progress, labeled
-                            as it stands.
+                            Working software, live.
                         </p>
                         <p className="mt-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
                             ThinkTank OS is the route for scholars: submit
