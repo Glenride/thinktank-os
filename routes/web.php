@@ -58,6 +58,7 @@ Route::domain('store.dvaughnhouse.com')->group(function () {
 
 // Glenride institutional front door; the Vanguard Library lives at /library
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/library', [VanguardLibraryController::class, 'index'])->name('library.index');
 // /briefs has no index of its own — the library is the briefs list.
 Route::redirect('/briefs', '/library', 301);

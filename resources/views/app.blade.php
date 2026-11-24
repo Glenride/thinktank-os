@@ -72,5 +72,27 @@
             </div>
         </noscript>
         @endif
+        {{-- AEO: plain-text homepage pitch for crawlers that don't run JS.
+             Same words as the interactive homepage — no cloaking. --}}
+        @if(isset($homeSeo) && ($page['component'] ?? null) === 'Home/Landing')
+        <noscript>
+            <div>
+                <h1>{{ $homeSeo['headline'] }}</h1>
+                <p><strong>{{ $homeSeo['principle'] }}</strong></p>
+                @foreach($homeSeo['hero'] as $para)
+                <p>{{ $para }}</p>
+                @endforeach
+                <h2>What Glenride studies</h2>
+                <ul>
+                    @foreach($homeSeo['areas'] as $area)
+                    <li><strong>{{ $area['name'] }}</strong>: {{ $area['line'] }}</li>
+                    @endforeach
+                </ul>
+                <p>{{ $homeSeo['proof'] }}</p>
+                <p>{{ $homeSeo['scholars'] }}</p>
+                <p>{{ $homeSeo['closing'] }}</p>
+            </div>
+        </noscript>
+        @endif
     </body>
 </html>

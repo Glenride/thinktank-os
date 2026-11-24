@@ -5,7 +5,7 @@
  */
 export default function SiteFooter() {
     const legal = [
-        { label: 'About', href: 'https://glenride.com/#about' },
+        { label: 'About', href: '/about' },
         { label: 'Contact', href: 'https://glenride.com/#contact' },
         { label: 'Terms of Service', href: 'https://glenride.com/terms' },
         { label: 'Privacy Policy', href: 'https://glenride.com/privacy' },

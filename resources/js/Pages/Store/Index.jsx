@@ -430,7 +430,7 @@ export default function Index({ categories = [], stripeKey = '' }) {
                         What can I buy from the store?
                     </h2>
                     <p className="mt-4 text-sm leading-relaxed text-ink-soft dark:text-cream-soft">
-                        Field guides from Reynard's (the 30-Day Ruck Reset is $19), free Glenride apps and tools that open in your browser, and executive briefings for institutions — salon seats at $500, the ContextForge license at $1,200 per year, and annual corporate retainers at $25,000. Anything marked "Available now" can be bought today through Stripe. Nothing here takes payment before its price and terms are published. Prices as of October 2026.
+                        Field guides from Reynard's (the 30-Day Ruck Reset is $19), free Glenride apps and tools that open in your browser, and executive briefings for institutions — salon seats at $500, the ContextForge license at $1,200 per year, and annual corporate retainers at $25,000. Anything marked "Available now" can be bought today through Stripe. Nothing here takes payment before its price and terms are published. Prices as of October 2026. Buying from the store funds the work; it does not shape it. Research conclusions answer to evidence, not to buyers or sponsors.
                     </p>
                 </div>
             </section>

@@ -772,14 +772,14 @@ export default function Landing({
                         </div>
                         <a
                             id="contact"
-                            href="https://dvaughnhouse.com/#contact"
+                            href="mailto:dvaughn@dvaughnhouse.com"
                             className="group flex flex-wrap items-baseline justify-between gap-2 border-b border-line py-6 transition dark:border-line-dark"
                         >
                             <span className="font-display text-xl font-bold text-ink transition group-hover:text-sienna-deep dark:text-cream dark:group-hover:text-sienna">
                                 Contact
                             </span>
                             <span className="text-sm text-ink-soft dark:text-cream-soft">
-                                Reach Glenride through the routing hub →
+                                dvaughn@dvaughnhouse.com →
                             </span>
                         </a>
                     </div>
