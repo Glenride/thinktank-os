@@ -3,6 +3,7 @@ import ImageBandCarousel from '@/Components/ImageBandCarousel';
 import InstitutionalHeader from '@/Components/InstitutionalHeader';
 import SiteFooter from '@/Components/SiteFooter';
 import { Head, Link } from '@inertiajs/react';
+import { useCallback } from 'react';
 
 // Gateway hero slides — full-bleed images, each with its own overlay copy.
 const HERO_SLIDES = [
@@ -89,12 +90,46 @@ const RESEARCH_AREAS = [
 
 // Branding upgrade, Nov 24, 2026 — design retained, copy shortened,
 // visuals inserted in place. Standalone visuals live in public/visuals/.
+// The frame fits its content height on load and whenever the content
+// changes size (same-origin), so no dead space sits below a visual.
 function VisualFrame({ title, src, height = 720 }) {
+    const fit = useCallback((frame) => {
+        if (!frame) return;
+        try {
+            const doc = frame.contentDocument;
+            if (!doc) return;
+            const h = doc.documentElement.scrollHeight;
+            if (h > 0) frame.style.height = `${h}px`;
+        } catch (e) {
+            // Cross-origin or not loaded yet: keep the set height.
+        }
+    }, []);
+
+    const onLoad = useCallback(
+        (event) => {
+            const frame = event.currentTarget;
+            fit(frame);
+            try {
+                const doc = frame.contentDocument;
+                if (doc && doc.body && !frame._glenrideResizeObserver) {
+                    frame._glenrideResizeObserver = new ResizeObserver(() =>
+                        fit(frame),
+                    );
+                    frame._glenrideResizeObserver.observe(doc.body);
+                }
+            } catch (e) {
+                // Keep the set height.
+            }
+        },
+        [fit],
+    );
+
     return (
         <iframe
             title={title}
             src={src}
             loading="lazy"
+            onLoad={onLoad}
             style={{ height: `${height}px` }}
             className="mt-10 w-full overflow-hidden rounded border border-line bg-paper dark:border-line-dark dark:bg-night-card"
         />
