@@ -171,7 +171,7 @@ export default function Landing({
 
     return (
         <div className="min-h-screen bg-paper font-serif text-ink selection:bg-sienna selection:text-ink dark:bg-night dark:text-cream">
-            <Head title="Weekly U.S. Drug Shortage Digest | Glenride" />
+            <Head title="Weekly U.S. Drug Shortage Digest" />
 
             <InstitutionalHeader
                 auth={auth}

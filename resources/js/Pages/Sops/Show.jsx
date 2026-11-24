@@ -23,7 +23,7 @@ export default function Show({ document }) {
                 </div>
             }
         >
-            <Head title={`${document.id} — ${document.title} - Glenride`} />
+            <Head title={`${document.id} — ${document.title}`} />
 
             <style>{`
                 .sop-content { color: #292524; line-height: 1.75; }

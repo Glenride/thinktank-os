@@ -7,7 +7,7 @@ const DIGEST_BRIEF = '/briefs/f451f193-a6b6-574d-a42e-f3c7eb2e38cb';
 export default function FdaList({ auth }) {
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title="FDA Drug Shortage List | Glenride">
+            <Head title="FDA Drug Shortage List">
                 <meta
                     name="description"
                     content="The FDA drug shortage list, explained: what the FDA counts, how it differs from ASHP, and where to check the list itself. From Glenride."

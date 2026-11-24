@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 export default function Show({ document, auth }) {
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title={`${document.title} - Glenride`} />
+            <Head title={`${document.title}`} />
 
             <style>{`
                 .essay-content { color: #221D18; line-height: 1.8; font-size: 1.05rem; }

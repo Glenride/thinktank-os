@@ -88,9 +88,6 @@ export default function InstitutionalHeader({
                             <Dropdown.Link href={GATEWAY_URL}>
                                 Routing Hub
                             </Dropdown.Link>
-                            <Dropdown.Link href="https://mission.dvaughnhouse.com">
-                                Mission Control
-                            </Dropdown.Link>
                         </Dropdown.Content>
                     </Dropdown>
                 </nav>
@@ -141,7 +138,7 @@ export default function InstitutionalHeader({
                                     href={route('login')}
                                     className="inline-flex items-center rounded-lg bg-sienna px-4 py-2 text-xs font-mono font-semibold uppercase tracking-wider text-ink shadow-sm transition hover:bg-sienna-deep hover:text-paper"
                                 >
-                                    ThinkTank OS
+                                    Sign in
                                 </Link>
                                 <a
                                     href={`${GATEWAY_URL}/donate`}
@@ -172,9 +169,6 @@ export default function InstitutionalHeader({
                     <a href={GATEWAY_URL} className={mobileLinkCls}>
                         Routing Hub
                     </a>
-                    <a href="https://mission.dvaughnhouse.com" className={mobileLinkCls}>
-                        Mission Control
-                    </a>
                     <div className="mt-2 border-t border-line pt-2 dark:border-line-dark">
                         {auth?.user ? (
                             <ResponsiveNavLink href={route('dashboard')}>
@@ -183,7 +177,7 @@ export default function InstitutionalHeader({
                         ) : (
                             <>
                                 <ResponsiveNavLink href={route('login')}>
-                                    ThinkTank OS
+                                    Sign in
                                 </ResponsiveNavLink>
                                 <a
                                     href={`${GATEWAY_URL}/donate`}

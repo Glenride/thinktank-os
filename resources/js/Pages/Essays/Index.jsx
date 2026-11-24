@@ -4,7 +4,7 @@ import { Head, Link } from '@inertiajs/react';
 export default function Index({ documents = [], auth }) {
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title="Essays - Glenride" />
+            <Head title="Essays" />
             <InstitutionalHeader auth={auth} active="essays" />
 
             {/* Banner hero — full-bleed image */}

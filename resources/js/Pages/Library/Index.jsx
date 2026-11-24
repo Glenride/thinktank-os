@@ -40,7 +40,7 @@ export default function Index({ briefs = [], auth }) {
 
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title="The Vanguard Library - Glenride" />
+            <Head title="The Vanguard Library" />
 
             <InstitutionalHeader auth={auth} active="library" />
 

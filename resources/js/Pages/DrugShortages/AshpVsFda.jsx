@@ -7,7 +7,7 @@ const DIGEST_BRIEF = '/briefs/f451f193-a6b6-574d-a42e-f3c7eb2e38cb';
 export default function AshpVsFda({ auth }) {
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title="ASHP vs FDA Drug Shortage List | Glenride">
+            <Head title="ASHP vs FDA Drug Shortage List">
                 <meta
                     name="description"
                     content="ASHP vs FDA drug shortage list: why the two lists disagree, what each counts, and how Glenride reads them together."

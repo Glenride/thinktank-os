@@ -4,7 +4,7 @@ import { Head, Link } from '@inertiajs/react';
 export default function Show({ document }) {
     return (
         <div className="min-h-screen bg-paper font-serif text-ink selection:bg-sienna selection:text-ink dark:bg-night dark:text-cream">
-            <Head title={`${document.title} - Glenride`} />
+            <Head title={`${document.title}`} />
 
             <main className="mx-auto max-w-4xl px-6 py-12 lg:px-8">
                 <p className="font-mono text-xs font-bold uppercase tracking-widest text-sienna-deep dark:text-sienna">

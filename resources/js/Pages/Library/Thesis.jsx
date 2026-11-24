@@ -5,7 +5,7 @@ import { Head, Link } from '@inertiajs/react';
 export default function Thesis({ auth }) {
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title="Institutional Thesis - Glenride" />
+            <Head title="Institutional Thesis" />
 
             <InstitutionalHeader
                 auth={auth}

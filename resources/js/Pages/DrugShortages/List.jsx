@@ -7,7 +7,7 @@ const DIGEST_BRIEF = '/briefs/f451f193-a6b6-574d-a42e-f3c7eb2e38cb';
 export default function List({ auth }) {
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title="Drug Shortage List | Glenride">
+            <Head title="Drug Shortage List">
                 <meta
                     name="description"
                     content="The U.S. drug shortage list, published weekly by Glenride from FDA and ASHP data — current shortages, what resolved, and what changed."

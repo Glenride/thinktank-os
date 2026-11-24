@@ -22,7 +22,7 @@ export default function DigestQueue({ rows = [], canIssue = false, auth, humanPr
 
     return (
         <div className="min-h-screen bg-paper font-serif text-ink selection:bg-sienna selection:text-ink dark:bg-night dark:text-cream">
-            <Head title="Digest attestation queue - Glenride" />
+            <Head title="Digest attestation queue" />
 
             <InstitutionalHeader auth={auth} active="attestations" subtitle="Glenride Attestations" />
 

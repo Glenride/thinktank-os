@@ -7,7 +7,7 @@ const DIGEST_BRIEF = '/briefs/f451f193-a6b6-574d-a42e-f3c7eb2e38cb';
 export default function Current({ auth }) {
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title="Current Drug Shortages | Glenride">
+            <Head title="Current Drug Shortages">
                 <meta
                     name="description"
                     content="Current drug shortages in the U.S., measured weekly by Glenride from FDA and ASHP data — what is in shortage, what resolved, and why."

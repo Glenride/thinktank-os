@@ -17,7 +17,7 @@ export default function Index({ documents = [] }) {
                 </div>
             }
         >
-            <Head title="Standard Operating Procedures - Glenride" />
+            <Head title="Standard Operating Procedures" />
 
             <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12">
                 <div className="max-w-3xl">

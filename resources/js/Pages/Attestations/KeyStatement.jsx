@@ -7,7 +7,7 @@ export default function KeyStatement({ keys = {}, active_key_id = '', identity =
 
     return (
         <div className="min-h-screen bg-paper font-serif text-ink selection:bg-sienna selection:text-ink dark:bg-night dark:text-cream">
-            <Head title="Signing Key Statement - Glenride Attestations" />
+            <Head title="Signing Key Statement - Attestations" />
 
             <InstitutionalHeader auth={auth} active="attestations" subtitle="Glenride Attestations" />
 

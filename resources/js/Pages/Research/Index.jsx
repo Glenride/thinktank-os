@@ -5,7 +5,7 @@ import { Head, Link } from '@inertiajs/react';
 export default function Index({ study, reports = [], auth }) {
     return (
         <div className="min-h-screen bg-paper text-ink dark:bg-night dark:text-cream font-serif selection:bg-sienna selection:text-ink">
-            <Head title="Research - Glenride" />
+            <Head title="Research" />
             <InstitutionalHeader auth={auth} active="research" subtitle="Glenride Research" />
 
             <main className="mx-auto max-w-3xl px-6 py-16 sm:py-20 lg:px-8">
