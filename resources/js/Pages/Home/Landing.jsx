@@ -1,69 +1,8 @@
-import HeroCarousel from '@/Components/HeroCarousel';
 import ImageBandCarousel from '@/Components/ImageBandCarousel';
 import InstitutionalHeader from '@/Components/InstitutionalHeader';
 import SiteFooter from '@/Components/SiteFooter';
 import { Head, Link } from '@inertiajs/react';
 import { useCallback } from 'react';
-
-// Gateway hero slides — full-bleed images, each with its own overlay copy.
-const HERO_SLIDES = [
-    {
-        image: '/images/heroes/hero-port-sunset.webp',
-        headline: 'Supply chains, seen clearly.',
-        line: 'For operators and decision-makers: Glenride tracks how critical supply chains fail, where they bend, and what keeps them running — before the break reaches you.',
-        ctaLabel: 'Enter the Vanguard Library',
-        ctaHref: route('library.index'),
-    },
-    {
-        image: '/images/heroes/hero-global-network.webp',
-        headline: 'Research that signs its work.',
-        line: 'I wish there was a record I could check, not a claim I had to take on trust. Every brief carries its evidence, its verifier, and its date — attested, and open to challenge.',
-        ctaLabel: 'View the attestations',
-        ctaHref: route('attestations.index'),
-    },
-    {
-        image: '/images/heroes/hero-ship-risk.webp',
-        headline: 'Shortages, measured — not guessed.',
-        line: 'I hate finding out a drug is in shortage from a pharmacist. Every Monday, Glenride publishes a weekly U.S. drug shortage digest — what is in shortage, what resolved, and why — from FDA and ASHP data. As of Q3 2026: 225 active U.S. drug shortages, 87 new this year.',
-        ctaLabel: 'Read the weekly digest',
-        ctaHref: route('library.index'),
-    },
-    {
-        image: '/images/heroes/hero-port-lanes.webp',
-        headline: 'Built to be checked.',
-        line: 'Briefs, standards, and a store where everything has a price and nothing is promised.',
-        ctaLabel: 'Visit the store',
-        ctaHref: route('store.index'),
-    },
-    {
-        image: '/images/heroes/hero-trucks.webp',
-        headline: 'Every mile, accounted for.',
-        line: 'Ports, rails, roads, and runways are one chain. Glenride reads it whole — and publishes what it finds.',
-        ctaLabel: 'Enter the Library',
-        ctaHref: route('library.index'),
-    },
-    {
-        image: '/images/heroes/hero-air-sea.webp',
-        headline: "Modes change. The record doesn't.",
-        line: 'Air to sea to road, critical cargo keeps its evidence — every handoff timed, signed, and open to challenge.',
-        ctaLabel: 'See the attestations',
-        ctaHref: route('attestations.index'),
-    },
-    {
-        image: '/images/heroes/hero-cold-chain.webp',
-        headline: 'The cold chain, held to the degree.',
-        line: 'Temperature, humidity, shock — the conditions a medicine travels in are part of its record, not a footnote.',
-        ctaLabel: 'Read the Thesis',
-        ctaHref: route('thesis.index'),
-    },
-    {
-        image: '/images/heroes/hero-control-room.webp',
-        headline: 'Watched, end to end.',
-        line: 'A chain you can see is a chain you can fix. Exceptions surface early — and so do the people answering for them.',
-        ctaLabel: 'Read the Essays',
-        ctaHref: route('essays.index'),
-    },
-];
 
 // Body band carousel — the chain at work, below the opening sections.
 const BODY_BAND_IMAGES = [
@@ -76,15 +15,30 @@ const BODY_BAND_IMAGES = [
 const RESEARCH_AREAS = [
     {
         name: 'Supply-Chain Resilience',
-        line: 'See where the chain breaks, before harm hits.',
+        line: 'Understanding the systems behind essential goods, identifying vulnerabilities, and examining what happens when critical links fail.',
     },
     {
-        name: 'Pharmaceutical Data Evaluation',
-        line: 'What is in shortage, this week, with source and date.',
+        name: 'Pharmaceutical Intelligence',
+        line: 'Evaluating drug shortage information and pharmaceutical data to provide clear, source-attributed intelligence.',
     },
     {
-        name: 'Applied AI & Enterprise Software Systems',
-        line: 'Working software, live. Work in progress, labeled as it stands.',
+        name: 'Applied AI and Enterprise Software',
+        line: 'Building practical software systems that turn research, data, and institutional knowledge into useful capabilities.',
+    },
+];
+
+const WORK_STEPS = [
+    {
+        verb: 'Investigate.',
+        line: 'Identify vulnerabilities, examine evidence, and understand the systems behind complex problems.',
+    },
+    {
+        verb: 'Build.',
+        line: 'Develop software, analytical tools, and practical models that address what the research reveals.',
+    },
+    {
+        verb: 'Verify.',
+        line: 'Document the evidence, methodology, and results so others can independently examine the work.',
     },
 ];
 
@@ -171,7 +125,7 @@ export default function Landing({
 
     return (
         <div className="min-h-screen bg-paper font-serif text-ink selection:bg-sienna selection:text-ink dark:bg-night dark:text-cream">
-            <Head title="Weekly U.S. Drug Shortage Digest" />
+            <Head title="Supply chains, seen clearly." />
 
             <InstitutionalHeader
                 auth={auth}
@@ -179,25 +133,69 @@ export default function Landing({
                 subtitle="Independent, AI-Native Think Tank"
             />
 
-            {/* Gateway — this landing page is the site's Routing Hub.
-                Hero: full-bleed rotating image carousel with a flat ink
-                scrim; the Glenride wordmark stays the persistent H1 and
-                each slide carries its own headline, line, and CTA. */}
-            <HeroCarousel slides={HERO_SLIDES}>
-                {!auth?.user && (
-                    <p className="mt-10 font-mono text-xs uppercase tracking-widest text-paper/60 dark:text-cream-soft">
-                        Fellows and scholars —{' '}
-                        <Link
-                            href={route('login')}
-                            className="font-semibold text-paper underline decoration-sienna decoration-2 underline-offset-4 transition hover:text-sienna dark:text-cream"
-                        >
-                            Scholar sign in
-                        </Link>
+            {/* Hero — one message, not a rotation. A visitor should know
+                what Glenride is, what it does, and why it matters in the
+                first screen. */}
+            <section className="relative overflow-hidden bg-ink">
+                <img
+                    src="/images/heroes/hero-port-sunset.webp"
+                    alt=""
+                    fetchPriority="high"
+                    className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-ink/65" />
+                <div className="relative mx-auto max-w-7xl px-6 py-28 lg:px-8 lg:py-36">
+                    <p className="font-mono text-xs uppercase tracking-widest text-paper/70">
+                        Independent, AI-Native Think Tank
                     </p>
-                )}
-            </HeroCarousel>
+                    <h1 className="mt-6 max-w-3xl font-display text-5xl font-bold leading-tight tracking-tight text-paper sm:text-6xl">
+                        Supply chains, seen clearly.
+                    </h1>
+                    <p className="mt-6 font-display text-2xl font-bold text-sienna">
+                        Built to be checked.
+                    </p>
+                    <div className="mt-6 max-w-2xl space-y-4 text-lg leading-relaxed text-paper/85">
+                        <p>
+                            Critical systems rarely fail without warning. The
+                            signals are there—in the data, the dependencies,
+                            and the decisions made along the way.
+                        </p>
+                        <p>
+                            Glenride investigates vulnerabilities in the
+                            systems modern life depends on, turning fragmented
+                            information into actionable intelligence that
+                            people can examine, verify, and use.
+                        </p>
+                    </div>
+                    <div className="mt-10 flex flex-wrap gap-4">
+                        <Link
+                            href={route('research.index')}
+                            className="rounded-full bg-sienna px-6 py-3 text-sm font-semibold text-ink transition hover:bg-sienna-deep hover:text-paper"
+                        >
+                            Explore Our Research
+                        </Link>
+                        <Link
+                            href={route('library.index')}
+                            className="rounded-full border border-paper/60 px-6 py-3 text-sm font-semibold text-paper transition hover:border-paper hover:bg-paper/10"
+                        >
+                            Enter the Vanguard Library
+                        </Link>
+                    </div>
+                    {!auth?.user && (
+                        <p className="mt-10 font-mono text-xs uppercase tracking-widest text-paper/60">
+                            Fellows and scholars —{' '}
+                            <Link
+                                href={route('login')}
+                                className="font-semibold text-paper underline decoration-sienna decoration-2 underline-offset-4 transition hover:text-sienna"
+                            >
+                                Scholar sign in
+                            </Link>
+                        </p>
+                    )}
+                </div>
+            </section>
 
-            {/* What Glenride is */}
+            {/* What Glenride is — the power-wisdom gap */}
             <section
                 id="about"
                 className="border-b border-line dark:border-line-dark"
@@ -205,22 +203,25 @@ export default function Landing({
                 <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
                     <div className="max-w-3xl">
                         <h2 className="font-display text-3xl font-bold tracking-tight text-ink dark:text-cream sm:text-4xl">
-                            Built to close the power-wisdom gap
+                            Closing the power-wisdom gap.
                         </h2>
                         <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            <p>Capability grows fast. Wisdom has to keep up.</p>
                             <p>
-                                Glenride is an independent, AI-native think tank.
-                                We find where critical systems break before the
-                                break becomes harm — and we publish a record
-                                anyone can check.
+                                Technology expands what we can do. Evidence
+                                and sound judgment help us decide what we
+                                should do.
                             </p>
                             <p>
-                                We study supply chain vulnerabilities,
-                                pharmaceutical data, and the software systems
-                                modern life quietly depends on. Every Monday we
-                                publish a weekly U.S. drug shortage digest,
-                                with source and date on every number.
+                                Glenride is an independent, AI-native think
+                                tank studying the vulnerabilities,
+                                dependencies, and emerging risks within
+                                critical systems.
+                            </p>
+                            <p>
+                                We combine independent research, artificial
+                                intelligence, and human judgment to identify
+                                problems, evaluate evidence, and develop
+                                practical solutions.
                             </p>
                             <p>— D'Vaughn House, Founder</p>
                         </div>
@@ -250,17 +251,62 @@ export default function Landing({
                 </div>
             </section>
 
+            {/* Research that moves beyond the page */}
+            <section className="border-b border-line dark:border-line-dark">
+                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+                    <div className="max-w-3xl">
+                        <h2 className={VISUAL_HEADING}>
+                            Research that moves beyond the page.
+                        </h2>
+                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            We believe research should do more than describe
+                            problems. It should help people understand them,
+                            test possible solutions, and make better decisions.
+                        </p>
+                    </div>
+                    <div className="mt-10 grid gap-8 border-t border-line pt-10 dark:border-line-dark md:grid-cols-3">
+                        {WORK_STEPS.map((step) => (
+                            <div key={step.verb}>
+                                <h3 className="font-display text-xl font-bold text-ink dark:text-cream">
+                                    {step.verb}
+                                </h3>
+                                <p className="mt-3 leading-relaxed text-ink-soft dark:text-cream-soft">
+                                    {step.line}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                    <p className="mt-10 max-w-3xl text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                        The objective is not simply to produce more
+                        information. It is to make information more useful,
+                        reliable, and accountable.
+                    </p>
+                </div>
+            </section>
+
             {/* Human and AI — AI prepares, humans decide */}
             <section className="border-b border-line dark:border-line-dark">
                 <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
                     <div className="max-w-3xl">
                         <h2 className={VISUAL_HEADING}>
-                            AI prepares, humans decide.
+                            AI prepares. Humans decide.
                         </h2>
-                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            Machines propose, but humans are the source of all
-                            decisions.
-                        </p>
+                        <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            <p>
+                                Artificial intelligence can accelerate
+                                research, organize information, identify
+                                patterns, and prepare analysis.
+                            </p>
+                            <p>
+                                But important decisions require human judgment
+                                and accountability.
+                            </p>
+                            <p>
+                                At Glenride, AI supports the work. People
+                                remain responsible for evaluating evidence,
+                                interpreting findings, and making decisions.
+                            </p>
+                        </div>
                     </div>
                     <VisualFrame
                         title="Human and AI collaboration"
@@ -283,10 +329,35 @@ export default function Landing({
                         <h2 className={VISUAL_HEADING}>
                             The chain, end to end.
                         </h2>
-                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            One medicine, six stages. Tap a stage to see where
-                            it breaks.
-                        </p>
+                        <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            <p>
+                                A supply chain is only as resilient as the
+                                relationships connecting it.
+                            </p>
+                            <p>
+                                We examine the full journey—from sourcing and
+                                manufacturing to transportation, distribution,
+                                and delivery—to understand where disruptions
+                                originate, how they spread, and where
+                                intervention matters most.
+                            </p>
+                            <p className="font-mono text-sm font-semibold tracking-wide text-ink dark:text-cream">
+                                Sourcing → Manufacturing → Transportation →
+                                Distribution → Delivery
+                            </p>
+                            <p>
+                                One disruption can affect an entire system.
+                                Understanding the connections makes it possible
+                                to see risks that individual organizations may
+                                overlook.
+                            </p>
+                        </div>
+                        <Link
+                            href={route('research.index')}
+                            className="mt-8 inline-flex items-center font-mono text-sm font-semibold text-sienna-deep transition hover:text-ink dark:text-sienna dark:hover:text-cream"
+                        >
+                            Explore Supply-Chain Research →
+                        </Link>
                     </div>
                     <VisualFrame
                         title="The chain, end to end"
@@ -296,24 +367,65 @@ export default function Landing({
                 </div>
             </section>
 
-            {/* Pharmaceutical data evaluation — Pearls */}
+            {/* Pharmaceutical intelligence — Pearls */}
             <section className="border-b border-line dark:border-line-dark">
                 <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
                     <div className="max-w-3xl">
                         <h2 className={VISUAL_HEADING}>
-                            What is in shortage, this week.
+                            Pharmaceutical intelligence. With sources
+                            attached.
                         </h2>
-                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            ASHP 197 live bulletins. FDA 69 of 75. Nov 23,
-                            2026. Pearls, at{' '}
+                        <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            <p>
+                                Drug shortage information changes. Sources
+                                differ. Reporting dates matter.
+                            </p>
+                            <p>
+                                Glenride publishes a weekly U.S. drug shortage
+                                digest that brings together information from
+                                authoritative public sources, including the FDA
+                                and ASHP.
+                            </p>
+                            <p>
+                                Every reported figure is accompanied by its
+                                source and reporting date. Our goal is to make
+                                shortage information easier to examine,
+                                understand, and verify.
+                            </p>
+                            <p>
+                                <span className="font-semibold text-ink dark:text-cream">
+                                    Pearls — Shortage Signal.
+                                </span>{' '}
+                                A pharmaceutical intelligence service developed
+                                to make drug shortage information more
+                                accessible and accountable.
+                            </p>
+                            <p>
+                                ASHP 197 live bulletins. FDA 69 of 75. Nov
+                                23, 2026. Pearls, at{' '}
+                                <a
+                                    href="https://pearls.glenride.com"
+                                    className="font-semibold text-sienna-deep transition hover:text-ink dark:text-sienna dark:hover:text-cream"
+                                >
+                                    pearls.glenride.com
+                                </a>
+                                . Attestation GLR-AT-2026-6ZGY2J.
+                            </p>
+                        </div>
+                        <div className="mt-8 flex flex-wrap gap-4">
                             <a
                                 href="https://pearls.glenride.com"
-                                className="font-semibold text-sienna-deep transition hover:text-ink dark:text-sienna dark:hover:text-cream"
+                                className="rounded-full bg-sienna px-6 py-3 text-sm font-semibold text-ink transition hover:bg-sienna-deep hover:text-paper"
                             >
-                                pearls.glenride.com
+                                Explore Pearls
                             </a>
-                            . Attestation GLR-AT-2026-6ZGY2J.
-                        </p>
+                            <Link
+                                href={route('drug-shortages.current')}
+                                className="rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink transition hover:border-ink dark:border-line-dark dark:text-cream dark:hover:border-cream"
+                            >
+                                Read the Latest Weekly Digest
+                            </Link>
+                        </div>
                     </div>
                     <VisualFrame
                         title="Pharmaceutical data evaluation"
@@ -328,7 +440,7 @@ export default function Landing({
                 <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
                     <div className="max-w-3xl">
                         <h2 className={VISUAL_HEADING}>
-                            Built to be checked.
+                            Applied AI and enterprise software.
                         </h2>
                         <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
                             Working software, live. Work in progress, labeled
@@ -343,38 +455,41 @@ export default function Landing({
                 </div>
             </section>
 
-            {/* Innovation flywheel — research to business, and back */}
-            <section className="border-b border-line dark:border-line-dark">
-                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
-                    <div className="max-w-3xl">
-                        <h2 className={VISUAL_HEADING}>
-                            Research to business, and back.
-                        </h2>
-                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            Ventures means businesses. A model, not measured
-                            results.
-                        </p>
-                    </div>
-                    <VisualFrame
-                        title="Innovation flywheel"
-                        src="/visuals/flywheel.html"
-                        height={720}
-                    />
-                </div>
-            </section>
-
-            {/* The proof layer */}
+            {/* The proof layer — Built to be checked */}
             <section className="border-b border-line bg-paper-deep dark:border-line-dark dark:bg-night-card">
                 <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
                     <div className="max-w-3xl">
                         <h2 className="font-display text-3xl font-bold tracking-tight text-ink dark:text-cream sm:text-4xl">
-                            Proof, not promises.
+                            Built to be checked.
                         </h2>
-                        <p className="mt-6 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                            Every attested work carries a signed Glenride
-                            record: the claim, the evidence, the verifier, and
-                            the timestamp. The record is public, and anyone can
-                            verify it, or challenge it.
+                        <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            <p>
+                                A claim is only as useful as the evidence
+                                supporting it.
+                            </p>
+                            <p>
+                                Glenride&apos;s attestation framework creates
+                                a public record connecting a claim to its
+                                supporting evidence, verifier, and timestamp.
+                            </p>
+                            <p>
+                                Each record is designed to make the work
+                                easier to inspect and challenge.
+                            </p>
+                        </div>
+                        <p className="mt-8 font-mono text-sm font-semibold uppercase tracking-widest text-ink dark:text-cream">
+                            The record identifies:
+                        </p>
+                        <ul className="mt-4 space-y-2 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            <li>The claim being made.</li>
+                            <li>The evidence supporting it.</li>
+                            <li>The verification performed.</li>
+                            <li>The responsible verifier.</li>
+                            <li>The timestamp and record history.</li>
+                        </ul>
+                        <p className="mt-8 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            Verification should not depend on taking our word
+                            for it.
                         </p>
                         <p className="mt-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
                             <span className="font-semibold text-ink dark:text-cream">
@@ -402,7 +517,7 @@ export default function Landing({
                             href={route('attestations.index')}
                             className="mt-8 inline-flex items-center font-mono text-sm font-semibold text-sienna-deep transition hover:text-ink dark:text-sienna dark:hover:text-cream"
                         >
-                            Browse the public registry →
+                            Browse the Public Attestation Registry →
                         </Link>
                     </div>
                 </div>
@@ -412,9 +527,14 @@ export default function Landing({
             <section className="border-b border-line dark:border-line-dark">
                 <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
                     <div className="flex flex-wrap items-end justify-between gap-4">
-                        <h2 className="font-display text-3xl font-bold tracking-tight text-ink dark:text-cream sm:text-4xl">
-                            From the Vanguard Library
-                        </h2>
+                        <div>
+                            <h2 className="font-display text-3xl font-bold tracking-tight text-ink dark:text-cream sm:text-4xl">
+                                Research you can examine.
+                            </h2>
+                            <p className="mt-3 font-display text-xl font-bold text-ink dark:text-cream">
+                                The Vanguard Library
+                            </p>
+                        </div>
                         <Link
                             href={route('library.index')}
                             className="font-mono text-sm font-semibold text-sienna-deep transition hover:text-ink dark:text-sienna dark:hover:text-cream"
@@ -423,10 +543,26 @@ export default function Landing({
                         </Link>
                     </div>
 
-                    <p className="mt-6 max-w-3xl text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
-                        15 published briefs. Covers, abstracts, categories,
-                        full publication links.
-                    </p>
+                    <div className="mt-6 max-w-3xl space-y-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                        <p>
+                            The Vanguard Library is Glenride&apos;s public
+                            research collection.
+                        </p>
+                        <p>
+                            It brings together original research, technical
+                            briefs, independent analysis, and computational
+                            replications.
+                        </p>
+                        <p>
+                            We publish not only conclusions, but also the
+                            supporting methodology, relevant evidence, and
+                            technical records wherever available.
+                        </p>
+                        <p>
+                            15 published briefs. Research across disciplines.
+                            Evidence open to examination.
+                        </p>
+                    </div>
                     <VisualFrame
                         title="Vanguard Library"
                         src="/visuals/library.html"
@@ -469,6 +605,90 @@ export default function Landing({
                                 )}
                             </article>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Innovation flywheel — from research to practical application */}
+            <section className="border-b border-line dark:border-line-dark">
+                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+                    <div className="max-w-3xl">
+                        <h2 className={VISUAL_HEADING}>
+                            From research to practical application.
+                        </h2>
+                        <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            <p>
+                                We believe important ideas should have the
+                                opportunity to become useful things.
+                            </p>
+                            <p>
+                                Glenride connects research with software
+                                development, experimentation, and venture
+                                creation. When an identified problem calls for
+                                a practical solution, we explore whether that
+                                solution can become a working product, service,
+                                or independent business.
+                            </p>
+                            <p className="font-mono text-sm font-semibold tracking-wide text-ink dark:text-cream">
+                                Research → Discovery → Development →
+                                Application → Evaluation
+                            </p>
+                            <p>
+                                The results of practical work can inform new
+                                research, while research can reveal
+                                opportunities for new products and ventures.
+                            </p>
+                        </div>
+                    </div>
+                    <VisualFrame
+                        title="Innovation flywheel"
+                        src="/visuals/flywheel.html"
+                        height={720}
+                    />
+                </div>
+            </section>
+
+            {/* Closing */}
+            <section className="border-b border-line bg-ink dark:border-line-dark">
+                <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+                    <div className="max-w-3xl">
+                        <h2 className="font-display text-3xl font-bold tracking-tight text-paper sm:text-4xl">
+                            Independent thinking. Verifiable work.
+                        </h2>
+                        <div className="mt-6 space-y-5 text-lg leading-relaxed text-paper/85">
+                            <p>
+                                Glenride exists to help close the distance
+                                between what humanity can do and what humanity
+                                can responsibly accomplish.
+                            </p>
+                            <p>
+                                We study critical systems, develop practical
+                                intelligence, and build tools that help people
+                                make better-informed decisions.
+                            </p>
+                            <p>
+                                We believe the greatest value of knowledge is
+                                realized when it can be put to work—and when
+                                the work can stand up to scrutiny.
+                            </p>
+                        </div>
+                        <p className="mt-8 font-display text-2xl font-bold text-sienna">
+                            Glenride. Built to be checked.
+                        </p>
+                        <div className="mt-8 flex flex-wrap gap-4">
+                            <Link
+                                href={route('research.index')}
+                                className="rounded-full bg-sienna px-6 py-3 text-sm font-semibold text-ink transition hover:bg-sienna-deep hover:text-paper"
+                            >
+                                Explore Our Work
+                            </Link>
+                            <Link
+                                href={route('library.index')}
+                                className="rounded-full border border-paper/60 px-6 py-3 text-sm font-semibold text-paper transition hover:border-paper hover:bg-paper/10"
+                            >
+                                Enter the Vanguard Library
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>
