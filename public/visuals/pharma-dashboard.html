@@ -3,41 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What is in shortage, this week. - Glenride V4</title>
-<meta name="description" content="Glenride V4 pharmaceutical data dashboard. Weekly U.S. drug shortage figures from ASHP and FDA, with source and retrieval date on every number. Standalone visual.">
+<title>What is in shortage, this week. - Glenride</title>
+<meta name="description" content="Weekly U.S. drug shortage figures from ASHP and FDA, with source and retrieval date on every number.">
 <link rel="stylesheet" href="https://fonts.bunny.net/css?family=bricolage-grotesque:700,800|newsreader:400,400i,500,600">
 <style>
-  :root{--paper:#FAF5EC;--paper-deep:#F3ECDC;--ink:#221D18;--ink-soft:#57504A;--sienna:#E97451;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14);--cream:#F3ECDC}
+  :root{--paper:#FAF5EC;--ink:#221D18;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14)}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;line-height:1.5;-webkit-font-smoothing:antialiased}
   .hero{background:var(--ink);color:var(--paper);padding:56px 24px 48px}
   .hero-inner{max-width:960px;margin:0 auto}
   .hero h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(42px,6.5vw,72px);line-height:.98;letter-spacing:-.02em}
-  .hero h1 em{font-style:normal;color:var(--sienna)}
-  .hero p{font-size:21px;color:var(--cream);max-width:640px;margin-top:16px}
+  .hero h1 em{font-style:normal;color:var(--sienna-deep)}
+  .hero p{font-size:21px;color:var(--paper);max-width:640px;margin-top:16px}
   .wrap{max-width:960px;margin:0 auto;padding:36px 24px 48px}
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+  .stat{background:#FAF5EC;border:1px solid var(--line);border-radius:16px;padding:22px}
   .stat .num{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:50px;line-height:1;color:var(--sienna-deep)}
   .stat .label{font-size:17px;font-weight:600;margin-top:6px}
-  .stat .sub{font-size:14px;color:var(--ink-soft);margin-top:2px}
-  .asof{font-size:15px;color:var(--ink-soft);margin-top:16px}
+  .stat .sub{font-size:14px;color:var(--ink);margin-top:2px}
+  .asof{font-size:15px;color:var(--ink);margin-top:16px}
   .asof strong{color:var(--ink)}
   .runs{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-  .runs button{font:inherit;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:15px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 16px;cursor:pointer}
+  .runs button{font:inherit;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:15px;background:#FAF5EC;border:1px solid var(--line);border-radius:999px;padding:10px 16px;cursor:pointer}
   .runs button:hover{border-color:var(--sienna-deep)}
   .runs button.active{background:var(--sienna-deep);border-color:var(--sienna-deep);color:var(--paper)}
-  #detail{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+  #detail{margin-top:20px;background:#FAF5EC;border:1px solid var(--line);border-radius:16px;padding:24px}
   #detail h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:26px}
-  #detail .meta{font-size:14px;color:var(--ink-soft);margin-top:4px}
+  #detail .meta{font-size:14px;color:var(--ink);margin-top:4px}
   .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
   .detail-grid h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:15px;letter-spacing:.06em;color:var(--sienna-deep)}
-  .detail-grid p,.detail-grid li{font-size:18px;color:var(--ink-soft)}
+  .detail-grid p,.detail-grid li{font-size:18px;color:var(--ink)}
   .detail-grid ul{margin-left:20px}
   .detail-grid p strong,.detail-grid li strong{color:var(--ink)}
-  .chart{margin-top:24px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+  .chart{margin-top:24px;background:#FAF5EC;border:1px solid var(--line);border-radius:16px;padding:24px}
   .chart h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:24px}
-  .chart p{font-size:16px;color:var(--ink-soft);margin-top:4px}
+  .chart p{font-size:16px;color:var(--ink);margin-top:4px}
   .chart svg{width:100%;height:auto;display:block;margin-top:12px}
   .bar{fill:var(--sienna-deep)}
   .bar.latest{fill:var(--ink)}
@@ -45,14 +45,14 @@
   .bar-value{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:18px;fill:var(--ink)}
   .compare{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .compare-card{background:var(--ink);color:var(--paper);border-radius:16px;padding:24px}
-  .compare-card.light{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .compare-card.light{background:#FAF5EC;color:var(--ink);border:1px solid var(--line)}
   .compare-card h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:22px}
-  .compare-card .big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:44px;line-height:1;margin-top:10px;color:var(--sienna)}
+  .compare-card .big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:44px;line-height:1;margin-top:10px;color:var(--sienna-deep)}
   .compare-card.light .big{color:var(--sienna-deep)}
-  .compare-card p{font-size:17px;color:var(--cream);margin-top:8px}
-  .compare-card.light p{color:var(--ink-soft)}
+  .compare-card p{font-size:17px;color:var(--paper);margin-top:8px}
+  .compare-card.light p{color:var(--ink)}
   .disclaimer{margin-top:24px;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:18px}
-  .source{margin-top:20px;font-size:14px;color:var(--ink-soft)}
+  .source{margin-top:20px;font-size:14px;color:var(--ink)}
   .source a{color:var(--sienna-deep)}
   @media (max-width:680px){.hero{padding:40px 20px 36px}.stats{grid-template-columns:1fr 1fr}.detail-grid{grid-template-columns:1fr}.compare{grid-template-columns:1fr}}
 </style>
@@ -100,7 +100,7 @@
         <rect class="bar" x="60" y="52" width="110" height="168" rx="8"></rect>
         <rect class="bar" x="220" y="56" width="110" height="164" rx="8"></rect>
         <rect class="bar" x="380" y="56" width="110" height="164" rx="8"></rect>
-        <rect x="540" y="56" width="110" height="164" rx="8" fill="#F3ECDC" stroke="rgba(34,29,24,.14)"></rect>
+        <rect x="540" y="56" width="110" height="164" rx="8" fill="#FAF5EC" stroke="rgba(34,29,24,.14)"></rect>
         <rect class="bar latest" x="700" y="42" width="110" height="178" rx="8"></rect>
         <text class="bar-value" x="115" y="40" text-anchor="middle">192</text>
         <text class="bar-value" x="275" y="44" text-anchor="middle">190</text>
@@ -130,7 +130,7 @@
 
     <p class="disclaimer"><strong>Figures are for research citation only. No clinical guidance is ever offered.</strong> If a medicine you need is in shortage, talk to your clinician or pharmacist.</p>
 
-    <p class="source">V4, standalone visual, built Nov 24, 2026, before any homepage redesign. Figures from the Glenride digest runs and the attested Nov 23 record, with source and retrieval date on every number. Live pages: <a href="https://glenride.com/drug-shortages/current">Current shortages</a>, <a href="https://glenride.com/drug-shortages/fda-list">FDA list</a>, <a href="https://glenride.com/drug-shortages/ashp-vs-fda">ASHP vs FDA</a>, <a href="https://glenride.com/research/attestations">Attestations</a>. ASHP bulletins are copyrighted. Structured facts plus attribution plus link only, never full bulletin text. Palette is canonical Glenride only: paper #FAF5EC, ink #221D18, sienna #E97451, sienna-deep #B84A2B. No new palette.</p>
+    <p class="source">Source: Glenride weekly digest runs, Oct 19 to Nov 23, 2026. Attestation GLR-AT-2026-6ZGY2J. Figures for research citation only. No clinical guidance.</p>
   </main>
 
 <script>

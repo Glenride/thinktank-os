@@ -3,46 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Vanguard Library. - Glenride V5</title>
-<meta name="description" content="Glenride V5 Vanguard Library. Fifteen published briefs as visual research cards, each with a short abstract, date, category, methodology, and link to the full publication. Standalone visual.">
+<title>The Vanguard Library. - Glenride</title>
+<meta name="description" content="Fifteen published briefs as visual research cards, each with a short abstract, date, category, and link to the full publication.">
 <link rel="stylesheet" href="https://fonts.bunny.net/css?family=bricolage-grotesque:700,800|newsreader:400,400i,500,600">
 <style>
-  :root{--paper:#FAF5EC;--paper-deep:#F3ECDC;--ink:#221D18;--ink-soft:#57504A;--sienna:#E97451;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14);--cream:#F3ECDC}
+  :root{--paper:#FAF5EC;--ink:#221D18;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14)}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;line-height:1.5;-webkit-font-smoothing:antialiased}
   .hero{background:var(--ink);color:var(--paper);padding:56px 24px 48px}
   .hero-inner{max-width:1080px;margin:0 auto}
   .hero h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(42px,6.5vw,72px);line-height:.98;letter-spacing:-.02em}
-  .hero h1 em{font-style:normal;color:var(--sienna)}
-  .hero p{font-size:21px;color:var(--cream);max-width:640px;margin-top:16px}
+  .hero h1 em{font-style:normal;color:var(--sienna-deep)}
+  .hero p{font-size:21px;color:var(--paper);max-width:640px;margin-top:16px}
   .wrap{max-width:1080px;margin:0 auto;padding:36px 24px 48px}
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+  .stat{background:#FAF5EC;border:1px solid var(--line);border-radius:16px;padding:22px}
   .stat .num{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:48px;line-height:1;color:var(--sienna-deep)}
   .stat .label{font-size:17px;font-weight:600;margin-top:6px}
-  .stat .sub{font-size:14px;color:var(--ink-soft);margin-top:2px}
+  .stat .sub{font-size:14px;color:var(--ink);margin-top:2px}
   .filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-  .filters button{font:inherit;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 15px;cursor:pointer}
+  .filters button{font:inherit;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:14px;background:#FAF5EC;border:1px solid var(--line);border-radius:999px;padding:9px 15px;cursor:pointer}
   .filters button:hover{border-color:var(--sienna-deep)}
   .filters button.active{background:var(--sienna-deep);border-color:var(--sienna-deep);color:var(--paper)}
-  #count{font-size:15px;color:var(--ink-soft);margin-top:14px}
+  #count{font-size:15px;color:var(--ink);margin-top:14px}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+  .card{background:#FAF5EC;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
   .cover{background:var(--ink);color:var(--paper);padding:20px;min-height:128px;display:flex;flex-direction:column;justify-content:space-between}
   .cover.alt{background:var(--sienna-deep)}
-  .cover .cat{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--sienna)}
+  .cover .cat{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--sienna-deep)}
   .cover.alt .cat{color:var(--paper)}
   .cover .no{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:44px;line-height:1}
   .body{padding:20px;display:flex;flex-direction:column;flex:1}
   .body h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:21px;line-height:1.15}
-  .meta{font-size:14px;color:var(--ink-soft);margin-top:8px}
+  .meta{font-size:14px;color:var(--ink);margin-top:8px}
   .meta strong{color:var(--sienna-deep)}
-  .abstract{font-size:17px;color:var(--ink-soft);margin-top:10px;flex:1}
+  .abstract{font-size:17px;color:var(--ink);margin-top:10px;flex:1}
   .abstract strong{color:var(--ink)}
   .link{margin-top:16px;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:16px;color:var(--sienna-deep);text-decoration:none}
   .link:hover{text-decoration:underline}
-  .note{margin-top:24px;padding:20px 0;border-top:1px solid var(--line);font-size:17px;color:var(--ink-soft)}
-  .source{margin-top:12px;font-size:14px;color:var(--ink-soft)}
+  .note{margin-top:24px;padding:20px 0;border-top:1px solid var(--line);font-size:17px;color:var(--ink)}
+  .source{margin-top:12px;font-size:14px;color:var(--ink)}
   .source a{color:var(--sienna-deep)}
   @media (max-width:900px){.grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}}
   @media (max-width:600px){.hero{padding:40px 20px 36px}.grid{grid-template-columns:1fr}}
@@ -78,7 +78,7 @@
     <div class="grid" id="grid"></div>
 
     <p class="note"><strong>How to read a card.</strong> Title, date, category, and methodology are from the live library. Each abstract is 40 to 60 words, written from the verified long abstract only. No new claims. Covers are typographic, not generated images. The full publication is linked on every card.</p>
-    <p class="source">V5, standalone visual, built Nov 24, 2026, before any homepage redesign. Source: <a href="https://glenride.com/library">glenride.com/library</a>, last updated Nov 6, 2026. Palette is canonical Glenride only: paper #FAF5EC, ink #221D18, sienna #E97451, sienna-deep #B84A2B. No new palette.</p>
+    <p class="source">Source: <a href="https://glenride.com/library">glenride.com/library</a>, last updated Nov 6, 2026.</p>
   </main>
 
 <script>

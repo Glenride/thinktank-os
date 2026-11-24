@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Built to close the power-wisdom gap — Glenride V1</title>
-<meta name="description" content="Glenride V1 power-wisdom diagram. Capability plus wisdom, leading to responsible application. Standalone visual, before redesign.">
+<title>Built to close the power-wisdom gap — Glenride</title>
+<meta name="description" content="Capability plus wisdom, leading to responsible application.">
 <link rel="stylesheet" href="https://fonts.bunny.net/css?family=bricolage-grotesque:700,800|newsreader:400,400i,500,600">
 <style>
-  :root{--paper:#FAF5EC;--paper-deep:#F3ECDC;--ink:#221D18;--ink-soft:#57504A;--sienna:#E97451;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14)}
+  :root{--paper:#FAF5EC;--ink:#221D18;--sienna-deep:#B84A2B;--line:rgba(34,29,24,.14)}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);font-family:"Newsreader",Georgia,serif;line-height:1.5;-webkit-font-smoothing:antialiased}
   .wrap{max-width:960px;margin:0 auto;padding:40px 24px 48px}
   header{margin-bottom:28px}
   h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.02em}
-  .lede{font-size:20px;color:var(--ink-soft);max-width:620px;margin-top:12px}
+  .lede{font-size:20px;color:var(--ink);max-width:620px;margin-top:12px}
   .lede strong{color:var(--ink);font-weight:600}
-  .hint{font-size:14px;color:var(--ink-soft);margin-top:10px}
-  .diagram{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+  .hint{font-size:14px;color:var(--ink);margin-top:10px}
+  .diagram{background:#FAF5EC;border:1px solid var(--line);border-radius:12px;padding:20px}
   svg{width:100%;height:auto;display:block}
   .node{cursor:pointer}
   .node rect{fill:var(--paper);stroke:var(--line);stroke-width:1;rx:8}
@@ -26,21 +26,21 @@
   .node text{font-family:"Newsreader",Georgia,serif;font-size:16px;fill:var(--ink)}
   .col-title{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:15px;letter-spacing:.08em;fill:var(--sienna-deep)}
   .gap-label{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:18px;fill:var(--ink)}
-  .gap-sub{font-size:13px;fill:var(--ink-soft)}
+  .gap-sub{font-size:13px;fill:var(--ink)}
   .outcome rect{fill:var(--ink);stroke:var(--ink)}
   .outcome text{fill:var(--paper);font-family:"Newsreader",Georgia,serif}
   .outcome .o-title{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:16px;letter-spacing:.06em}
   #detail{margin-top:20px;border-top:1px solid var(--line);padding-top:20px;min-height:96px}
   #detail h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:22px;margin-bottom:6px}
-  #detail p{font-size:18px;color:var(--ink-soft);max-width:640px}
+  #detail p{font-size:18px;color:var(--ink);max-width:640px}
   #detail p strong{color:var(--ink)}
   blockquote{margin-top:28px;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:21px;line-height:1.45}
-  blockquote footer{font-size:14px;color:var(--ink-soft);margin-top:10px}
+  blockquote footer{font-size:14px;color:var(--ink);margin-top:10px}
   blockquote a{color:var(--sienna-deep)}
-  .source{margin-top:20px;font-size:14px;color:var(--ink-soft)}
+  .source{margin-top:20px;font-size:14px;color:var(--ink)}
   .source a{color:var(--sienna-deep)}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-  .chips button{font:inherit;font-size:15px;background:var(--paper-deep);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+  .chips button{font:inherit;font-size:15px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
   .chips button:hover,.chips button[aria-pressed="true"]{background:var(--sienna-deep);color:var(--paper);border-color:var(--sienna-deep)}
   @media (max-width:640px){.wrap{padding:28px 16px 36px}.diagram{padding:12px}blockquote{font-size:19px}}
 </style>
@@ -83,7 +83,7 @@
         <rect x="620" y="230" width="280" height="48" rx="8"></rect><text x="636" y="260">Ethics</text>
       </g>
 
-      <rect x="330" y="50" width="260" height="228" rx="12" fill="#F3ECDC" stroke="rgba(34,29,24,.14)"></rect>
+      <rect x="330" y="50" width="260" height="228" rx="12" fill="#FAF5EC" stroke="rgba(34,29,24,.14)"></rect>
       <text x="460" y="110" text-anchor="middle" class="gap-label">THE GAP</text>
       <text x="460" y="136" text-anchor="middle" class="gap-sub">Power without wisdom</text>
       <text x="460" y="160" text-anchor="middle" class="gap-sub">moves fast</text>
@@ -124,7 +124,7 @@
     <footer>Glenride, <a href="https://glenride.com/thesis">The Foundational Thesis, Essay I: The Power-Wisdom Gap</a></footer>
   </blockquote>
 
-  <p class="source">V1, standalone visual, built Nov 24, 2026, before any homepage redesign. Terms from the thesis and the visual brief. Palette is canonical Glenride only: paper #FAF5EC, ink #221D18, sienna-deep #B84A2B. No new palette. No invented figures. Data packet: visual-data-packets-2026-11-24.json, power_wisdom.</p>
+  <p class="source">Source: Thesis Essay I, glenride.com/thesis.</p>
 </div>
 <script>
 const details = {
