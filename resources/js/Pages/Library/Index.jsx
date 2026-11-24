@@ -141,7 +141,7 @@ export default function Index({ briefs = [], auth }) {
 
                                         {/* Title */}
                                         <h2 className="font-display text-xl font-bold text-ink dark:text-cream group-hover:text-sienna-deep dark:group-hover:text-sienna transition leading-snug">
-                                            <Link href={route('briefs.show', brief.id)}>
+                                            <Link href={route('briefs.show', brief.slug ?? brief.id)}>
                                                 {brief.title}
                                             </Link>
                                         </h2>
@@ -174,7 +174,7 @@ export default function Index({ briefs = [], auth }) {
                                         </div>
 
                                         <Link
-                                            href={route('briefs.show', brief.id)}
+                                            href={route('briefs.show', brief.slug ?? brief.id)}
                                             className="inline-flex items-center text-xs font-mono font-semibold text-sienna-deep dark:text-sienna group-hover:text-sienna-deep dark:group-hover:text-sienna transition"
                                         >
                                             Read Brief →

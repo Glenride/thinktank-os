@@ -2,7 +2,7 @@ import InstitutionalHeader from '@/Components/InstitutionalHeader';
 import SiteFooter from '@/Components/SiteFooter';
 import { Head, Link } from '@inertiajs/react';
 
-const DIGEST_BRIEF = '/briefs/f451f193-a6b6-574d-a42e-f3c7eb2e38cb';
+const DIGEST_BRIEF = '/briefs/drug-shortage-digest';
 
 export default function AshpVsFda({ auth }) {
     return (

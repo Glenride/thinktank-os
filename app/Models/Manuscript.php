@@ -24,6 +24,7 @@ class Manuscript extends Model
         'user_id',
         'credit_account_id',
         'title',
+        'slug',
         'abstract',
         'raw_file_path',
         'synthesized_brief_path',
@@ -35,6 +36,38 @@ class Manuscript extends Model
         'grant_amount',
         'published_at',
     ];
+
+    /**
+     * Brief URLs use the slug (/briefs/drug-shortage-digest). UUIDs still
+     * resolve in the controller, which 301-redirects them to the slug.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (Manuscript $manuscript) {
+            if (empty($manuscript->slug) && ! empty($manuscript->title)) {
+                $manuscript->slug = static::uniqueSlug($manuscript->title, $manuscript->id);
+            }
+        });
+    }
+
+    public static function uniqueSlug(string $title, ?string $exceptId = null): string
+    {
+        $base = \Illuminate\Support\Str::slug($title);
+        $base = $base !== '' ? $base : 'brief';
+        $slug = $base;
+        $i = 2;
+        while (static::where('slug', $slug)->when($exceptId, fn ($q) => $q->where('id', '!=', $exceptId))->exists()) {
+            $slug = "{$base}-{$i}";
+            $i++;
+        }
+
+        return $slug;
+    }
 
     /**
      * The attributes that should be cast.

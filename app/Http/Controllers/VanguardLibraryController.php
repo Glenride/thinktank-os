@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Manuscript;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,7 +33,7 @@ class VanguardLibraryController extends Controller
     /**
      * Display a published 4-page Vanguard Policy Brief in high-clarity typography.
      */
-    public function show(Request $request, string $manuscript): Response
+    public function show(Request $request, string $manuscript): Response|RedirectResponse
     {
         $manuscriptModel = null;
 
@@ -54,8 +56,21 @@ class VanguardLibraryController extends Controller
                     ?? new \App\Models\User(['name' => "D'Vaughn House", 'email' => 'host@centersun21.com']);
                 $manuscriptModel->setRelation('user', $defaultAuthor);
             }
-        } elseif (\Illuminate\Support\Str::isUuid($manuscript)) {
+
+            // The real manuscript exists: its slug URL is canonical.
+            if ($manuscriptModel->exists && $manuscriptModel->slug) {
+                return redirect()->route('briefs.show', $manuscriptModel, 301);
+            }
+        } elseif (Str::isUuid($manuscript)) {
             $manuscriptModel = Manuscript::with('user:id,name,email')->find($manuscript);
+
+            // UUID URLs keep working, but the slug URL is canonical.
+            if ($manuscriptModel && $manuscriptModel->slug) {
+                return redirect()->route('briefs.show', $manuscriptModel, 301);
+            }
+        } else {
+            $manuscriptModel = Manuscript::with('user:id,name,email')
+                ->where('slug', $manuscript)->first();
         }
 
         if (! $manuscriptModel) {

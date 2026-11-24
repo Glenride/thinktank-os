@@ -38,9 +38,8 @@ export default function About({ auth }) {
                 <p className="mt-4 leading-relaxed text-ink-soft dark:text-cream-soft">
                     Glenride was founded in 2017 by D&apos;Vaughn House, an
                     Independent AI Orchestrator. He is the founder and the
-                    author of the briefs in the Vanguard Library. Glenride is
-                    solely owned in perpetuity. There is no outside ownership
-                    and no venture funding.
+                    author of the briefs in the Vanguard Library. There is
+                    no outside ownership and no venture funding.
                 </p>
                 <p className="mt-4 leading-relaxed text-ink-soft dark:text-cream-soft">
                     The Glenride Council on AI &amp; Supply-Chain Resilience
@@ -91,10 +90,10 @@ export default function About({ auth }) {
                 <p className="mt-4 leading-relaxed text-ink-soft dark:text-cream-soft">
                     Reach Glenride directly at{' '}
                     <a
-                        href="mailto:dvaughn@dvaughnhouse.com"
+                        href="mailto:dvaughn@glenride.com"
                         className="font-semibold text-sienna-deep underline underline-offset-4 dark:text-sienna"
                     >
-                        dvaughn@dvaughnhouse.com
+                        dvaughn@glenride.com
                     </a>
                     . The research is at{' '}
                     <Link

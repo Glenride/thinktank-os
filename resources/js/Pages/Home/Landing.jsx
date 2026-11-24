@@ -581,7 +581,7 @@ export default function Landing({
                             >
                                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                                     <h3 className="max-w-3xl font-display text-2xl font-bold leading-snug text-ink transition group-hover:text-sienna-deep dark:text-cream dark:group-hover:text-sienna">
-                                        <Link href={route('briefs.show', brief.id)}>
+                                        <Link href={route('briefs.show', brief.slug ?? brief.id)}>
                                             {brief.title}
                                         </Link>
                                     </h3>
@@ -772,14 +772,14 @@ export default function Landing({
                         </div>
                         <a
                             id="contact"
-                            href="mailto:dvaughn@dvaughnhouse.com"
+                            href="mailto:dvaughn@glenride.com"
                             className="group flex flex-wrap items-baseline justify-between gap-2 border-b border-line py-6 transition dark:border-line-dark"
                         >
                             <span className="font-display text-xl font-bold text-ink transition group-hover:text-sienna-deep dark:text-cream dark:group-hover:text-sienna">
                                 Contact
                             </span>
                             <span className="text-sm text-ink-soft dark:text-cream-soft">
-                                dvaughn@dvaughnhouse.com →
+                                dvaughn@glenride.com →
                             </span>
                         </a>
                     </div>
