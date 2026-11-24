@@ -273,7 +273,6 @@ export default function Landing({
             {/* The chain, end to end — rotating body band */}
             <ImageBandCarousel
                 images={BODY_BAND_IMAGES}
-                overlayLine="The chain, end to end."
                 label="The supply chain, end to end"
             />
 
