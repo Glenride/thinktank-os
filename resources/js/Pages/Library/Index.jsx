@@ -60,6 +60,13 @@ export default function Index({ briefs = [], auth }) {
                         <p className="mt-4 text-lg text-paper/85 font-serif leading-relaxed">
                             Peer-reviewed empirical research distilled into actionable, four-page executive policy briefs. Synthesized autonomously through ContextForge and curated by institutional fellows.
                         </p>
+                        <p className="mt-4 text-sm text-paper/70 font-serif leading-relaxed">
+                            Product and bot concepts live in{' '}
+                            <Link href={route('labs.index')} className="font-semibold text-paper underline decoration-sienna decoration-2 underline-offset-4">
+                                Labs
+                            </Link>
+                            .
+                        </p>
                         <div className="mt-6"><div className="inline-flex items-center space-x-2 rounded-full border border-paper/40 px-3 py-1 text-xs font-mono text-paper mb-6">
                             <span className="h-1.5 w-1.5 rounded-full bg-sienna"></span>
                             <span>The Glenride Monograph Series</span>

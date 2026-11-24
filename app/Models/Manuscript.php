@@ -112,6 +112,31 @@ class Manuscript extends Model
     }
 
     /**
+     * The five product and bot concept briefs, kept out of the Vanguard
+     * Library and shown on the Labs page instead (his call, Nov 24,
+     * 2026). They stay published; only their listing changes.
+     */
+    public const LABS_IDS = [
+        'edd48b1e-ff78-5eaf-b1ec-1afb11228332', // Henry: The Ecom Ad Factory
+        '00b07e8e-3034-576c-ade3-ebc91abdca51', // Meg — Inbox Judge
+        'd34cf08d-df03-5082-92fe-bc148aade944', // Motion Bot
+        '836a5ca9-565a-5fd2-b913-031b7b63c283', // Project M4
+        '49bb0bdd-dd34-51a5-a0ac-7e3d764cd79f', // Tress Column
+    ];
+
+    /** Scope query to the library briefs (everything except Labs). */
+    public function scopeLibrary(Builder $query): Builder
+    {
+        return $query->whereNotIn('id', self::LABS_IDS);
+    }
+
+    /** Scope query to the Labs briefs. */
+    public function scopeLabs(Builder $query): Builder
+    {
+        return $query->whereIn('id', self::LABS_IDS);
+    }
+
+    /**
      * Scope query to manuscripts awaiting AI synthesis.
      */
     public function scopePendingSynthesis(Builder $query): Builder

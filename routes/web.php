@@ -60,6 +60,7 @@ Route::domain('store.dvaughnhouse.com')->group(function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/library', [VanguardLibraryController::class, 'index'])->name('library.index');
+Route::get('/labs', [VanguardLibraryController::class, 'labs'])->name('labs.index');
 // /briefs has no index of its own — the library is the briefs list.
 Route::redirect('/briefs', '/library', 301);
 Route::get('/briefs/{manuscript}', [VanguardLibraryController::class, 'show'])->name('briefs.show');

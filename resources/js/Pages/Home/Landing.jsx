@@ -563,7 +563,7 @@ export default function Landing({
                             technical records wherever available.
                         </p>
                         <p>
-                            15 published briefs. Research across disciplines.
+                            10 published briefs. Research across disciplines.
                             Evidence open to examination.
                         </p>
                     </div>

@@ -28,7 +28,7 @@ class HomeController extends Controller
         $attestationIssued = Attestation::count();
         $attestationInForce = Attestation::active()->count();
         $attestationAnchored = Attestation::whereNotNull('anchor_tx')->count();
-        $publishedCount = Manuscript::published()->count();
+        $publishedCount = Manuscript::published()->library()->count();
 
         // Plain-text homepage pitch for crawlers that don't run JS
         // (Blade <noscript>, same words as the interactive homepage).
@@ -50,6 +50,7 @@ class HomeController extends Controller
         ]);
 
         $featuredBriefs = Manuscript::published()
+            ->library()
             ->latest('published_at')
             ->take(3)
             ->get(['id', 'title', 'abstract', 'published_at'])

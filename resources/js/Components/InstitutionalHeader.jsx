@@ -85,6 +85,9 @@ export default function InstitutionalHeader({
                             <Dropdown.Link href={route('attestations.index')}>
                                 Attestations
                             </Dropdown.Link>
+                            <Dropdown.Link href={route('labs.index')}>
+                                Labs
+                            </Dropdown.Link>
                             <Dropdown.Link href={GATEWAY_URL}>
                                 Routing Hub
                             </Dropdown.Link>
@@ -165,6 +168,9 @@ export default function InstitutionalHeader({
                     </ResponsiveNavLink>
                     <ResponsiveNavLink href={route('attestations.index')} active={active === 'attestations'}>
                         Attestations
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href={route('labs.index')} active={active === 'labs'}>
+                        Labs
                     </ResponsiveNavLink>
                     <a href={GATEWAY_URL} className={mobileLinkCls}>
                         Routing Hub

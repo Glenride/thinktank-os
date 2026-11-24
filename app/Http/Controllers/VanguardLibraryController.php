@@ -22,11 +22,32 @@ class VanguardLibraryController extends Controller
                 'attestations' => fn ($q) => $q->whereIn('status', ['issued', 'challenged'])->latest('issued_at'),
             ])
             ->published()
+            ->library()
             ->latest('published_at')
             ->get();
 
         return Inertia::render('Library/Index', [
             'briefs' => $published,
+        ]);
+    }
+
+    /**
+     * Labs: the product and bot concept briefs, on their own page so the
+     * library stays about the research.
+     */
+    public function labs(Request $request): Response
+    {
+        $labs = Manuscript::with([
+                'user:id,name,email',
+                'attestations' => fn ($q) => $q->whereIn('status', ['issued', 'challenged'])->latest('issued_at'),
+            ])
+            ->published()
+            ->labs()
+            ->latest('published_at')
+            ->get();
+
+        return Inertia::render('Labs/Index', [
+            'briefs' => $labs,
         ]);
     }
 
@@ -91,6 +112,7 @@ class VanguardLibraryController extends Controller
 
         $related = Manuscript::with('user:id,name')
             ->published()
+            ->library()
             ->when($manuscriptModel->exists, fn ($q) => $q->where('id', '!=', $manuscriptModel->id))
             ->latest('published_at')
             ->take(3)
