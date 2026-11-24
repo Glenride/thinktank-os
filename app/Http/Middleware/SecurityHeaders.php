@@ -21,15 +21,15 @@ class SecurityHeaders
         $csp = [
             "default-src 'self'",
             "script-src 'self' 'unsafe-inline' https://js.stripe.com",
-            "style-src 'self' 'unsafe-inline'",
-            "font-src 'self' data:",
+            "style-src 'self' 'unsafe-inline' https://fonts.bunny.net",
+            "font-src 'self' data: https://fonts.bunny.net",
             "img-src 'self' data: https://laravel.com",
             "frame-src 'self' https://js.stripe.com https://hooks.stripe.com",
             "connect-src 'self' https://api.stripe.com https://m.stripe.network https://q.stripe.com",
             "object-src 'none'",
             "base-uri 'self'",
             "form-action 'self'",
-            "frame-ancestors 'none'",
+            "frame-ancestors 'self'",
         ];
 
         $response->headers->set('Content-Security-Policy', implode('; ', $csp));
