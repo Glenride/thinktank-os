@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import { useState, useEffect, useMemo } from 'react';
+import '../../echo';
 
 const COLUMN_CONFIG = [
     {

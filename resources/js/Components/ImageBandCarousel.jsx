@@ -55,7 +55,8 @@ export default function ImageBandCarousel({ images = [], overlayLine, label = 'I
                     key={src}
                     src={src}
                     alt=""
-                    loading="lazy"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={i === 0 ? 'high' : 'auto'}
                     aria-hidden={i !== index}
                     className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
                         i === index ? 'opacity-100' : 'opacity-0'

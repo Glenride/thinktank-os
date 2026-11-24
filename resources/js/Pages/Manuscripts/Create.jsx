@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState, useRef } from 'react';
+import '../../echo';
 
 export default function Create({ recentManuscripts = [], submittedId = null, creditAccounts = [] }) {
     const user = usePage().props.auth.user;

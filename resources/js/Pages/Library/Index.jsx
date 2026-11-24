@@ -47,7 +47,7 @@ export default function Index({ briefs = [], auth }) {
             {/* Hero Section — full-bleed image, flat ink scrim */}
             <section className="relative overflow-hidden border-b border-ink bg-ink text-paper dark:border-line-dark dark:text-cream">
                 <img
-                    src="/images/heroes/hero-warehouse.jpg"
+                    src="/images/heroes/hero-warehouse.webp"
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
                 />
@@ -188,7 +188,7 @@ export default function Index({ briefs = [], auth }) {
             </main>
 
             {/* Supporting image band — intermodal rail yard */}
-            <ImageBand src="/images/heroes/hero-intermodal.jpg" />
+            <ImageBand src="/images/heroes/hero-intermodal.webp" />
 
             {/* Institutional Thesis Callout Banner */}
             <section className="border-t border-line dark:border-line-dark bg-paper-deep dark:bg-night-deep py-16">

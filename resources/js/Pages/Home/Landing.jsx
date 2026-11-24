@@ -7,56 +7,56 @@ import { Head, Link } from '@inertiajs/react';
 // Gateway hero slides — full-bleed images, each with its own overlay copy.
 const HERO_SLIDES = [
     {
-        image: '/images/heroes/hero-port-sunset.jpg',
+        image: '/images/heroes/hero-port-sunset.webp',
         headline: 'Supply chains, seen clearly.',
         line: 'For operators and decision-makers: Glenride tracks how critical supply chains fail, where they bend, and what keeps them running — before the break reaches you.',
         ctaLabel: 'Enter the Vanguard Library',
         ctaHref: route('library.index'),
     },
     {
-        image: '/images/heroes/hero-global-network.jpg',
+        image: '/images/heroes/hero-global-network.webp',
         headline: 'Research that signs its work.',
         line: 'I wish there was a record I could check, not a claim I had to take on trust. Every brief carries its evidence, its verifier, and its date — attested, and open to challenge.',
         ctaLabel: 'View the attestations',
         ctaHref: route('attestations.index'),
     },
     {
-        image: '/images/heroes/hero-ship-risk.jpg',
+        image: '/images/heroes/hero-ship-risk.webp',
         headline: 'Shortages, measured — not guessed.',
         line: 'I hate finding out a drug is in shortage from a pharmacist. Every Monday, Glenride publishes a weekly U.S. drug shortage digest — what is in shortage, what resolved, and why — from FDA and ASHP data. As of Q3 2026: 225 active U.S. drug shortages, 87 new this year.',
         ctaLabel: 'Read the weekly digest',
         ctaHref: route('library.index'),
     },
     {
-        image: '/images/heroes/hero-port-lanes.jpg',
+        image: '/images/heroes/hero-port-lanes.webp',
         headline: 'Built to be checked.',
         line: 'Briefs, standards, and a store where everything has a price and nothing is promised.',
         ctaLabel: 'Visit the store',
         ctaHref: route('store.index'),
     },
     {
-        image: '/images/heroes/hero-trucks.jpg',
+        image: '/images/heroes/hero-trucks.webp',
         headline: 'Every mile, accounted for.',
         line: 'Ports, rails, roads, and runways are one chain. Glenride reads it whole — and publishes what it finds.',
         ctaLabel: 'Enter the Library',
         ctaHref: route('library.index'),
     },
     {
-        image: '/images/heroes/hero-air-sea.jpg',
+        image: '/images/heroes/hero-air-sea.webp',
         headline: "Modes change. The record doesn't.",
         line: 'Air to sea to road, critical cargo keeps its evidence — every handoff timed, signed, and open to challenge.',
         ctaLabel: 'See the attestations',
         ctaHref: route('attestations.index'),
     },
     {
-        image: '/images/heroes/hero-cold-chain.jpg',
+        image: '/images/heroes/hero-cold-chain.webp',
         headline: 'The cold chain, held to the degree.',
         line: 'Temperature, humidity, shock — the conditions a medicine travels in are part of its record, not a footnote.',
         ctaLabel: 'Read the Thesis',
         ctaHref: route('thesis.index'),
     },
     {
-        image: '/images/heroes/hero-control-room.jpg',
+        image: '/images/heroes/hero-control-room.webp',
         headline: 'Watched, end to end.',
         line: 'A chain you can see is a chain you can fix. Exceptions surface early — and so do the people answering for them.',
         ctaLabel: 'Read the Essays',
@@ -66,10 +66,10 @@ const HERO_SLIDES = [
 
 // Body band carousel — the chain at work, below the opening sections.
 const BODY_BAND_IMAGES = [
-    '/images/heroes/hero-jit.jpg',
-    '/images/heroes/hero-retail.jpg',
-    '/images/heroes/hero-last-mile.jpg',
-    '/images/heroes/hero-resilience.jpg',
+    '/images/heroes/hero-jit.webp',
+    '/images/heroes/hero-retail.webp',
+    '/images/heroes/hero-last-mile.webp',
+    '/images/heroes/hero-resilience.webp',
 ];
 
 const RESEARCH_AREAS = [

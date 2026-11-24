@@ -370,7 +370,7 @@ export default function Index({ categories = [], stripeKey = '' }) {
             {/* Hero Section — full-bleed image, flat ink scrim */}
             <section className="relative overflow-hidden border-b border-ink bg-ink py-20 text-cream">
                 <img
-                    src="/images/heroes/hero-arrival.jpg"
+                    src="/images/heroes/hero-arrival.webp"
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover object-[center_70%]"
                 />
@@ -435,7 +435,7 @@ export default function Index({ categories = [], stripeKey = '' }) {
             </section>
 
             {/* Supporting image band — green corridor ship */}
-            <ImageBand src="/images/heroes/hero-green-corridor.jpg" />
+            <ImageBand src="/images/heroes/hero-green-corridor.webp" />
 
             {/* Checkout Modal */}
             {selectedProduct && (

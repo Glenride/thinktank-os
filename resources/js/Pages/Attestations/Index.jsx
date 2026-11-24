@@ -28,7 +28,7 @@ export default function Index({ attestations = [], stats = {}, canIssue = false,
             {/* Banner hero — full-bleed image */}
             <section aria-hidden="true" className="relative h-[48vh] min-h-[300px] overflow-hidden bg-ink">
                 <img
-                    src="/images/heroes/hero-documents.jpg"
+                    src="/images/heroes/hero-documents.webp"
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover object-[center_70%]"
                 />
@@ -97,7 +97,7 @@ export default function Index({ attestations = [], stats = {}, canIssue = false,
             </main>
 
             {/* Supporting image band — predictive forecast globe */}
-            <ImageBand src="/images/heroes/hero-forecast.jpg" />
+            <ImageBand src="/images/heroes/hero-forecast.webp" />
 
             <main className="mx-auto max-w-7xl px-6 pb-16 lg:px-8">
                 {/* Verify a record */}

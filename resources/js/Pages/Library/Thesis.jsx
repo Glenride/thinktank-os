@@ -16,7 +16,7 @@ export default function Thesis({ auth }) {
             {/* Banner hero — full-bleed image */}
             <section aria-hidden="true" className="relative h-[48vh] min-h-[300px] overflow-hidden bg-ink">
                 <img
-                    src="/images/heroes/hero-storm.jpg"
+                    src="/images/heroes/hero-storm.webp"
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover object-[center_30%]"
                 />
@@ -43,7 +43,7 @@ export default function Thesis({ auth }) {
             </main>
 
             {/* Supporting image band — port congestion heatmap */}
-            <ImageBand src="/images/heroes/hero-congestion.jpg" />
+            <ImageBand src="/images/heroes/hero-congestion.webp" />
 
             <main className="mx-auto max-w-3xl px-6 pt-16 pb-20 sm:pb-28">
                 {/* Essay 1: The Power-Wisdom Gap */}
