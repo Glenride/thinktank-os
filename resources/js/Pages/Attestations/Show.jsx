@@ -11,7 +11,7 @@ const STATUS_STYLES = {
 };
 
 const ANCHOR_PLACEHOLDER =
-    'Not anchored — anchoring via Pearls on Base is tentative and comes when volume warrants.';
+    'Not anchored on chain yet.';
 
 function fingerprint(signature) {
     if (!signature) return '—';

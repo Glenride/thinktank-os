@@ -6,14 +6,12 @@ import ImageBand from '@/Components/ImageBand';
 const STATUS_STYLES = {
     available: 'border-sienna-deep/40 bg-sienna/10 text-sienna-deep dark:border-sienna/40 dark:bg-sienna/10 dark:text-sienna',
     external: 'border-line bg-paper-deep text-ink-soft dark:border-line-dark dark:bg-night-deep dark:text-cream-soft',
-    coming_soon: 'border-sienna/50 bg-paper-deep text-ink-soft dark:border-sienna/40 dark:bg-night-deep dark:text-cream-soft',
     custom: 'border-dashed border-line bg-paper text-ink-soft dark:border-line-dark dark:bg-night-card dark:text-cream-soft',
 };
 
 const STATUS_LABELS = {
     available: 'Available now',
     external: 'Free · opens in browser',
-    coming_soon: 'Coming soon',
     custom: 'Custom setup',
 };
 
@@ -100,11 +98,6 @@ function ProductCard({ product, onBuy }) {
                     >
                         Open in browser →
                     </a>
-                )}
-                {product.status === 'coming_soon' && (
-                    <div className="w-full rounded-xl py-3.5 px-4 text-xs font-mono uppercase tracking-wider text-center border border-line bg-paper-deep text-ink-soft cursor-not-allowed dark:border-line-dark dark:bg-night-deep dark:text-cream-soft">
-                        Price & terms publishing soon
-                    </div>
                 )}
                 {product.status === 'custom' && (
                     <div className="w-full rounded-xl py-3.5 px-4 text-xs font-mono uppercase tracking-wider text-center border border-line bg-paper-deep text-ink-soft cursor-not-allowed dark:border-line-dark dark:bg-night-deep dark:text-cream-soft">
@@ -397,7 +390,15 @@ export default function Index({ categories = [], stripeKey = '' }) {
 
             {/* Category Sections */}
             <main className="py-16 space-y-20">
-                {categories.map((category) => (
+                {categories
+                    .map((category) => ({
+                        ...category,
+                        products: (category.products || []).filter(
+                            (product) => product.status !== 'coming_soon',
+                        ),
+                    }))
+                    .filter((category) => category.products.length > 0)
+                    .map((category) => (
                     <section key={category.id} className="mx-auto max-w-7xl px-6 lg:px-8">
                         <div className="mb-8">
                             <h2 className="font-display text-2xl font-bold text-ink dark:text-cream">{category.name}</h2>
@@ -429,7 +430,7 @@ export default function Index({ categories = [], stripeKey = '' }) {
                         What can I buy from the store?
                     </h2>
                     <p className="mt-4 text-sm leading-relaxed text-ink-soft dark:text-cream-soft">
-                        Field guides from Reynard's (the 30-Day Ruck Reset is $19), free Glenride apps and tools that open in your browser, and executive briefings for institutions — salon seats at $500, the ContextForge license at $1,200 per year, and annual corporate retainers at $25,000. Anything marked "Available now" can be bought today through Stripe. "Coming soon" means the price and terms aren't published yet, and nothing here takes payment before they are. Prices as of October 2026.
+                        Field guides from Reynard's (the 30-Day Ruck Reset is $19), free Glenride apps and tools that open in your browser, and executive briefings for institutions — salon seats at $500, the ContextForge license at $1,200 per year, and annual corporate retainers at $25,000. Anything marked "Available now" can be bought today through Stripe. Nothing here takes payment before its price and terms are published. Prices as of October 2026.
                     </p>
                 </div>
             </section>

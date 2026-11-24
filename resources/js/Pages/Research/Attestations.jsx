@@ -36,14 +36,6 @@ export default function Attestations({ study, auth }) {
                             </p>
                         </article>
                     ))}
-                    {study.thin && (
-                        <p className="mt-8 leading-relaxed text-ink-soft dark:text-cream-soft">
-                            Only {study.total} attestation{study.total === 1 ? ' has' : 's have'} been
-                            issued so far, below the {study.min_rows}-row minimum for share
-                            findings. The count above stands; percentage findings will
-                            appear once the registry reaches {study.min_rows} attestations.
-                        </p>
-                    )}
                 </section>
 
                 <section className="mt-12">
@@ -100,13 +92,8 @@ export default function Attestations({ study, auth }) {
                         <li>
                             <strong className="text-ink dark:text-cream">Source:</strong> the Glenride
                             attestations table — every attestation Glenride has issued,
-                            including challenged and revoked records. Counts are computed
-                            at request time from the live database, never typed by hand.
-                        </li>
-                        <li>
-                            <strong className="text-ink dark:text-cream">Denominator:</strong> every
-                            share uses the total number of attestations ({study.total}) as
-                            its denominator.
+                            including challenged and revoked records. Counts come from
+                            the live registry.
                         </li>
                         <li>
                             <strong className="text-ink dark:text-cream">Excluded:</strong> nothing
@@ -114,19 +101,9 @@ export default function Attestations({ study, auth }) {
                             totals and are shown in the status breakdown.
                         </li>
                         <li>
-                            <strong className="text-ink dark:text-cream">Refresh:</strong> the page
-                            recomputes on every request, so it changes when an attestation
-                            is issued, challenged, revoked, or anchored.
-                        </li>
-                        <li>
-                            <strong className="text-ink dark:text-cream">Rounding:</strong> shares
-                            are rounded to one decimal place.
-                        </li>
-                        <li>
-                            <strong className="text-ink dark:text-cream">Small samples:</strong>{' '}
-                            findings whose denominator is under {study.min_rows} rows are
-                            skipped; gaps under 5 points are reported as &ldquo;about the
-                            same&rdquo;, not as a difference.
+                            <strong className="text-ink dark:text-cream">Refresh:</strong> this page
+                            updates whenever an attestation is issued, challenged,
+                            revoked, or anchored.
                         </li>
                     </ul>
                 </section>

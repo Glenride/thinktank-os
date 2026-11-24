@@ -62,11 +62,10 @@
     <div class="detail" style="margin-top:24px">
       <h2>Pearls</h2>
       <p><strong>The system behind this record.</strong> Weekly drug shortage digest, live.</p>
-      <p>Web app v1 live Nov 19, 2026. MCP v1.0 live Nov 17, 2026. 17 of 17 tests.</p>
+      <p>Pearls is live: the weekly digest, and the data service behind it.</p>
       <p><a href="https://pearls.glenride.com" style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;color:#B84A2B;text-decoration:none">pearls.glenride.com</a></p>
     </div>
 
-    <p class="note">Worked example: the U.S. drug shortage record. No routes, ports, or disruption figures are invented here. Where no verified route data exists, the stage says so.</p>
     <p class="source">Source: Glenride weekly digest runs, Oct 19 to Nov 23, 2026. Attestation GLR-AT-2026-6ZGY2J, issued Nov 23, 2026, 9:01:29 AM EST. Figures for research citation only. No clinical guidance.</p>
   </main>
 
@@ -76,7 +75,7 @@ const stages = {
   manufacturing: ["Manufacturing", "<p><strong>Where it is made.</strong> A medicine is made in a small number of plants, often one.</p><p>No verified plant level data is shown here. The concentration above is the verified signal.</p>"],
   transportation: ["Transportation", "<p><strong>Where it moves.</strong> From plant to distributor, then to pharmacy and clinic.</p><p>No verified route data is shown here. No ports or routes are invented.</p>"],
   distribution: ["Distribution", "<p><strong>Where it is listed.</strong> Public U.S. listings change without notice.</p><p>Nov 9, 2026: 2 new bulletins, 3 resolved. ASHP held at 190 live.</p>"],
-  verification: ["Verification", "<p><strong>Witness. Where it is checked.</strong> Retrieved, recorded, validated, attested.</p><div class=\"fig\">GLR-AT-2026-6ZGY2J<span>Issued Nov 23, 2026. Ed25519. Anchored on Base Sepolia.</span></div><p>Witness V1 shipped Oct 22, 2026. Signed attestations, public registry, issue, challenge, revoke.</p>"],
+  verification: ["Verification", "<p><strong>Witness. Where it is checked.</strong> Retrieved, recorded, validated, attested.</p><div class=\"fig\">GLR-AT-2026-6ZGY2J<span>Issued Nov 23, 2026. Ed25519. Anchored on Base Sepolia.</span></div><p>Signed attestations, public registry. Anyone can check a record, or challenge it.</p>"],
   delivery: ["Delivery", "<p><strong>Where it reaches a patient.</strong> A medicine a clinic, hospital, or patient depends on is suddenly unavailable.</p><p>Talk to your clinician or pharmacist if a medicine you need is in shortage.</p>"]
 };
 const detail = document.getElementById('detail');

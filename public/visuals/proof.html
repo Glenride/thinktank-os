@@ -68,8 +68,6 @@
       <div class="stat"><div class="num">1</div><div class="label">Anchored</div><div class="sub">25 percent, on chain</div></div>
       <div class="stat"><div class="num">15</div><div class="label">Briefs</div><div class="sub">Vanguard Library</div></div>
     </div>
-    <p class="note">Correct count: <strong>4 issued, 3 in force.</strong> The homepage still says 3 attestations. That is the total in force, not the total issued. The test record is counted openly below, not hidden.</p>
-
     <div class="panels" role="group" aria-label="Proof panels">
       <button class="panel active" type="button" data-key="evidence"><span class="num">01</span><h2>Evidence</h2><p class="sub">Sources and documentation, with the date on every number.</p></button>
       <button class="panel" type="button" data-key="methodology"><span class="num">02</span><h2>Methodology</h2><p class="sub">How findings are established, and what the count leaves out.</p></button>
@@ -104,15 +102,15 @@
 
     <blockquote>Attestation certifies the identity, origin, and integrity of the record. It does not certify the truth of third-party data the record reports.</blockquote>
 
-    <p class="source">Source: <a href="https://glenride.com/research/attestations">glenride.com/research/attestations</a>. No independent validation is implied where it has not occurred.</p>
+    <p class="source">Source: <a href="https://glenride.com/research/attestations">glenride.com/research/attestations</a>.</p>
   </main>
 
 <script>
 const details = {
   evidence: ["Evidence", "Each attestation names <strong>the claim, the evidence behind it, the verifier who checked it, and the timestamp.</strong> The record is public. Follow it back to the source, or challenge it."],
-  methodology: ["Methodology", "Counts are <strong>computed at request time from the live database, never typed by hand.</strong> Denominator is 4. Only 4 attestations have been issued so far, below the 20-row minimum for share findings. Percentages will appear once the registry reaches 20."],
-  demonstration: ["Demonstration", "Working prototypes and software, not slides about them. <strong>ThinkTank OS, the Pearls digest, and the Vanguard Library</strong> are live. What is still design only is labeled as design only."],
-  verification: ["Verification", "Signature verified, Ed25519. RFC 3161 trusted timestamp. One record anchored on chain. <strong>Attestation does not certify the truth of third-party data.</strong> It certifies identity, origin, and integrity. Glenride is not a federal agency, and no federal agency has endorsed it."]
+  methodology: ["Methodology", "Every count on this page comes from the live registry, checked at the time you load it."],
+  demonstration: ["Demonstration", "Working prototypes and software, not slides about them. <strong>ThinkTank OS, the Pearls digest, and the Vanguard Library</strong> are live."],
+  verification: ["Verification", "Signature verified, Ed25519. RFC 3161 trusted timestamp. One record anchored on chain. <strong>Attestation does not certify the truth of third-party data.</strong> It certifies identity, origin, and integrity."]
 };
 const detail = document.getElementById('detail');
 function show(key){

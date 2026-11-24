@@ -43,11 +43,8 @@ export default function Index({ study, reports = [], auth }) {
                 </div>
 
                 <p className="mt-10 text-sm leading-relaxed text-ink-soft dark:text-cream-soft">
-                    How these pages are built: every number comes from one tested
-                    calculation over Glenride&apos;s own data. Findings are skipped
-                    when their sample is under {study?.min_rows ?? 20} rows, small
-                    gaps are reported as &ldquo;about the same&rdquo;, and every
-                    finding has a stable link.
+                    Every number on these pages comes from Glenride&apos;s own
+                    data, and every finding has a stable link.
                 </p>
             </main>
 

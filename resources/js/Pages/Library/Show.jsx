@@ -60,7 +60,7 @@ export default function Show({ manuscript = {}, content = '', related = [], isPr
             {/* Preview Banner if unpublished */}
             {isPreview && (
                 <div className="border-b border-line bg-paper-deep dark:border-line-dark dark:bg-night-deep py-2.5 px-6 text-center text-xs font-mono text-ink dark:text-cream">
-                    ⚠️ Editorial Preview Mode: This manuscript is in active editorial polish and not yet released to the public index.
+                    This manuscript is still being prepared and is not yet part of the public library.
                 </div>
             )}
 

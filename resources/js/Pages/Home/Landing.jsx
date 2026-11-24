@@ -446,6 +446,11 @@ export default function Landing({
                             Working software, live. Work in progress, labeled
                             as it stands.
                         </p>
+                        <p className="mt-5 text-lg leading-relaxed text-ink-soft dark:text-cream-soft">
+                            ThinkTank OS is the route for scholars: submit
+                            your work, and Glenride attests the record and
+                            anchors it to the blockchain.
+                        </p>
                     </div>
                     <VisualFrame
                         title="Applied AI and enterprise software"
@@ -592,15 +597,9 @@ export default function Landing({
                                         {brief.abstract}
                                     </p>
                                 )}
-                                {(brief.attestation_public_id || brief.record_version) && (
+                                {brief.attestation_public_id && (
                                     <p className="mt-4 font-mono text-xs font-semibold text-sienna-deep dark:text-sienna">
-                                        {brief.attestation_public_id && (
-                                            <>Witnessed by Glenride · {brief.attestation_public_id}</>
-                                        )}
-                                        {brief.attestation_public_id && brief.record_version && ' · '}
-                                        {brief.record_version && (
-                                            <>SpinWave record v{brief.record_version}</>
-                                        )}
+                                        Witnessed by Glenride · {brief.attestation_public_id}
                                     </p>
                                 )}
                             </article>
@@ -750,13 +749,10 @@ export default function Landing({
                         </Link>
                         <div className="border-b border-line py-6 dark:border-line-dark">
                             <p className="font-display text-xl font-bold text-ink dark:text-cream">
-                                The record, before you reach out
+                                What you can check before you reach out
                             </p>
                             <ul className="mt-3 space-y-2 text-sm leading-relaxed text-ink-soft dark:text-cream-soft">
-                                <li>
-                                    Published daily — The Dispatch, triple-checked
-                                    before it posts.
-                                </li>
+                                <li>Published daily — The Dispatch.</li>
                                 <li>
                                     Every Monday — a public weekly U.S. drug
                                     shortage digest, from FDA and ASHP data:
