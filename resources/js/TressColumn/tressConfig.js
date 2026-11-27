@@ -179,11 +179,11 @@ export const PLUS_TIERS = {
     },
 };
 
-// PROVISIONAL freshness windows. NOT DECIDED. His approval is pending
-// (PRD Q4 residuals, Nov 17). One config spot on purpose: when he
-// picks the windows, they change here and nowhere else. Any figure
-// older than its window carries a stale label with its as-of time.
-// Do not present these values as decided.
+// Freshness windows, approved 2026-11-26 (PRD Q4): the provisional
+// per-figure values below were adopted as-is. One config spot on
+// purpose: when he changes the windows, they change here and
+// nowhere else. Any figure older than its window carries a stale
+// label with its as-of time.
 export const FRESHNESS_WINDOWS_MS = {
     gateProgress: 60000,
     launchList: 120000,
